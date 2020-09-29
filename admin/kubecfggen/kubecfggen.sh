@@ -23,6 +23,7 @@
 #                    0.8 - 30-Jan-2019 - Use client certificates instead of service account tokens
 #                    0.9 - 26-Nov-2019 - Rename service account 'tiller' to 'chaoskube' 
 #                    0.10- 19-Feb-2020 - Add `lease` resource to cluster-wide view role
+#                    0.11- 29-Sep-2020 - Add `volumeattachment` resource to cluster-wide view role
 #
 
 # version tag
@@ -285,7 +286,7 @@ rules:
   resources: ["podsecuritypolicies"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["storage.k8s.io"]
-  resources: ["storageclasses"]
+  resources: ["storageclasses, "volumeattachments"]
   verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

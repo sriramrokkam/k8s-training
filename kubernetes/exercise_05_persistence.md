@@ -94,6 +94,14 @@ You can try to see if the storage device is unmounted by:
 2. Use `kubectl get pv <pv-name> -o json | jq ".spec.gcePersistentDisk"` to get the name of the physical disk used by the persistent volume.
 3. Use `kubectl get nodes -o yaml | grep <physical-disk-name>` to see if the physical disk is still conected to a node? If it is you get  3 lines per connected node. 
 
+#### Orphaned / dangling VolumeAttachments
+
+In rare cases it might happen, that a `VolumeAttachment` object is still present and prevents to mount the volume on other nodes. 
+After deleting all pods referencing the volume, go through these steps:
+1. Use `kubectl get pvc <pcv-name>` to get the name of the bounded persistent volume.
+2. Use `kubectl get volumeattachments | grep <pv-name>` to check, if any VolumeAttachments references your PV.
+3. Contact your trainers and ask them to delete the VolumeAttachment.
+
 #### ReadOnly is needed twice
 
 If only **one** pod of your deployment reaches running state make sure you have defined `readOnly: true` at the volumes ***and*** at the volumeMounts part of the deployment. If you forgot, add both readOnly statements, delete the old deployment, wait for the unbinding of the disk from the nodes and reapply the fixed deployment to the cluster.  

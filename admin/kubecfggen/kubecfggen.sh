@@ -286,7 +286,7 @@ rules:
   resources: ["podsecuritypolicies"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["storage.k8s.io"]
-  resources: ["storageclasses, "volumeattachments"]
+  resources: ["storageclasses", "volumeattachments"]
   verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

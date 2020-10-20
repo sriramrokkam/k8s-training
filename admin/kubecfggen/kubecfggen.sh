@@ -24,10 +24,11 @@
 #                    0.9 - 26-Nov-2019 - Rename service account 'tiller' to 'chaoskube' 
 #                    0.10- 19-Feb-2020 - Add `lease` resource to cluster-wide view role
 #                    0.11- 29-Sep-2020 - Add `volumeattachment` resource to cluster-wide view role
+#                    0.12- 20-Oct-2020 - Change CSR to stable API v1 
 #
 
 # version tag
-_VERSION=0.8
+_VERSION=0.12
 
 # this is where we expect our configuration file
 CONFIG_FILE=`dirname $0`/kubecfggen.conf
@@ -360,11 +361,12 @@ for ns in $NAMESPACES; do
 
   # send csr to cluster
   cat <<__EOF | $KUBECTL create -f -
-apiVersion: certificates.k8s.io/v1beta1
+apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
 metadata:
   name: $ns.client-auth.training
 spec:
+  signerName: kubernetes.io/kube-apiserver-client
   groups:
   - system:authenticated
   request: $(cat $CLIENT_CERT_DIR/client.csr | base64 | tr -d '\n')

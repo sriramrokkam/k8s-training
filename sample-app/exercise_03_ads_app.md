@@ -127,6 +127,7 @@ spec:
   - port: 8080
     protocol: TCP
     targetPort: ads-app-port
+    name: http
   selector:
     component: <name-of-component>
     module: <name-of-module>
@@ -140,11 +141,11 @@ spec:
 
 - As the host URL has to be unique across the whole K8s Cluster, add `-<name-of-your-namespace>` as suffix to the hostname 'bulletinboard', so if you namespace were *part-0040* the host URL would look like: `bulletinboard-ads-part-0040.ingress.cw43.k8s-train.shoot.canary.k8s-hana.ondemand.com`.
 
-- Refer to the above created **Service** `ads-app-service` in field `serviceName` and `servicePort` (Section '- backend').
+- Refer to the above created **Service** `ads-app-service` in field `service.name` and `port.name` (Section '- backend').
 
 ```yaml
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ads-app-ingress
@@ -157,9 +158,12 @@ spec:
     http:
       paths: 
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: <name-of-ads-service>
-          servicePort: <name-of-ads-port>
+          service:
+            name: <name-of-ads-service>
+            port:
+              name: <name-of-ads-service-port>
 ```
 In the example above the namespace would be `part-0040`, cluster name would be `cw43` and project name would be `k8s-train`.
 

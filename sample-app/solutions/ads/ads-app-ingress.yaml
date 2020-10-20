@@ -13,9 +13,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: ads-app-service
-          servicePort: ads-app-port
+          service:
+            name: ads-app-service
+            port:
+              name: http
   tls:
     - hosts:
       - <Hostname>.ingress.<CLUSTER_NAME>.<PROJECT_NAME>.shoot.canary.k8s-hana.ondemand.com

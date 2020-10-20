@@ -49,7 +49,7 @@ Check the [help section](https://github.wdf.sap.corp/pages/kubernetes/gardener/d
 Write the ingress yaml file and reference to your service. Use the following skeleton and check the [kubernetes API reference](https://kubernetes.io/docs/reference/) for details and further info. 
 
 ```yaml
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: <ingress resource name>
@@ -64,9 +64,12 @@ spec:
     http:
       paths:
       - path: <URI relative to the host>
+        pathType: Prefix
         backend:
-          serviceName: <string>
-          servicePort: <string>
+          service: 
+            name: <string>
+            port:
+              number : <int>
 ```
 
 Finally, deploy your ingress and test the URL.

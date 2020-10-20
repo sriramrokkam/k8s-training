@@ -13,16 +13,22 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: {{ .Release.Name }}-reviews-app-service
-          servicePort: 80
+          service:
+            name: {{ .Release.Name }}-reviews-app-service
+            port:
+              number: 80
   - host: "{{ .Values.Ingress.LongName }}.{{ .Values.Ingress.Domain }}"
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: {{ .Release.Name }}-reviews-app-service
-          servicePort: 80
+          service:
+            name: {{ .Release.Name }}-reviews-app-service
+            port:
+              number: 80
   tls:
   - hosts:
     - "{{ .Values.Ingress.ShortName }}.{{ .Values.Ingress.Domain }}"

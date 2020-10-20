@@ -33,6 +33,7 @@ spec:
         image: nginx:mainline
         ports:
         - containerPort: 80
+          name: http
         volumeMounts:
         - name: index-html
           mountPath: /usr/share/nginx/html
@@ -72,6 +73,7 @@ spec:
         image: nginx:mainline
         ports:
         - containerPort: 80
+          name: http
         volumeMounts:
         - name: index-html
           mountPath: /usr/share/nginx/html
@@ -87,6 +89,7 @@ spec:
   - port: 80
     protocol: TCP
     targetPort: 80
+    name: http
   selector:
     app: mynginx
   type: ClusterIP
@@ -102,11 +105,12 @@ spec:
   - port: 80
     protocol: TCP
     targetPort: 80
+    name: http
   selector:
     app: yournginx
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fanout-nginx
@@ -118,15 +122,21 @@ spec:
     http:
       paths:
       - path: /my(.*)
+        pathType: Prefix
         backend:
-          serviceName: mynginx-service
-          servicePort: 80
+          service: 
+            name: mynginx-service
+            port: 
+              name: http
       - path: /your(.*)
+        pathType: Prefix
         backend:
-          serviceName: yournginx-service
-          servicePort: 80
+          service:
+            name: yournginx-service
+            port:
+              name: http
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vh-nginx
@@ -136,14 +146,20 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: mynginx-service
-          servicePort: 80
+          service:
+            name: mynginx-service
+            port: 
+              number: 80
   - host: yournginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: yournginx-service
-          servicePort: 80
+          service: 
+            name: yournginx-service
+            port:
+              number: 80
 ---

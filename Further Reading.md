@@ -35,17 +35,19 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 #### @SAP: Gardener
 - First of all: SAP offers an internal Kubernetes platform offering that is called Project Gardener. If you need a Kubernetes environment, this is the place to go: [Gardener](https://github.wdf.sap.corp/pages/kubernetes/gardener/)
 
-- If you are looking for more detailed information about Gardener, check out this [kubernetes blog post](https://kubernetes.io/blog/2018/05/17/gardener/).
+- If you are looking for more detailed information about Gardener, check out the kubernetes blog posts [part 1](https://kubernetes.io/blog/2018/05/17/gardener/) & [part 2](https://kubernetes.io/blog/2019/12/02/gardener-project-update/).
 
 - Interested in the architecture behind Gardener? There was a talk about it at *devX*, too:
 [Project Gardener: Multicloud Kubernetes Cluster Provisioning at Scale](https://video.sap.com/media/t/1_9ifoaxbx/84675141)
 
-- Gardener's curated [link list](https://github.wdf.sap.corp/pages/kubernetes/gardener/doc/2017/01/16/howto-curated-links.html)
+- Finally, the Gardener open source project hosts more [technical documentation](https://github.com/gardener/gardener/tree/master/docs).
 
 #### in general
 - Do you want to watch Kelsey Hightower, one of the big brains behind Kubernetes play Tetris on the Jumbotron at d-Kom 2018 at SAP Arena? Check out [his keynote](https://broadcast.co.sap.com/event/dkom/2018#!video%2F18106).
 
 - If there is a Container 101 talk at *devX*, there must be a Kubernetes 102 talk as well: [Kubernetes 102](https://video.sap.com/media/t/1_64gue1c2/84675141)
+
+- the Cloud Native Computing Foundation publishes KubeCon talks on their [youtube channel](https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA)
 
 - Another talk at *devX* was about resource management in Kubernetes:
 [Inside Kubernetes Resource Management (QoS) – Mechanics and Lessons from the Field](https://video.sap.com/media/t/1_hcnybwp9/84675141)
@@ -60,11 +62,11 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) is a tool which helps creating API extensions including their controller/reconcile loops
 
-- for managing access to multiple clusters, we put some small bash snippets into a [gist](https://github.wdf.sap.corp/gist/D051945/3f3daf9f71f7e012c1e25a48c1c6e8da)
+- for managing access to multiple clusters, we put some small bash snippets into a [gist](https://github.wdf.sap.corp/gist/D051945/3f3daf9f71f7e012c1e25a48c1c6e8da). There are also tools like [kubectx](https://github.com/ahmetb/kubectx) or [kube-ps1](https://github.com/jonmosco/kube-ps1), which make your life a lot easier.
 
 - [kubectl efficiency](https://www.youtube.com/watch?v=vVAFctQP1Vg&list=PLj6h78yzYM2NDs-iu8WU5fMxINxHXlien&index=12&t=0s)
 
-- getting started locally - with [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/) or [k3s](https://k3s.io/)
+- getting started locally - with [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/), [k3s](https://k3s.io/) or [kind](https://kind.sigs.k8s.io/)
 
 #### networking
 - The nitty gritty details about the networking in and behind Kubernetes are explained in the final *devX* talk we would like to point you to: [Insights into Kubernetes Networking](https://video.sap.com/media/t/1_8fawa5io/84675141)
@@ -72,6 +74,8 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 - More on networking? The [Life of a Packet](https://www.youtube.com/watch?v=0Omvgd7Hg1I) talk by Google's Michael Rubin at KubeCon EU '17 can be found [here on YouTube](https://www.youtube.com/watch?v=0Omvgd7Hg1I).
 
 - If you are more into reading - here is a very good [blog post](https://sookocheff.com/post/kubernetes/understanding-kubernetes-networking-model/) about networking in Kubernetes context.
+
+- If you are more into doing things - there is a [kubeCon2020 tutorial](https://www.youtube.com/watch?v=InZVNuKY5GY&list=PLj6h78yzYM2O1wlsM-Ma-RYhfT5LKq0XC&index=16&t=0s) digging into it.
 
 - SE radio: [container networking talk](http://www.se-radio.net/2018/10/se-radio-episode-341-michael-hausenblas-on-container-networking/)
 

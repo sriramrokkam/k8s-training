@@ -32,7 +32,7 @@ Compared to the previous v2 setup procedure, this is a significant improvement. 
 Helm organizes applications in so called charts, which contain parameters you can set during installation. By default, helm (v3) is not configured to search any remote repository for charts. So as a first step, add the `stable` repository, which hosts charts maintained on [github.com](https://github.com/helm/charts/tree/master/stable).
 
 ```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo add stable https://charts.helm.sh/stable
 
 helm repo list
 ```

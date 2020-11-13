@@ -39,6 +39,6 @@ if [ $RC -ne 0 ]; then
     exit 4
 fi
 
-$HELM repo add stable https://kubernetes-charts.storage.googleapis.com/
+$HELM repo add stable https://charts.helm.sh/stable
 
 echo "** Successfully installed helm client locally **"

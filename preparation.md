@@ -7,7 +7,12 @@ This page describes the necessary **preparation steps** before the course and as
 In the course you will use a Linux VM (Ubuntu based) that contains all the needed tools so that we lose no time for environment setup.
 Follow the instructions on the [Getting Started with the k8s training VM Image](https://github.wdf.sap.corp/cloud-native-dev/Cloud-Curriculum-VM/blob/master/Getting_Started_Running_KubernetesVM.md) page to install VMWare (VirtualBox= Blacklisted !) and download and configure the VM image.
 
-Once you have your VM up and running, **clone this repository to the VM**:
+### Clone
+Once you have your VM up and running, **clone this repository to the VM**.
+
+Due to some [security restrictions](https://github.wdf.sap.corp/pages/github/authentification-enforcement), you cannot simply clone the repository anonymously or with username/password. You have to create a personal access token instead.
+
+Follow these [instructions](https://docs.github.com/en/enterprise-server@2.22/github/authenticating-to-github/creating-a-personal-access-token) and enter the token as password when prompted during cloning.
 
 ```bash
 git clone https://github.wdf.sap.corp/slvi/docker-k8s-training.git

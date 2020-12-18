@@ -127,6 +127,9 @@ To continue with the setup, you need `helm`. Run the [helm_init](helm_init.sh) s
 For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. After using a plain docker registry for quite some time, we decided to swith to [Harbor](https://goharbor.io/). It comes with a UI and some more useful features.
 In the admin folder of this repo, you find a registry folder with `install_harbor_registry.sh` script. Check the prerequisites and run the script as described [here](./registry/readme.md) to deploy a registry and make it available via an ingress.
 
+### Build and push sample app artefacts
+For the day 4 exercises, you will need to build and push the images of bulletinboard-ads and bulletinboard-reviews. This can be done automatically using this [script](./exercise_prep/bulletinboard.sh). It will clone both repositories, build the images and push them to the Harbor registry using the `participant` credentials.
+
 ### Setup cluster monitoring (~1 day before course starts)
 If you want to keep track of things happening in the cluster, you can use these [scripts](./monitoring) to setup prometheus/grafana based monitoring.
 

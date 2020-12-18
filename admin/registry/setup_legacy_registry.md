@@ -1,4 +1,4 @@
-# Depricated!
+# Deprecated!
 This description explains how things worked in the past. We strongly recommend to use the Harbor registry as described [here](./readme.md).
 
 # Setup a Docker registry in K8s

@@ -14,8 +14,9 @@ cd dbuild
 Download the files into your build context:
 
 ```bash
-wget -O evil.jpg https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/evil.jpg
-wget -O index.html https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/evil.html
+cp <path-to-cloned-training-repo>/docker/res/evil.jpg .
+cp <path-to-cloned-training-repo>//docker/res/evil.html .
+mv evil.html index.html
 ```
 
 ## Step 3: Create an SSL configuration for _nginx_
@@ -89,22 +90,22 @@ docker tag 28ffc0efbc9b secure-nginx:0001
 
 ## Step 8: Push the image to a registry
 
-Tag your image (again) so that it will have a reference to a registry. The URL for the registry is  **registry.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com**, the values for `<cluster-name>` and `<project-name>` **must be substituted** with those given to you by your trainer.
+Tag your image (again) so that it will have a reference to a registry. The URL for the registry is  **h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com/training**, the values for `<cluster-name>` and `<project-name>` **must be substituted** with those given to you by your trainer.
 
 Assuming that `<cluster-name>` is `wdfcw01`, that `<project-name>` is `k8s-train`, that your participant-ID is `part-0001` and that the image ID returned to you in Step 7 is `28ffc0efbc9b`, tag your image like this:
 
 ```bash
-docker tag 28ffc0efbc9b registry.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/secure-nginx:part-0001
+docker tag 28ffc0efbc9b h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/secure-nginx:part-0001
 ```
 
 In order to push to the registry, you need to log on to it first. Run the command and enter the password `2r4!rX6u5-qH`:
 
 ```bash
-docker login -u participant registry.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com
+docker login -u participant h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com
 ```
 
 Finally, push the image to the registry:
 
 ```bash
-docker push registry.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/secure-nginx:part-0001
+docker push h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/secure-nginx:part-0001
 ```

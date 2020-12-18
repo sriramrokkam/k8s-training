@@ -61,7 +61,7 @@ helm install --wait -n harbor-registry -f harbor-values.yaml \
 	--set registry.credentials.password=$REGISTRY_PASS \
 	--set registry.credentials.htpasswd=$_passwd \
 	--set harborAdminPassword=$ADMIN_PASSWD \
-	harbor harbor/harbor
+	$HELM_RELEASE_NAME harbor/harbor
 
 AUTH_TOKEN=$(echo -n "admin:$ADMIN_PASSWD" | base64)
 

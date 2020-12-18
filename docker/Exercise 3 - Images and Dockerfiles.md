@@ -6,11 +6,12 @@ In this exercise, you will build an image with a Dockerfile, tag it and upload i
 
 Create an empty directory on your VM, change into it and create an empty `Dockerfile`.
 
-We want to copy a custom (yet very simple) website to the image. You can either write your own _index.html_ or you can download a ready-made website with an image into your build context:
+We want to copy a custom (yet very simple) website to the image. You can either write your own _index.html_ or you can copy a ready-made website with an image into your build context. The prepared files can be found in the training repository's `docker/res/` subfolder:
 
 ```bash
-wget -O evil.jpg https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/evil.jpg
-wget -O index.html https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/evil.html
+cp <path-to-cloned-training-repo>/docker/res/evil.jpg .
+cp <path-to-cloned-training-repo>//docker/res/evil.html .
+mv evil.html index.html
 ```
 
 ## Step 1: extend an existing image
@@ -44,7 +45,7 @@ server {
 }
 ```
 
-**Shortcut:** You can also download this configuration file from https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/ssl.conf.
+**Shortcut:** You can also copy this configuration file from training repository (./docker/res/ssl.conf).
 
 Again, with the help of the `COPY` directive, make sure that this file ends up in your image at `/etc/nginx/conf.d/ssl.conf`.
 
@@ -70,16 +71,20 @@ Use the `docker build` command to build the image. Make note of the UID of the n
 
 With `docker tag`, give your image a nice name such as *secure_nginx* and a release number (again, use your participant's ID as release number).
 
-## Step 8: Push the image to a registry
+## Step 8: Explore the registry
+The K8s cluster prepared for the training is also serving a [Harbor](https://goharbor.io/) registry at  **h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com** to which you can push your image. The values for *\<cluster-name\>* and *\<project-name\>* will be given to you by your trainer and **must be substituted** respectively.
 
-The K8s cluster prepared for the training is also serving a docker registry at  **registry.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com** to which you can push your image. The values for *\<cluster-name\>* and *\<project-name\>* will be given to you by your trainer and **must be substituted** respectively.
+Harbor is setup with a generic user called `participant` and the password is **`2r4!rX6u5-qH`**. Open the URL in a browser and logon. You will be able to see a project called `training`. Navigate to the training project's `repositories` view. On the right upper side you will find a button "push command". It has some convenient inforamtion about how to tag and push an image to this repository.
 
-Since the registry is setup with basic authentication, you have to login first and Docker provides a way to manage your login data. With `docker login <registry-URL>` you can authenticate once and store the credentials in `~/.docker/config.json`. For our registry **the username is `participant` and the password is `2r4!rX6u5-qH`**.
+Once you have finished exploring the UI, move on and upload your custom image.
 
-Next, use the `docker tag` command to tag your image correctly so that the registry is used. The name of your image should be **secure_nginx with your participant ID** as release tag. For instance, if you are working on *part-0001*, tag your image like **"\<registry name\>/secure_nginx:part-0001"**.
+## Step 9: Push the image to a registry
+Before you can push an image to the registy, have to login and Docker provides a way to manage your login data. With `docker login <registry-URL>` you can authenticate once and store the credentials in `~/.docker/config.json`. For our registry **the username is `participant` and the password is `2r4!rX6u5-qH`**.
+
+Next, use the `docker tag` command to tag your image correctly so that the registry is used. The name of your image should be **secure_nginx with your participant ID** as release tag. Note, that the project's name has to be part of the URL.
+
+For instance, if you are working on *part-0001*, tag your image like **"h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com/training/secure_nginx:part-0001"**. You can also check the "push command" menu in the Harbor UI.
 
 Use `docker push <full-image-name>:<tag>` to upload your image to the registry.
 
-If the push succeeded, open the registry in a browser: **registry.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com/v2/_catalog**
-
-Ideally you would see an "secure_nginx" repository there. To browse the list of tags use **/v2/< repo-name >/tags/list**, where the repo name should be *secure_nginx*.
+If the push succeeded, check the result in the browser.

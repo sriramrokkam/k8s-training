@@ -32,10 +32,10 @@ Ingress.LongName: (mandatory)
 If you haven't done so already install helm. This was also a prerequisite of the helm exercise.
 
 Go to your project base folder `k8s-bulletinboard`, which you created at the beginning of exercise 2, and create a sub-folder `reviews`.
-Download the chart into that folder:
+The chart for `reviews` has already been prepared and is part of the training repository. Copy the chart from there:
 
 ```bash
-wget https://github.wdf.sap.corp/slvi/docker-k8s-training/raw/master/sample-app/solutions/reviews/bulletinboard-reviews-chart.tgz
+cp <path-to-cloned-training-repo>/sample-app/solutions/reviews/bulletinboard-reviews-chart.tgz .
 ```
 
 ## Step 1: Helm

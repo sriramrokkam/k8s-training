@@ -10,7 +10,7 @@ We want to copy a custom (yet very simple) website to the image. You can either 
 
 ```bash
 cp <path-to-cloned-training-repo>/docker/res/evil.jpg .
-cp <path-to-cloned-training-repo>//docker/res/evil.html .
+cp <path-to-cloned-training-repo>/docker/res/evil.html .
 mv evil.html index.html
 ```
 

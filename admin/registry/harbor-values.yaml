@@ -1,0 +1,106 @@
+chartmuseum:
+  enabled: true
+clair:
+  enabled: false
+core:
+  image:
+    repository: goharbor/harbor-core
+    tag: dev
+  replicas: 1
+  startupProbe:
+    initialDelaySeconds: 10
+database:
+  internal:
+    image:
+      repository: goharbor/harbor-db
+      tag: dev
+    password: tDDHyYNSRufLfzKrfFLqG92n 
+  maxIdleConns: 50
+  maxOpenConns: 1000
+  type: internal
+expose:
+  ingress:
+    annotations:
+      cert.gardener.cloud/purpose: managed
+      ingress.kubernetes.io/proxy-body-size: "0"
+      ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    controller: default
+  tls:
+    certSource: secret
+    enabled: true
+    secret:
+      secretName: harbor-ingress-tls
+  type: ingress
+imagePullPolicy: IfNotPresent
+internalTLS:
+  enabled: false
+jobservice:
+  image:
+    repository: goharbor/harbor-jobservice
+    tag: dev
+  jobLogger: file
+  maxJobWorkers: 10
+  replicas: 1
+logLevel: info
+nginx:
+  image:
+    repository: goharbor/nginx-photon
+    tag: dev
+  replicas: 1
+notary:
+  enabled: false
+persistence:
+  enabled: true
+  imageChartStorage:
+    disableredirect: false
+    filesystem:
+      rootdirectory: /storage
+    type: filesystem
+  persistentVolumeClaim:
+    database:
+      accessMode: ReadWriteOnce
+      size: 1Gi
+    redis:
+      accessMode: ReadWriteOnce
+      size: 1Gi
+    registry:
+      accessMode: ReadWriteOnce
+      size: 10Gi
+  resourcePolicy: keep
+portal:
+  image:
+    repository: goharbor/harbor-portal
+    tag: dev
+  replicas: 1
+proxy:
+  components:
+  - core
+  - jobservice
+  httpProxy: null
+  httpsProxy: null
+  noProxy: 127.0.0.1,localhost,.local,.internal
+redis:
+  internal:
+    image:
+      repository: goharbor/redis-photon
+      tag: dev
+  type: internal
+registry:
+  controller:
+    image:
+      repository: goharbor/harbor-registryctl
+      tag: dev
+  middleware:
+    enabled: false
+  registry:
+    image:
+      repository: goharbor/registry-photon
+      tag: dev
+  relativeurls: false
+  replicas: 1
+trivy:
+  enabled: false
+updateStrategy:
+  type: RollingUpdate

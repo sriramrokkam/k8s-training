@@ -17,12 +17,12 @@ The structure looks like this
 
 ## Step 0: Setting up your build context
 
-Create an empty directory on your VM that will be your build context. Download the `wiki.go` file and create a folder called `tmpl` where you place the `edit.html` and `view.html` template files.
+Create an empty directory on your VM that will be your build context. From your cloned training repository copy the `wiki.go` file and create a folder called `tmpl` where you place the `edit.html` and `view.html` template files.
 
 ```bash
-wget -O edit.html https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/edit.html
-wget -O view.html https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/view.html
-wget -O wiki.go https://github.wdf.sap.corp/raw/slvi/docker-k8s-training/master/docker/res/wiki.go
+cp <path-to-cloned-repository>/docker/res/edit.html ./tmpl/
+cp <path-to-cloned-repository>/docker-k8s-training/master/docker/res/view.html ./tmpl/
+cp <path-to-cloned-repository>/docker-k8s-training/master/docker/res/wiki.go .
 ```
 
 ## Step 1: Creating the Dockerfile

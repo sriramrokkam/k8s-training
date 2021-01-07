@@ -89,7 +89,7 @@ Technically it would be possible to run most of the exercises also with Docker o
 ### Clone the repo
 There are demo scripts/files for the container, docker and kubernetes parts. Simply clone the repo to your VM and work with this copy:
 
-`git clone https://github.wdf.sap.corp/slvi/docker-k8s-training.git`
+`git clone https://github.tools.sap/kubernetes/docker-k8s-training.git`
 
 We are referencing stable versions of our repo with a release tag, so you can use one of these for the training as well.
 
@@ -120,12 +120,15 @@ Furthermore, during the training these ranges will be used for the network polic
 
 You can use the [network information portal](https://nip.wdf.sap.corp/nip2/faces/networking/wan/PublicAddresses.xhtml) to get your local office's CIDR blocks. For the exercise 8 you can give the info to participants as well or ask them to search for it.
 
-### Setup helm & tiller
-To continue with the setup, you have to initialize tiller in `kube-system` namespace. Run the [helm_init](helm_init.sh) script within your VM to download the helm client (if not present) and bring up tiller with a dedicated service account & cluster admin permissions.
+### Setup helm
+To continue with the setup, you need `helm`. Run the [helm_init](helm_init.sh) script within your VM to download the helm client (if not present) and add some repositories.
 
 ### Setup a docker registry (~1 day before course starts)
-For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. Recommendation is to spin up a registry without any persistence in the k8s cluster you use for the training.
-In the admin folder of this repo, you find a registry folder with `install.registry.sh` script. Check the prerequisites and run the script as described [here](./registry/readme.md) to deploy a registry and make it available via an ingress.
+For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. After using a plain docker registry for quite some time, we decided to swith to [Harbor](https://goharbor.io/). It comes with a UI and some more useful features.
+In the admin folder of this repo, you find a registry folder with `install_harbor_registry.sh` script. Check the prerequisites and run the script as described [here](./registry/readme.md) to deploy a registry and make it available via an ingress.
+
+### Build and push sample app artefacts
+For the day 4 exercises, you will need to build and push the images of bulletinboard-ads and bulletinboard-reviews. This can be done automatically using this [script](./exercise_prep/bulletinboard.sh). It will clone both repositories, build the images and push them to the Harbor registry using the `participant` credentials.
 
 ### Setup cluster monitoring (~1 day before course starts)
 If you want to keep track of things happening in the cluster, you can use these [scripts](./monitoring) to setup prometheus/grafana based monitoring.
@@ -143,7 +146,7 @@ Of course, you can create a separate namespace (!= `default`) and add it to the 
 Please be aware, that Gardener does no longer assign external IP addresses to cluster nodes. Hence, accessing applications externally via node ports does not work any longer. Node ports are still used to route traffic into the cluster network but they are only exposed within the GCP VPC of the cluster.
 
 ### Get support from Gardener Team
-- Raise your question via email in the [kubernetes-users Mailinglist](https://listserv.sap.corp/mailman/listinfo/kubernetes-users) or in the [K8s CaaS in SAP Cloud Platform Jam Group](https://jam4.sapjam.com/groups/Niq7TSBxLlzgb3nroBZJVx/overview_page/e9uqTDxXBRFbk7FJXEA4Cd) or in the Slack Channel [k8s-landscape-gardener](https://sap-cp.slack.com/messages/CBV3JS9S4/).
+- Raise your question via email in the [kubernetes-users Mailinglist](https://listserv.sap.corp/mailman/listinfo/kubernetes-users) or via Slack in #sap-tech-kubernetes or #sap-tech-gardener-canary.
 
 ### Add nodes to K8s cluster
 In exceptional cases it might happen that your cluster needs more resources to deal with all the participants pods because autoscaler configuration is not sufficient high. In order to scale the cluster up, get in contact with [Cloud Curriculum K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<DateOfYourTraining>).

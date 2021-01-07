@@ -23,8 +23,8 @@ This time around npm is executed as part of the docker-build hence nothing has t
 Push your image to the registry and remember to give it a unique name, e.g. `bulletinboard-reviews-<participant-id>`.
 
 ```SHELL
-docker build -t <registry-url>/bulletinboard-reviews-<participant-id>:v1 .
-docker push <registry-url>/bulletinboard-reviews-<participant-id>:v1
+docker build -t <registry-url>/training/bulletinboard-reviews-<participant-id>:v1 .
+docker push <registry-url>/training/bulletinboard-reviews-<participant-id>:v1
 ```
 
 ## Step 3: clone ads repository
@@ -48,8 +48,8 @@ You now have two options:
 After that build your image and push it to the registry. Remember to give it a unique name, e.g. `bulletinboard-ads-<participant-id>`.
 
 ```SHELL
-docker build -t <registry-url>/bulletinboard-ads-<participant-id>:v1 .
-docker push <registry-url>/bulletinboard-ads-<participant-id>:v1
+docker build -t <registry-url>/training/bulletinboard-ads-<participant-id>:v1 .
+docker push <registry-url>/training/bulletinboard-ads-<participant-id>:v1
 ```
 
 #### Hints on Option 1:

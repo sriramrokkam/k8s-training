@@ -1,0 +1,87 @@
+#!/bin/bash
+
+HELM_RELEASE_NAME=harbor-registry
+REGISTRY_USER=harbor
+REGISTRY_PASS="GkPxKfTMse83TEcZhZe4qjaH"
+ADMIN_PASSWD="82rUHSy98xbZztm5MjLJ7Nf6"
+
+CURL_WAIT=5
+
+# check if we have a working kubectl ready
+[ -z "$KUBECTL" ] && KUBECTL=$(which kubectl 2> /dev/null)
+if [ -z "$KUBECTL" -o ! -x "$KUBECTL" ]; then
+        echo "kubectl could not be found, download it from https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl"
+        exit 3
+fi
+
+# try to access the cluster, if it is not working, we exit
+${KUBECTL} get nodes &> /dev/null
+RC=$?
+if [ $RC -ne 0 ]; then
+        echo "ERROR: Unable to get the nodes of your cluster ('kubectl get nodes' returned with RC $RC)."
+        echo "       Check that your kube.config is correct and points to the corrent cluster."
+        exit 4
+fi
+
+# check if we have a working helm ready
+[ -z "$HELM" ] && HELM=`which helm`
+if [ -z "$HELM" -o ! -x "$HELM" ]; then
+        echo "Cannot find or execute helm. Download it from https://helm.sh/docs/intro/install/."
+        exit 3
+fi
+
+# try to access the cluster, if it is not working, we exit
+${HELM} list &> /dev/null
+RC=$?
+if [ $RC -ne 0 ]; then
+        echo "ERROR: helm does not work currently."
+        echo "       Please make sure tiller is installed & has required premissions."
+        exit 4
+fi
+
+# construct ingress hostname string
+GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
+GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
+
+INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
+
+echo -e "\n > Using ingress hostname $INGRESS_HOSTNAME..."
+echo -e "\n >> Deploying Harbor with custon values (this can take up to 5 minutes)...\n"
+
+_passwd=$(htpasswd -nbBC10 $REGISTRY_USER $REGISTRY_PASS)
+REGISTRY_URL=$(echo $INGRESS_HOSTNAME | tr [:upper:] [:lower:])
+
+kubectl create ns harbor-registry
+
+helm repo add harbor https://helm.goharbor.io
+helm install --wait -n harbor-registry -f harbor-values.yaml \
+	--set expose.ingress.hosts.core=$REGISTRY_URL \
+	--set externalURL="https://${REGISTRY_URL}" \
+	--set registry.credentials.username=$REGISTRY_USER \
+	--set registry.credentials.password=$REGISTRY_PASS \
+	--set registry.credentials.htpasswd=$_passwd \
+	--set harborAdminPassword=$ADMIN_PASSWD \
+	$HELM_RELEASE_NAME harbor/harbor
+
+AUTH_TOKEN=$(echo -n "admin:$ADMIN_PASSWD" | base64)
+
+## create user
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/users" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"username\": \"participant\", \"password\": \"2r4!rX6u5-qH\", \"realname\": \"participant\", \"admin_role_in_auth\": false, \"sysadmin_flag\": false, \"email\": \"participant@training.sap\" }"
+
+sleep $CURL_WAIT
+
+## create project
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"project_name\": \"training\", \"storage_limit\": 0, \"public\": false }"
+
+sleep $CURL_WAIT
+
+## get project ID
+PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "training") | .project_id'`
+
+sleep $CURL_WAIT
+
+## assign user to project
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
+
+echo -e "\n\nRegistry is available at https://$REGISTRY_URL"
+echo -e "Login as admin:$ADMIN_PASSWD\n"

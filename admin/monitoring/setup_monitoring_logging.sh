@@ -2,7 +2,8 @@
 
 ## check prerequisites
 NAMESPACE="monitoring"
-HELM_RELEASE_NAME="monitoring"
+HELM_PROMETHEUS_RELEASE_NAME="monitoring"
+HELM_LOKI_RELEASE_NAME="logging"
 ADMIN_PASSWD="1noipsuNwfAxJAUV6Pns"
 
 # check if we have a working kubectl ready
@@ -37,18 +38,6 @@ if [ $RC -ne 0 ]; then
 	exit 4
 fi
 
-
-## add chart repo
-${HELM} repo add prometheus-community https://prometheus-community.github.io/helm-charts
-${HELM} repo update
-
-# create a namespace for the monitoring
-${KUBECTL} create ns $NAMESPACE
-
-## prepare for grafana
-${KUBECTL} -n $NAMESPACE create configmap monitoring-dashboards --from-file=./dashboards/cluster_stats.json --from-file=./dashboards/training_stats.json
-${KUBECTL} -n $NAMESPACE label configmap monitoring-dashboards grafana_dashboard=1
-
 # construct ingress hostname string
 GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
 GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
@@ -61,10 +50,35 @@ if [ $(echo $INGRESS_HOSTNAME_SHORT | wc -m) -gt 64 ]; then
 	exit 5
 fi
 
-# install prometheus chart
-echo "installing helm chart and waiting until all pods are up and running..."
+## add chart repo
+${HELM} repo add prometheus-community https://prometheus-community.github.io/helm-charts
+${HELM} repo add grafana https://grafana.github.io/helm-charts
+${HELM} repo update
 
-${HELM} install $HELM_RELEASE_NAME prometheus-community/kube-prometheus-stack \
+# create a namespace for the monitoring
+${KUBECTL} create ns $NAMESPACE
+
+## prepare for grafana
+${KUBECTL} -n $NAMESPACE create configmap monitoring-dashboards --from-file=./dashboards/loki.json --from-file=./dashboards/training_stats.json
+${KUBECTL} -n $NAMESPACE label configmap monitoring-dashboards grafana_dashboard=1
+
+# install Loki stack chart
+echo "installing Loki helm chart and waiting until all pods are up and running..."
+${HELM} install $HELM_LOKI_RELEASE_NAME grafana/loki-stack \
+	--wait -n $NAMESPACE \
+	--set loki.enabled=true \
+	--set promtail.enabled=true \
+	--set fluent-bit.enabled=false \
+	--set grafana.enabled=false \
+	--set grafana.sidecar.datasources.enabled=true \
+	--set prometheus.enabled=false \
+	--set filebeat.enabled=false \
+	--set logstash.enabled=false
+
+# install prometheus chart
+echo "installing Prometheus helm chart and waiting until all pods are up and running..."
+
+${HELM} install $HELM_PROMETHEUS_RELEASE_NAME prometheus-community/kube-prometheus-stack \
 	--wait -n $NAMESPACE \
 	-f prom-stack-values.yaml \
 	--set grafana.adminPassword=$ADMIN_PASSWD \
@@ -74,3 +88,4 @@ ${HELM} install $HELM_RELEASE_NAME prometheus-community/kube-prometheus-stack \
 	--set grafana.ingress.tls[0].hosts[1]=$INGRESS_HOSTNAME_LONG
 
 echo "Grafana Ingress Host: ${INGRESS_HOSTNAME_LONG}"
+

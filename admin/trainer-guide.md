@@ -130,8 +130,8 @@ In the admin folder of this repo, you find a registry folder with `install_harbo
 ### Build and push sample app artefacts
 For the day 4 exercises, you will need to build and push the images of bulletinboard-ads and bulletinboard-reviews. This can be done automatically using this [script](./exercise_prep/bulletinboard.sh). It will clone both repositories, build the images and push them to the Harbor registry using the `participant` credentials.
 
-### Setup cluster monitoring (~1 day before course starts)
-If you want to keep track of things happening in the cluster, you can use these [scripts](./monitoring) to setup prometheus/grafana based monitoring.
+### Setup cluster monitoring & logging (~1 day before course starts)
+If you want to keep track of things happening in the cluster, you can use this [script](./monitoring) to setup prometheus/loki based monitoring & logging. Both can be accessed via Grafana.
 
 ### (Optional) [Gain access to the Dashboard](accessDashboard.md)
 

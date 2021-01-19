@@ -1,6 +1,6 @@
 # Setup a monitoring with promethes and grafana
 
-In this folder you find scripts & yaml files to deploy a **monitoring system** based on [**Prometheus**](https://prometheus.io/) & **visualization** based on [**Grafana**](https://grafana.com/). We use the `stable/prometheus` ([details](https://github.com/helm/charts/tree/master/stable/prometheus)) and `stable/grafana` ([details](https://github.com/helm/charts/tree/master/stable/grafana)) helm charts and install them with custom values.
+In this folder you find scripts & yaml files to deploy a **monitoring system** based on [**Prometheus**](https://prometheus.io/) & **visualization** based on [**Grafana**](https://grafana.com/). We use the `prometheus-community/kube-prometheus-stack` ([details](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)) helm chart and install it with custom values.
 
 **Prometheus** collects metrics from various endpoints such as the API server or kubelet. Data is stored as time series and can be queried via `prometheus-server`.
 
@@ -13,18 +13,19 @@ In it's current version, the helm chart values will be set in a way to instruct 
 ## step-by-step setup
 
 ### preparation
-* check, that `kubectl` works with your cluster
-* If not yet done - setup `helm`. Use the `helm_init.sh` [script](../helm_init.sh) to carry out all required steps. Run `helm repo list` to check, if the `stable` repository is accessible. If it is not, run the following command to add it your local helm configuration: `helm repo add stable https://kubernetes-charts.storage.googleapis.com/` 
+* check, that `kubectl` works with the cluster you intend to install the stack into
+* If not yet done - setup `helm`. Use the `helm_init.sh` [script](../helm_init.sh) to carry out all required steps.
 
 ### Run the setup script
-run `setup_monitoring.sh [project name] [cluster name]` and supply the name or your Gardener project as well as the cluster name.
+run `setup_monitoring.sh
 
 The script will
   * construct a URL for Gardener ingress
   * create a namespace `monitoring`
-  * deploy the chart `stable/prometheus` into the new namespace
-  * deploy the chart `stable/grafana` into the new namespace
+  * deploy the chart `prometheus-community/kube-prometheus-stack` into the new namespace
   * request a let's encrypt certificate for the grafana ingress
   * create a configmap with the dashboard json files and import it to grafana
 
-Finally, follow the instructions printed by the Grafana chart to obtain the ingress URL and the admin password.
+To access Prometheus, use port-forwarding e.g. `kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-prometheus 9090:9090`
+
+To access Grafana use the hostname of the ingress and login with `admin`:`1noipsuNwfAxJAUV6Pns`.

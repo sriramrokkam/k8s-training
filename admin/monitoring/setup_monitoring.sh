@@ -2,24 +2,8 @@
 
 ## check prerequisites
 NAMESPACE="monitoring"
-
-# this is where we expect our helm values files
-MYHOME=$(dirname $0)
-GRAFANA_CONFIG_FILE=$MYHOME/grafana-values.yaml
-# read the configuration file
-if [ ! -r $GRAFANA_CONFIG_FILE ]; then
-	echo "Cannot read the configuration file $GRAFANA_CONFIG_FILE."
-  echo "Please make sure, it's available."
-	exit 1
-fi
-
-PROMETHEUS_CONFIG_FILE=$MYHOME/prometheus-values.yaml
-# read the configuration file
-if [ ! -r $PROMETHEUS_CONFIG_FILE ]; then
-	echo "Cannot read the configuration file $PROMETHEUS_CONFIG_FILE."
-  echo "Please make sure, it's available."
-	exit 1
-fi
+HELM_RELEASE_NAME="monitoring"
+ADMIN_PASSWD="1noipsuNwfAxJAUV6Pns"
 
 # check if we have a working kubectl ready
 [ -z "$KUBECTL" ] && KUBECTL=`which kubectl`
@@ -53,18 +37,17 @@ if [ $RC -ne 0 ]; then
 	exit 4
 fi
 
-## update repository info
-${HELM} repo update
 
-## deploy prometheus components
+## add chart repo
+${HELM} repo add prometheus-community https://prometheus-community.github.io/helm-charts
+${HELM} repo update
 
 # create a namespace for the monitoring
 ${KUBECTL} create ns $NAMESPACE
 
-# install prometheus chart
-${HELM} install --namespace $NAMESPACE prometheus stable/prometheus -f $PROMETHEUS_CONFIG_FILE
-
 ## prepare for grafana
+${KUBECTL} -n $NAMESPACE create configmap monitoring-dashboards --from-file=./dashboards/cluster_stats.json --from-file=./dashboards/training_stats.json
+${KUBECTL} -n $NAMESPACE label configmap monitoring-dashboards grafana_dashboard=1
 
 # construct ingress hostname string
 GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
@@ -78,17 +61,16 @@ if [ $(echo $INGRESS_HOSTNAME_SHORT | wc -m) -gt 64 ]; then
 	exit 5
 fi
 
-# set ingress url in values file
-sed -i.bck "s/INGRESS_HOSTNAME_SHORT/${INGRESS_HOSTNAME_SHORT}/g" $GRAFANA_CONFIG_FILE
-sed -i.bck "s/INGRESS_HOSTNAME_LONG/${INGRESS_HOSTNAME_LONG}/g" $GRAFANA_CONFIG_FILE
+# install prometheus chart
+echo "installing helm chart and waiting until all pods are up and running..."
 
-## deploy grafana components
+${HELM} install $HELM_RELEASE_NAME prometheus-community/kube-prometheus-stack \
+	--wait -n $NAMESPACE \
+	-f prom-stack-values.yaml \
+	--set grafana.adminPassword=$ADMIN_PASSWD \
+	--set grafana.ingress.hosts[0]=$INGRESS_HOSTNAME_SHORT \
+	--set grafana.ingress.hosts[1]=$INGRESS_HOSTNAME_LONG \
+	--set grafana.ingress.tls[0].hosts[0]=$INGRESS_HOSTNAME_SHORT \
+	--set grafana.ingress.tls[0].hosts[1]=$INGRESS_HOSTNAME_LONG
 
-${KUBECTL} -n $NAMESPACE create configmap monitoring-dashboards --from-file=./dashboards/cluster_stats.json --from-file=./dashboards/training_stats.json
-${KUBECTL} -n $NAMESPACE label configmap monitoring-dashboards grafana_dashboard=1
-
-# install grafana chart
-${HELM} install --namespace $NAMESPACE grafana stable/grafana -f $GRAFANA_CONFIG_FILE
-
-## print some help
-echo "To access grafana, follow the instructions above."
+echo "Grafana Ingress Host: ${INGRESS_HOSTNAME_LONG}"

@@ -29,63 +29,82 @@ metadata:
 spec:
   storageClassName: default
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
 ```
 
-Create the resource: `kubectl create -f pvc.yaml`. Verify that your respective claim has been created and is bound to a PV.
+Create the resource: `kubectl create -f pvc.yaml` and verify that your respective claim has been created. 
+
+Given the policy of the storage class, a PV might not be provisioned immediately and the PVC is "stuck" in status `Pending`. This is perfectly fine, but take a closer look with `kubectl describe pvc <pvc-name>`.
 
 ## Step 2: Attach the PVC to a pod
-Create a helper pod with a volume and mount section to get access to your PVC. The snippet below is not complete, so fill in the `???` with the corresponding values.
+Expand the deployment used in the previous exercise and make use of the PVC as a volume. Fill in the volumeMounts section to get access to your PVC within the actual container. The snippet below is not complete, so fill in the `???` with the corresponding values.
 
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx-storage-pod
 spec:
   volumes:
-    - name: content-storage
-      persistentVolumeClaim:
-       claimName: ???
+  - name: content-storage
+    persistentVolumeClaim:
+      claimName: ???
   containers:
-  - name: helper
-    image: alpine:3.8
-    args:
-    - sleep
-    - "1000"
+  - name: nginx
+    image: nginx:mainline
+    ports:
+    - containerPort: 80
     volumeMounts:
     - mountPath: "/usr/share/nginx/html"
       name: ???
 ```
 
-### Step 3: create custom content
-Locate the alpine pod and open a shell session into it: `kubectl exec -ti nginx-storage-pod -- ash`
-Alpine Linux has no `bash` binary, `ash` is actually correct :wink:
+__Important__: The PVC's access mode is `ReadWriteOnce`. Hence, reduce the number of replicas in your deployment to 1. 
+
+Once you re-created the deployment, make sure to check that the pod is status `Running` before you continue. You can also have a look at the PVC again. It should be backed by PV by now.
+
+## Step 3: create custom content
+If you would try to access the nginx running in your pod, you would probably get an error message `403 Forbidden`. This is expected since you are hiding the original `index.html` with a bind-mount. So let's move on and create some content on the volume we have available. 
+
+Locate the nginx pod and open a shell session into it: `kubectl exec -ti <pod-name> -- bash`
 Navigate to the directory mentioned in the `volumeMounts` section and create a custom `index.html`. You can re-use the code you used in the docker exercises the other day. Once you are done, disconnect from the pod and close the shell session.
 
-### Step 4: Remove and re-attach the storage
-Delete the alpine helper pod, you created earlier: ` kubectl delete pod nginx-storage-pod`
-Then create a new deployment that uses the `nginx-pvc`. However `create nginx` will not work this time, since you need to specify the volume mount. Extend the deployment.yaml from exercises 3 with a `volumes` and `volumeMounts` section. You can use the pod spec listed above as an example.
+<details><summary>__Hint__</summary>
 
-Please note that our storage backend (`default` storage class based on [`gcePersistentDisk`](https://kubernetes.io/docs/concepts/storage/volumes/#gcepersistentdisk)) does not support `readWriteMany` mounts. You can either mount the volume once for write access (like you did in step 2) or several times as readOnly. Since our deployment has 3 replicas and we don't want to modify the `index.html`, mount the `nginx-pvc` by adding `readOnly: true` to both the `volumeMounts` and the `volumes.persistentVolumeClaim` sections.
+You can you use heredocs to create a custom index page without installing vi.
+```
+cat << __EOF > index.html
+<html>
+<head>
+        <title>Containers on the run...</title>
+</head>
+<body>
+        <h1>Welcome to Containers...</h1>
+        <p>You successfully managed to add a hello world page.</p>
+</body>
+</html>
+__EOF
+```
+</details>
 
-Once you successfully created the deployment, check that all replicas are up and running.
+With the index page in place, try to access the webserver via the service you created in the previous exercise. It should bring up the new page now. 
 
-### Step 5: Check the content
-Remember the service from the previous exercise? Since the labels where not changed, the service will route incoming traffic to the new pods with the attached storage volume. Open a web browser and verify that your custom index.html page is displayed properly.
+## Step 4: Scaling does not work, does it?
+In the previous step, the deployment was deliberately created with only one replica since the access mode "ReadWriteOnce" does not allow multiple consumers. In this section we will take a closer look at the implications of the access mode.
+
+Firstly, try to bring up more pods by increasing the deployment's replica count to 5. Use `kubectl get pods -o wide` to monitor on which nodes pods are scheduled and on which node copies acutally transition to status "Running".  
+
+Is there a node, where multiple pods successully started?
+
+If a pod stays in status `Pending` or `ContainerCreating` you could use `kubectl describe pod <pod-name>` to check the events logged for this pod. They give a first idea, of what is acutally happening (or not working). 
+
+If you compare the age of the pods, you will like find that only on the node, where the very first pod runs other pods managed to start up. Essentially, this is because the access mode limits only the number of nodes, you could mount a volume to. Within the context of a node, multiple bind-mounts are very well possible. Hence be careful with scaling operations and the use of storage.
+
+Finally, scale the deployment back to a replica count of 1.
 
 **Important: do not delete the deployment,service or PVC**
 
-
 ## Troubleshooting
-In case the pods of the deployment stay in status `Pending` or `ContainerCreation` for quite some time, make sure the pod `nginx-storage-pod` got deleted. Also check the events of one of the pods by running `kubectl describe pod <pod-name>`. 
-
-#### Resource already in use?
-
-If one of the events is a warning that contains something like "resource already in use", delete the deployment as well as the pod `nginx-storage-pod` (if not already done) but do NOT delete the PVC. Next, wait around 1-2min, to ensure that the referenced storage device is unmounted from the node, where it was used before. Then re-create the deployment.  
+In case the pods of the deployment stay in status `Pending` or `ContainerCreation` for quite some time, check the events of one of the pods by running `kubectl describe pod <pod-name>`. 
 
 #### How to check if a disk is mounted!
 
@@ -93,21 +112,6 @@ You can try to see if the storage device is unmounted by:
 1. Use `kubectl get pvc <pcv-name>` to get the name of the bounded persistent volume.
 2. Use `kubectl get pv <pv-name> -o json | jq ".spec.gcePersistentDisk"` to get the name of the physical disk used by the persistent volume.
 3. Use `kubectl get nodes -o yaml | grep <physical-disk-name>` to see if the physical disk is still conected to a node? If it is you get  3 lines per connected node. 
-
-#### Orphaned / dangling VolumeAttachments
-
-In rare cases it might happen, that a `VolumeAttachment` object is still present and prevents to mount the volume on other nodes. 
-After deleting all pods referencing the volume, go through these steps:
-1. Use `kubectl get pvc <pcv-name>` to get the name of the bounded persistent volume.
-2. Use `kubectl get volumeattachments | grep <pv-name>` to check, if any VolumeAttachments references your PV.
-3. Contact your trainers and ask them to delete the VolumeAttachment.
-
-#### ReadOnly is needed twice
-
-If only **one** pod of your deployment reaches running state make sure you have defined `readOnly: true` at the volumes ***and*** at the volumeMounts part of the deployment. If you forgot, add both readOnly statements, delete the old deployment, wait for the unbinding of the disk from the nodes and reapply the fixed deployment to the cluster.  
-You need it in both places because: 
-- The addition of `readOnly: true` at the volumes part tells k8s to mount the disk with readOnly to each node. This is needed to be able to mount the disk to multiple nodes. 
-- The addition of `readOnly: true` at the volumeMounts part tells k8s to do the docker bind mount into the container also with readOnly. Since the disk is mounted readOnly docker **can not** mount the volume with read&write access into the container. 
 
 #### Service Problems
 

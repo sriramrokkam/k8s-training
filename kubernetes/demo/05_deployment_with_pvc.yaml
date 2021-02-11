@@ -5,7 +5,7 @@ metadata:
   labels:
     tier: application
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       run: nginx
@@ -18,7 +18,7 @@ spec:
       - name: content-storage
         persistentVolumeClaim:
           claimName: nginx-pvc
-          readOnly: true
+#          readOnly: true
       containers:
       - name: nginx
         image: nginx:mainline
@@ -27,4 +27,4 @@ spec:
         volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: content-storage
-          readOnly: true
+#          readOnly: true

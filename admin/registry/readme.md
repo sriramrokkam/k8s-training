@@ -17,7 +17,7 @@ While an integration to LDAP or OIDC would be possible, we keep it simple and us
 
 Harbor organizes artefacts in so called projects. For the training the script creates a private project called `training` and assigns the `participant` user to it.
 
-To push images to the registry, you have to use the project as part of the host string (e.g. `https://h.ingress.wdf49.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/<image-repo>:<tag>`). For the sake of convenience, the harbor UI has hints for tagging & pushing. You can display by navigating to the project's details (projects -> training) and click on the "push command" in the right upper corner.
+To push images to the registry, you have to use the project as part of the host string (e.g. `https://h.ingress.<cluster-name>.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/<image-repo>:<tag>`). For the sake of convenience, the harbor UI has hints for tagging & pushing. You can display by navigating to the project's details (projects -> training) and click on the "push command" in the right upper corner.
 
 ## step-by-step setup
 
@@ -37,6 +37,6 @@ The script will
   * create a new harbor user `participant` with password `2r4!rX6u5-qH` (also mentioned in the respective exercise)
   * assign the harbor user to the `training` project with role `developer`
 
-Finally, test your registry by opening the ingress URL (e.g. `https://h.ingress.wdf49.k8s-train.shoot.canary.k8s-hana.ondemand.com/`).
+Finally, test your registry by opening the ingress URL (e.g. `https://h.ingress.<cluster-name>.k8s-train.shoot.canary.k8s-hana.ondemand.com/`).
 
 As a trainer, you have two sets of credentials - user `participant` limited to the `training` project and user `admin` for global management of the harbor installation (password is printed out at the end of the script's run but can be found in the script too). 

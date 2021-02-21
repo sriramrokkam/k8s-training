@@ -23,7 +23,8 @@ To push images to the registry, you have to use the project as part of the host 
 
 ### preparation
 * check, that `kubectl` works with your cluster
-* If not yet done - setup `helm`. Use the `helm_init.sh` [script](../helm_init.sh) to carry out all required steps. 
+* If not yet done - setup `helm`. Use the `helm_init.sh` [script](../helm_init.sh) to carry out all required steps.
+* Make sure that you have the htpasswd binary on your local machine. Otherwise install apache2-utils by running `sudo apt-get install apache2-utils`.
 
 ### Install the registry
 run `install_harbor_registry.sh`. The script will find the name of your Gardener project as well as the cluster name from the helm configuration file.

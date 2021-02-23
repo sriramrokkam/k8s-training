@@ -12,7 +12,7 @@ spec:
   storageClassName: default
   # request a volume with a specific access mode
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   resources:
     requests:
       # request storage of certain size

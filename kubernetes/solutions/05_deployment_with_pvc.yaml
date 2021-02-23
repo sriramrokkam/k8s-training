@@ -5,7 +5,7 @@ metadata:
   labels:
     tier: application
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       run: nginx
@@ -21,7 +21,7 @@ spec:
         # a reference to a PersistentVolumeClaim in the same namespace
         persistentVolumeClaim:
           claimName: nginx-pvc
-          readOnly: true
+#          readOnly: true
       containers:
       - name: nginx
         image: nginx:mainline
@@ -32,4 +32,4 @@ spec:
         - mountPath: "/usr/share/nginx/html"
           # use the name given to the volume in the 'volumes' section above to reference it
           name: content-storage
-          readOnly: true
+#          readOnly: true

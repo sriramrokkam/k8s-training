@@ -268,28 +268,37 @@ spec:
   selector:
     name: front-end
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: front-end
   labels:
     name: front-end
-    garden.sapcloud.io/purpose: managed-cert
+  annotations:
+    cert.gardener.cloud/purpose: managed
   namespace: sock-shop
 spec:
   rules:
   - host: s.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
-        - backend:
-            serviceName: front-end
-            servicePort: http
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: front-end
+            port:
+              name: http
   - host: sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
-        - backend:
-            serviceName: front-end
-            servicePort: http
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: front-end
+            port:
+              name: http
   tls:
   - hosts:
     - s.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com

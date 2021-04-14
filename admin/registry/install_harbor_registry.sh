@@ -39,6 +39,12 @@ if [ $RC -ne 0 ]; then
         exit 4
 fi
 
+# check if we have htpasswd installed 
+if [ -z "$(which htpasswd)" ]; then
+        echo "htpasswd could not be found. Please install it with 'apt install apache2-utils'.".
+        exit 5
+fi
+
 # construct ingress hostname string
 GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
 GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
@@ -46,7 +52,7 @@ GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].c
 INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
 
 echo -e "\n > Using ingress hostname $INGRESS_HOSTNAME..."
-echo -e "\n >> Deploying Harbor with custon values (this can take up to 5 minutes)...\n"
+echo -e "\n >> Deploying Harbor with custom values (this can take up to 5 minutes)...\n"
 
 _passwd=$(htpasswd -nbBC10 $REGISTRY_USER $REGISTRY_PASS)
 REGISTRY_URL=$(echo $INGRESS_HOSTNAME | tr [:upper:] [:lower:])

@@ -57,11 +57,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: simple-nginx-ingress
-  labels:
+  annotations:
     # check this tutorial to see how the cert-manager works
-    # https://gardener.cloud/050-tutorials/content/howto/x509_certificates/#request-a-certificate-via-ingress
+    # https://github.com/gardener/cert-management#requesting-a-certificate-for-ingress
     # use kubectl describe ingress simple-nginx-ingress to view cert-manager events
-    garden.sapcloud.io/purpose: managed-cert
+    cert.gardener.cloud/purpose: managed
 spec:
   rules:
   - host: n.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com

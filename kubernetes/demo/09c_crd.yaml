@@ -13,7 +13,7 @@ spec:
     singular: steakfulset
   scope: Namespaced
   versions:
-    - name: v1
+    - name: v1alpha1
       served: true
       storage: true
       schema:
@@ -26,29 +26,58 @@ spec:
                 steak:
                   type: object
                   properties:
-                    cookLevel:
-                      type: string
-                    fat:
-                      type: string
-                    weight:
-                      type: integer
+                    spec:
+                      type: object
+                      properties:
+                        cookLevel:
+                          type: string
+                        fat:
+                          type: string
+                        weight:
+                          type: integer
+                        variant:
+                          type: string
+                      required:
+                      - weight
+                      - cookLevel
+                      - fat
+                      - variant
                   required:
-                  - weight
-                  - cookLevel
-                  - fat
+                    - spec
+                guests:
+                  type: integer
               required:
-              - steak          
+              - steak
+              - guests
+            status:
+              type: object
+              properties:
+                steaksServed:
+                  type: integer
+      subresources:
+          status: {}
       additionalPrinterColumns:
+      - name: Guests
+        type: integer
+        description: The number of guests served by this SteakfulSet, aka replicaCount.
+        jsonPath: .spec.guests
+      - name: Variant
+        type: string
+        description: The variant of the steak (rump-steak, tofu-steak, etc.)
+        jsonPath: .spec.steak.spec.variant
       - name: Weight
         type: integer
         description: The weight of the steak.
-        jsonPath: .spec.steak.weight
+        jsonPath: .spec.steak.spec.weight
       - name: Cooking
         type: string
         description: How would you like your steak?
-        jsonPath: .spec.steak.cookLevel
+        jsonPath: .spec.steak.spec.cookLevel
       - name: Fat
         type: string
         description: The amout of fat i.e. how juiy the steak will be.
-        jsonPath: .spec.steak.fat
-
+        jsonPath: .spec.steak.spec.fat
+      - name: Age
+        type: date
+        description: The age of the Steak object
+        jsonPath: .metadata.creationTimestamp

@@ -1,12 +1,12 @@
-apiVersion: food.training.sap/v1
+apiVersion: food.training.sap/v1alpha1
 kind: SteakfulSet
 metadata:
-  labels:
-    hungry: very
-  name: lean-rump-steak
+  name: team-barbecue
 spec:
+  guests: 2
   steak:
-    cookLevel: medium
-    fat: lean
-    weight: 250
-
+    spec:
+      cookLevel: medium
+      fat: lean
+      weight: 250
+      variant: angus-rump

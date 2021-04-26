@@ -69,7 +69,7 @@ Use the `docker build` command to build the image. Make note of the UID of the n
 
 ## Step 7: tag the image
 
-With `docker tag`, give your image a nice name such as *secure_nginx* and a release number (again, use your participant's ID as release number).
+With `docker tag`, give your image a nice name such as *secure_nginx* and a release number as tag (you can make one up, it should be around five characters in length).
 
 ## Step 8: Explore the registry
 The K8s cluster prepared for the training is also serving a [Harbor](https://goharbor.io/) registry at  **h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com** to which you can push your image. The values for *\<cluster-name\>* and *\<project-name\>* will be given to you by your trainer and **must be substituted** respectively.

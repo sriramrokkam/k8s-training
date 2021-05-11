@@ -11,7 +11,7 @@ Once again make sure,  everything is up and running. Use `kubectl` and check you
 
 ## Step 1: create a service
 Kubernetes provides a convenient way to expose applications. Simply run `kubectl expose deployment <deployment-name> --type=LoadBalancer --port=80 --target-port=80`.
-With `--type=LoadBalancer` you request our training infrastructure (GCP) to provision a public IP address. It will also automatically assign a cluster-IP and a nodePort in the current setup of the cluster. To create a service that gets only a cluster IP, a NodePort and a LoadBalancer, use `--type=LoadBalancer`.
+With `--type=LoadBalancer` you request our training infrastructure (GCP) to provision a public IP address. It will also automatically assign a cluster-IP and a NodePort in the current setup of the cluster. To create a service that gets only a cluster-IP, and does cluster interal load balancing but can only be called within the cluster from other pods but not via a public IP from the outside, use `--type=ClusterIP` or leave it away since it is the default.
 
 ## Step 2: connect to your service
 Checkout the newly created `service` object in your namespace. Try to get detailed information with `get -o=yaml` or `describe`. Note down the different ports exposed and try to access the application via the external IP.

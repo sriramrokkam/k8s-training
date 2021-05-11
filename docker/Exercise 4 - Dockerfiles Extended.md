@@ -21,8 +21,8 @@ Create an empty directory on your VM that will be your build context. From your 
 
 ```bash
 cp <path-to-cloned-repository>/docker/res/edit.html ./tmpl/
-cp <path-to-cloned-repository>/docker-k8s-training/master/docker/res/view.html ./tmpl/
-cp <path-to-cloned-repository>/docker-k8s-training/master/docker/res/wiki.go .
+cp <path-to-cloned-repository>/docker/res/view.html ./tmpl/
+cp <path-to-cloned-repository>/docker/res/wiki.go .
 ```
 
 ## Step 1: Creating the Dockerfile

@@ -64,7 +64,7 @@ To learn more about the configuration options the chaoskube chart provides, chec
 Next, check your installation by running `helm list`. It returns all installed releases including your chaoskube. You can reference it by its name.
 Get more information by running `helm status <your-releases-name>`
 
-Also check the pods running inside your kubernetes namespace. Don't forget to look into the logs of the chaoskube to see what would have happened with the dry-run flag set.
+Also check the pods running inside your kubernetes namespace. Don't forget to look into the logs of the chaoskube to see what would have happened without the dry-run flag set.
 `kubectl logs -f pod/<your chaoskube-pod-name>`
 
 ## Step 5: clean up

@@ -7,7 +7,8 @@ In this exercise you will use the `chroot` command to create file system isolati
 ## Step 0: chroot into a directory
 What does `chroot` do? Well, take a look at the man-page and find out.
 
-Now that you know, how it works, give it a try. As user `vagrant` create a new directory `container` in your `$HOME`. Change to user `root` and make the `container` directory your new `/` with `chroot`. **Do not be surprised if it does not work... yet.**
+Now that you know, how it works, give it a try. As user `vagrant` create a new directory `container` in your `$HOME`. Change to user `root` and make the `container` directory your new `/` with `chroot`. **Do not be surprised if it does not work... yet.** The error message you will see is:
+`chroot: failed to run command ‘/bin/bash’: No such file or directory`
 
 ## Step 1: prepare your chroot environment first
 

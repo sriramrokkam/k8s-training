@@ -32,9 +32,9 @@ spec:
 ```
 
 ## Step 1: create the pod
-Now tell the cluster that you would like it to schedule the pod for you. Send the file "pod.yaml" to the API server for further processing. You can try this directly or use the `--dry-run` flag, if you are not sure yet:
+Now tell the cluster that you would like it to schedule the pod for you. Send the file "pod.yaml" to the API server for further processing. You can try this directly or use the `--dry-run=client` flag, if you are not sure yet:
 
-`kubectl apply -f pod.yaml --dry-run`
+`kubectl apply -f pod.yaml --dry-run=client`
 
 `kubectl apply -f pod.yaml`
 

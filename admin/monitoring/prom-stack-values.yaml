@@ -370,7 +370,7 @@ alertmanager:
     ##
     image:
       repository: quay.io/prometheus/alertmanager
-      tag: v0.21.0
+      tag: v0.22.2
       sha: ""
 
     ## If true then the user will be responsible to provide a secret with alertmanager configuration
@@ -624,7 +624,9 @@ grafana:
       ## Annotations for Grafana dashboard configmaps
       ##
       annotations: {}
-      multicluster: false
+      multicluster: 
+        global:
+          enabled: false
     datasources:
       enabled: true
       defaultDatasourceEnabled: true
@@ -1432,7 +1434,7 @@ prometheusOperator:
   ##
   image:
     repository: quay.io/prometheus-operator/prometheus-operator
-    tag: v0.45.0
+    tag: v0.51.2
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -1440,7 +1442,7 @@ prometheusOperator:
   ##
   prometheusConfigReloaderImage:
     repository: quay.io/prometheus-operator/prometheus-config-reloader
-    tag: v0.45.0
+    tag: v0.51.2
     sha: ""
 
   ## Set the prometheus config reloader side-car CPU limit
@@ -1730,7 +1732,7 @@ prometheus:
     ##
     image:
       repository: quay.io/prometheus/prometheus
-      tag: v2.24.0
+      tag: v2.28.1
       sha: ""
 
     ## Tolerations for use with node taints

@@ -15,7 +15,7 @@ Download the files into your build context:
 
 ```bash
 cp <path-to-cloned-training-repo>/docker/res/evil.jpg .
-cp <path-to-cloned-training-repo>//docker/res/evil.html .
+cp <path-to-cloned-training-repo>/docker/res/evil.html .
 mv evil.html index.html
 ```
 

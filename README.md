@@ -46,4 +46,4 @@ Follow the instructions on the page [Prerequisites and Environment Setup](prepar
 ## Trainers and Course developers
 
 * As trainer please check out the [Trainer Guide](./admin/trainer-guide.md) in advance to the training.
-* The VM to be used by participants is built here: https://github.wdf.sap.corp/cloud-native-dev/k8s-training-vm
+* The VM to be used by participants is built here: https://github.wdf.sap.corp/cloud-native-dev/Cloud-Curriculum-VM

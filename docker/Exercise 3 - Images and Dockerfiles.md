@@ -81,9 +81,9 @@ Once you have finished exploring the UI, move on and upload your custom image.
 ## Step 9: Push the image to a registry
 Before you can push an image to the registy, have to login and Docker provides a way to manage your login data. With `docker login <registry-URL>` you can authenticate once and store the credentials in `~/.docker/config.json`. For our registry **the username is `participant` and the password is `2r4!rX6u5-qH`**.
 
-Next, use the `docker tag` command to tag your image correctly so that the registry is used. The name of your image should be **secure_nginx with your participant ID** as release tag. Note, that the project's name has to be part of the URL.
-
-For instance, if you are working on *part-0001*, tag your image like **"h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com/training/secure_nginx:part-0001"**. You can also check the "push command" menu in the Harbor UI.
+Next, use the `docker tag` command to tag your image correctly so that the registry is used. The name of your image should be **secure_nginx**. As release tag make something up that you can remember and is unique to you. 
+Remember that your image's name needs to contain the full & lengthy URL of the registry as a prefix.
+For instance, if your tag is *pilfering_platypus*, tag your image like **"h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com/training/secure_nginx:pilfering_platypus"**. You can also check the "push command" menu in the Harbor UI.
 
 Use `docker push <full-image-name>:<tag>` to upload your image to the registry.
 

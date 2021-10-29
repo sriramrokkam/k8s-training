@@ -82,20 +82,20 @@ Write down (or memorize) the ID that Docker returns, you will need it for the ne
 
 ## Step 7: Tag the image
 
-For this step, you will need the image ID from step 7. Assuming that ID is `28ffc0efbc9b` and your participants-ID is `part-0001`, tag your image like this:
+For this step, you will need the image ID from step 7. Assuming that ID is `28ffc0efbc9b` and your tag is `pilfering_platypus`, tag your image like this:
 
 ```bash
-docker tag 28ffc0efbc9b secure-nginx:0001
+docker tag 28ffc0efbc9b secure-nginx:pilfering_platypus
 ```
 
 ## Step 8: Push the image to a registry
 
 Tag your image (again) so that it will have a reference to a registry. The URL for the registry is  **h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com/training**, the values for `<cluster-name>` and `<project-name>` **must be substituted** with those given to you by your trainer.
 
-Assuming that `<cluster-name>` is `wdfcw01`, that `<project-name>` is `k8s-train`, that your participant-ID is `part-0001` and that the image ID returned to you in Step 7 is `28ffc0efbc9b`, tag your image like this:
+Assuming that `<cluster-name>` is `wdfcw01`, that `<project-name>` is `k8s-train`, that your tag is `pilfering_platypus` and that the image ID returned to you in Step 7 is `28ffc0efbc9b`, tag your image like this:
 
 ```bash
-docker tag 28ffc0efbc9b h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/secure-nginx:part-0001
+docker tag 28ffc0efbc9b h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/secure-nginx:pilfering_platypus
 ```
 
 In order to push to the registry, you need to log on to it first. Run the command and enter the password `2r4!rX6u5-qH`:
@@ -107,5 +107,5 @@ docker login -u participant h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.on
 Finally, push the image to the registry:
 
 ```bash
-docker push h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/secure-nginx:part-0001
+docker push h.ingress.wdfcw01.k8s-train.shoot.canary.k8s-hana.ondemand.com/training/secure-nginx:pilfering_platypus
 ```

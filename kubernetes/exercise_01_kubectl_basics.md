@@ -5,13 +5,15 @@ In this exercise you will learn how the command line interface (CLI) `kubectl` c
 ## Step 0: check your environment
 Login to your VM and locate the kubectl binary by running `which kubectl`. The result should return the path to the binary.
 
-Run the following commands, to download your personal `kube.config`. Replace _<training_id>_ and _<your_namespace_id>_ with the values that have been given to you by your trainer.
+Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_ , _<participant_id>_ and _<password>_ with the values that have been given to you by your trainer.
 
 ```bash
-~/setup/get_kube_config.sh <training_id> <your_namespace_id>
+~/setup/get_kube_config.sh <training_id> <participant_id> <password>
 ```
 
-Run `kubectl config get-contexts` to ensure a configuration file is available and/or `kubectl version` to test you can connect to the cluster. If you face any issue try to re-run the script and make sure the file `~/.kube/config` exist and is not empty.
+Run `kubectl config get-contexts` to ensure a configuration file is available and/or `kubectl version` to test you can connect to the cluster. If you face any issue try to re-run the script and make sure the file `~/.kube/config` exist and is not empty. 
+
+In case you are running things locally on your machine (without the VM): The `get_kube_config.sh` script is also part of the training repository which you have cloned. When executing it, the script will check, if `~/.kube/config` already exists and if this is the case create a new file `<training_name>.config` in your `~/.kube` directory (to prevent overwriting any existing configuration).
 
 ## Step 1: check the nodes
 Use the `kubectl get nodes` command to get the basic information about the clusters' nodes. Try to find out, how the output can be modified. Hint: use the `-o <format>` switch. More information can be found by appending `--help` to your command.

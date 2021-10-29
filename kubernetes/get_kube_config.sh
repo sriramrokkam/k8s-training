@@ -1,50 +1,47 @@
 #!/bin/bash
 #
 
-# this is the central location where all the kube.config files are stored
-BASE_URL=https://cc-admin.mo.sap.corp/userContent/k8s-trainings
-
-# this is the location in the local filesystem where the kube.config file needs to be placed
-TARGET=$HOME/.kube/config
-
-
-if [ $# -lt 2 ]; then
-	echo "Usage: get_kube_config.sh <training_id> <your_namespace_id>"
-	echo "       Pass the IDs handed out to you in the training."
-	exit 1
-fi
-
 if [ `id -u` -eq 0 ]; then
 	echo "ERROR: Please do not run this script as root."
 	exit 1
 fi
 
+# This is the central location where all the kube.config files are stored
+BASE_URL=".ingress.trn-admin.k8s-trainings.c.eu-de-2.cloud.sap"
 
-function trust_registry {
-	# extract CA from kubeconfig & move to ca store
-	TMPCRT=`mktemp`
+# This is the location in the local filesystem where the kube.config file needs to be placed
+mkdir -p $HOME/.kube
+TARGET=$HOME/.kube/config
 
-	kubectl config view --minify --flatten -o json | jq ".clusters[0].cluster.\"certificate-authority-data\"" | sed -e "s/^\"//g" -e "s/\"$//g" | base64 -d > $TMPCRT
-	sudo cp $TMPCRT /usr/local/share/ca-certificates/k8s-ca.crt
-	sudo chmod 644 /usr/local/share/ca-certificates/k8s-ca.crt
-	rm -f $TMPCRT
+if [ $# -eq 3 ]; then
+	TRAINING=$1
+	PARTID=$2
+	PASSWORD=$3
+else
+	echo -n "Please enter the training name: "
+	read -r TRAINING
+	echo -n "Please enter your participant ID: "
+	read -r PARTID
+	echo -n "Please enter the password: "
+	read -sr PASSWORD
+fi
 
-	# update ca store
-	sudo update-ca-certificates
-	if [ $? -ne 0 ]; then
-		echo "ERROR: An error occured while trying to import the cluster certificate."
-	else
-		echo "*** Successfully imported the cluster certificate to trusted store."
-	fi
-}
+PARTID=$(printf %04d $PARTID)
 
+echo -e "\n"
 
-CFG_URL="$BASE_URL/training-$1/kube-configs/$2/kube.config"
+if [ -f $TARGET ]; then
+	echo -e "${TARGET} already exists. Attempting to store kubeconfig file to ${HOME}/.kube/${TRAINING}.config."
+	echo "You can try to merge them manually or run 'export KUBECONFIG='${HOME}/.kube/${TRAINING}.config' to activate it for your current session."
+	TARGET=$HOME/.kube/$TRAINING.config.
+fi
+
+CFG_URL="http://${TRAINING}${BASE_URL}/kubeconfigs/part-${PARTID}.yaml"
 TMPFILE=`mktemp --dry-run`
 
-curl -s -S -o $TMPFILE $CFG_URL
+curl -u "${TRAINING}:${PASSWORD}" -s -S -k -o $TMPFILE $CFG_URL
 
-if [ -n "$(grep '<html>' $TMPFILE)" ]; then
+if [ $? -ne 0 ] || [ -n "$(grep '<html>' $TMPFILE)" ]; then
 	echo "ERROR: Did not receive a valid kube.config file."
 	echo "       Please check that you entered the correct training ID and participant ID."
 	rm -f $TMPFILE
@@ -54,8 +51,5 @@ fi
 mkdir -p `dirname $TARGET`
 mv $TMPFILE $TARGET
 
-echo "*** Successfully copied kube config to local $TARGET"
+echo -e "\n*** Successfully copied kube config to local $TARGET"
 
-if [ "$3" != "--no-trust-registry" ]; then
-	trust_registry
-fi

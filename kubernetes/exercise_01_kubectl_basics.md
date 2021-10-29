@@ -3,6 +3,11 @@
 In this exercise you will learn how the command line interface (CLI) `kubectl` can be used to communicate with the Kubernetes cluster ([kubectl documentation](https://kubernetes.io/docs/reference/kubectl/overview/)).
 
 ## Step 0: check your environment
+
+### Scenario 1 - use the training VM
+
+**This is highly recommended for Windows users**
+
 Login to your VM and locate the kubectl binary by running `which kubectl`. The result should return the path to the binary.
 
 Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_ , _<participant_id>_ and _<password>_ with the values that have been given to you by your trainer.
@@ -15,6 +20,28 @@ Run `kubectl config get-contexts` to ensure a configuration file is available an
 
 In case you are running things locally on your machine (without the VM): The `get_kube_config.sh` script is also part of the training repository which you have cloned. When executing it, the script will check, if `~/.kube/config` already exists and if this is the case create a new file `<training_name>.config` in your `~/.kube` directory (to prevent overwriting any existing configuration).
 
+### Scenario 2 - use a local environment
+
+**This will work only with a local bash enviroment like on MacOS or WSL**
+
+While using the VM makes life for your trainers easiert (one standardized environment), it is very well possible to do the Kubernetes exercises on you local machine. 
+In case you want to go this way, please install `kubectl` for your platform as [described here](https://kubernetes.io/de/docs/tasks/tools/install-kubectl/) and clone the training repository locally.
+
+```bash
+cd <some_path_you_want_to_clone_to>
+git clone https://github.tools.sap/kubernetes/docker-k8s-training.git
+```
+
+To download the credentials file to access the cluster, please run the `get_kube_config.sh` script located in our [repository](./get_kube_config.sh).
+Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_, _<participant_id>_ and <password> with the values that have been given to you by your trainer.
+
+```bash
+cd <cloned_training_repository>/kubernetes
+./get_kube_config.sh <training_id> <participant_id> <password>
+```
+
+Run `kubectl config get-contexts` to ensure a configuration file is available and/or `kubectl version` to test you can connect to the cluster. If you face any issue try to re-run the script and make sure the file `~/.kube/config` exist and is not empty.
+
 ## Step 1: check the nodes
 Use the `kubectl get nodes` command to get the basic information about the clusters' nodes. Try to find out, how the output can be modified. Hint: use the `-o <format>` switch. More information can be found by appending `--help` to your command.
 
@@ -24,7 +51,7 @@ Now that you know the cluster's node names, query more information about a speci
 ## Step 3: kubectl proxy
 The `kubectl proxy` command allows you to open a tunnel to the API server and make it available locally - usually on `localhost:8001` / `127.0.0.1:8001`. When you want to explore the API, this is an easy way to gain access.
 
-Run the proxy command in a new terminal window and open `localhost:8001/api/v1` in your VM's browser. The API path is important here, since you are only allowed to access certain parts of the API. Traverse through the `api/v1/` tree and search for the cluster nodes.  
+Run the proxy command in a new terminal window and open `localhost:8001/api/v1` in your VM's browser. The API path is important here, since you are only allowed to access certain parts of the API. Just opening `localhost:8001` will return an error. Traverse through the `api/v1/` tree and search for the cluster nodes.  
 
 ## Step 4: api-versions & api-resources
 Dealing with the API directly can be cumbersome. If you want to get an overview of existing APIs `kubectl` offers the `api-versions` command. Give it a try and compare the output with APIs you found in step 3.

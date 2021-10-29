@@ -27,7 +27,8 @@ In this last step you will expose another pod through a service. Simply create t
 
 You will probably get an error message concerning missing labels. Solve this by adding a custom label to your pod and try again to expose it.
 
-Once you are able to access the nginx via the `LoadBalancer`, take a look at the pod and the service. Determine the label as well as the corresponding selectors. Now remove the label from the pod: `kubectl label pod <your-pod> --overwrite <your-label-key>-` and try again to access the nginx via the `LoadBalancer`. Most likely this won't work anymore.
+Once you are able to access the nginx via the `LoadBalancer`, take a look at the pod and the service. Determine the label as well as the corresponding selectors. 
+Now remove the label from the pod. Please note, the trailing "-" is acutally required: `kubectl label pod <your-pod> <your-label-key>-` and try again to access the nginx via the `LoadBalancer`. Most likely this won't work anymore.
 
 Finally, clean up and remove the pod as well as the service you created in step 4.
 
@@ -38,11 +39,9 @@ Check the correctness of the label - selector combination by running the query m
 
 Finally, there might be some caching on various levels of the used infrastructure. To break caching on corporate proxy level, request a dedicated resource like the index page: `http:<LoadBalancer IP>/index.html`.
 
-The structure of a deployment can be found in the API documentation. Go to [API reference](https://kubernetes.io/docs/reference/) and choose the corresponding version (usually the training features a cluster with the latest or 2nd latest version). Within the API docs select the "Deployment".
+The structure of a service can be found in the API documentation. Go to [API reference](https://kubernetes.io/docs/reference/kubernetes-api/) and choose "Service Resources". Within the API docs select the "Service".
 
-Alternatively use `kubectl explain service`. To get detailed information about a field within the pod use its "path" like this: `kubectl explain deployment.spec.ports`.
-
-To create a new file with a skeleton of a deployment, right-click the Desktop within the training VM, select the context menu "new document" and choose "service". Additionally the solution to this exercise contains further explanatory comments.
+Alternatively use `kubectl explain service`. To get detailed information about a field within the service use its "path" like this: `kubectl explain deployment.spec.ports`.
 
 ## Further information & references
 - [services in K8s](https://kubernetes.io/docs/concepts/services-networking/service/)

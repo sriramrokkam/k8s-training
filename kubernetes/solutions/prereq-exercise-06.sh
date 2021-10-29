@@ -25,7 +25,7 @@ spec:
        claimName: nginx-pvc
   containers:
   - name: helper
-    image: alpine:3.8
+    image: alpine:latest
     command: ["/bin/sh", "-c", "echo '<html><head><title>My first webpage...</title></head><body><h1>This is my custom webpage, this is so great.</h1></body></html>' > /usr/share/nginx/html/index.html"]
     volumeMounts:
     - mountPath: "/usr/share/nginx/html"
@@ -64,7 +64,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment-pvc
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       run: nginx-deployment
@@ -82,7 +82,7 @@ spec:
           readOnly: true
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: nginx:mainline
         ports:
         - containerPort: 80
           name: http-port

@@ -25,7 +25,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: setup
-        image: alpine:3.8
+        image: alpine:latest
         command:
         - /bin/sh
         - -c
@@ -75,7 +75,7 @@ spec:
     # an ingress can have one to many hosts. A host is fully qualified URL
     # TODO: replace in ingress host URL the <participantId>, <cluster-name> and <project-name> parameters of the training cluster 
     # e.g. '0007-simple-nginx.ingress.wdfcw48.k8s-train.shoot.canary.k8s-hana.ondemand.com'
-  - host: <participantId>-simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
+  - host: <namspace-number>-simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       # the ingress controller routes traffic to a service backend based on a <host>/<path> combination

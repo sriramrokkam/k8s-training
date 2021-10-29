@@ -10,7 +10,7 @@ Network policies in your namespace help you restrict access to your nginx deploy
 Before you deploy a network policy, check the connection from a random pod to the nginx pods via the service.
 
 Start an alpine image and connect to it. Try to re-use the storage-pod.yaml from exercise 05 but without the volumes and mounts. Use the `exec` command to open a shell session into it.
-Alternatively spin up a a temporary deployment with `kubectl run tester -i --tty --restart=Never --rm --image=alpine:3.12 -- ash`.
+Alternatively spin up a a temporary deployment with `kubectl run tester -i --tty --restart=Never --rm --image=alpine:3.13 -- ash`.
 
 Do you remember, that your service name is also a valid DNS name? Instead of using an IP address to connect to your service, you can use its actual name (like `nginx-https`).
 

@@ -4,12 +4,12 @@ In this exercise, you will be dealing with _Pods_, **_Labels & Selectors_** and 
 
 With the deletion of the pod all information associated with it have been removed as well. Though an unplanned, forcefully deletion is an unlikely scenario, it illustrates the lack of resilience of the pod construct quite well.
 
-To overcome this shortage kubernetes offers a hierarchical constructed api. The pod, which encapsulated the container, is now wrapped in a more complex construct that takes care of the desired state - the deployment. In this case "desired state" means that a specified quorum of running instances is fulfilled.
+To overcome this shortage Kubernetes offers a hierarchical constructed api. The pod, which encapsulated the container, is now wrapped in a more complex construct that takes care of the desired state - the deployment. In this case "desired state" means that a specified quorum of running instances is fulfilled.
 
 
 ## Step 0: deployments - the easy way
 Run the following command and check what happens:
-`kubectl create deployment nginx --image=nginx:1.12.2`
+`kubectl create deployment nginx --image=nginx:1.21`
 It should create a new resource of type `deployment` named "nginx". Use `kubectl get deployment nginx -o yaml` and `kubectl describe deployment nginx` to get more detailed information on the deployment you just created. Based on those information, determine the labels and selectors used by your deployment.
 
 Can you figure out the name of the pod belonging to your deployment by using the label information? Hint: use the `-l` switch in combination with `kubectl get pods`
@@ -103,11 +103,9 @@ Congratulations - you have described a more complex resource in yaml format and 
 ## Troubleshooting
 In case of issues with the labels, make sure that the `deployment.spec.selector.matchLabels` query matches the labels specified within the `deployment.spec.template.metadata.labels`.
 
-The structure of a deployment can be found in the API documentation. Go to [API reference](https://kubernetes.io/docs/reference/) and choose the corresponding version (usually the training features a cluster with the latest or 2nd latest version). Within the API docs select the "Deployment".
+The structure of a deployment can be found in the API documentation. Go to [API reference](https://kubernetes.io/docs/reference/kubernetes-api/) and choose "Workload Resources". Within the API docs select the "Deployment".
 
 Alternatively use `kubectl explain deployment`. To get detailed information about a field within the pod use its "path" like this: `kubectl explain deployment.spec.replicas`.
-
-To create a new file with a skeleton of a deployment, right-click the Desktop within the training VM, select the context menu "new document" and choose "deployment". Additionally the solution to this exercise contains further explanatory comments.
 
 ## Further information & references
 - [Deployments in K8s concepts documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)

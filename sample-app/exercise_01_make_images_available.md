@@ -8,10 +8,10 @@
 
 ## Step 1: clone reviews repository
 
-Now proceed with the [bulletinboard-reviews](https://github.wdf.sap.corp/cloud-native-bootcamp/bulletinboard-reviews-nodejs) microservice. Clone the repository to your VM.
+Now proceed with the [bulletinboard-reviews](https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs) microservice. Clone the repository to your VM.
 
 ```SHELL
-git clone https://github.wdf.sap.corp/cloud-native-bootcamp/bulletinboard-reviews-nodejs
+git clone https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs
 ```
 
 ## Step 2: build and push the reviews image
@@ -29,10 +29,10 @@ docker push <registry-url>/training/bulletinboard-reviews-<participant-id>:v1
 
 ## Step 3: clone ads repository
 
-Let us start with the [bulletinboard-ads](https://github.wdf.sap.corp/cloud-native-bootcamp/bulletinboard-ads-java) microservice. Go a head and clone the repository to your VM.
+Let us start with the [bulletinboard-ads](https://github.tools.sap/cloud-native-bootcamp/bulletinboard-ads-java) microservice. Go a head and clone the repository to your VM.
 
 ```SHELL
-git clone https://github.wdf.sap.corp/cloud-native-bootcamp/bulletinboard-ads-java
+git clone https://github.tools.sap/cloud-native-bootcamp/bulletinboard-ads-java
 ```
 
 ## Step 4: build and push the ads image

@@ -19,7 +19,7 @@ Instead of creating a PersistentVolume (PV) first and then bind it to a Persiste
 This is not only convenient, but also helps to avoid confusion. PVC are bound to a namespace, PV resource are not. When there is a fitting PV, it can be bound to any PVC in any namespace. So there is some conflict potential, if your colleagues always claim your PV's :)
 The concept of the storage classes overcomes this problem. The tooling masked by the storage class auto-provisions PV's of a defined volume type for each requested PVC.
 
-Download the resource from [gitHub](./solutions/05_pvc.yaml) or copy the snippet from below to your VM:
+Use the resource stored in the [repository](./solutions/05_pvc.yaml) or copy the snippet from below to your VM:
 
 ```yaml
 kind: PersistentVolumeClaim
@@ -65,7 +65,7 @@ Once you re-created the deployment, make sure to check that the pod is status `R
 ## Step 3: create custom content
 If you would try to access the nginx running in your pod, you would probably get an error message `403 Forbidden`. This is expected since you are hiding the original `index.html` with a bind-mount. So let's move on and create some content on the volume we have available. 
 
-Locate the nginx pod and open a shell session into it: `kubectl exec -ti <pod-name> -- bash`
+Locate the nginx pod and open a shell session into it: `kubectl exec -it <pod-name> -- bash`
 Navigate to the directory mentioned in the `volumeMounts` section and create a custom `index.html`. You can re-use the code you used in the docker exercises the other day. Once you are done, disconnect from the pod and close the shell session.
 
 <details><summary>__Hint__</summary>

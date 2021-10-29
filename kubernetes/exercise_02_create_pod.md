@@ -12,7 +12,7 @@ In this step you are going to describe a pod in a yaml file (`pod.yaml`). Take t
 * `name: nginx-liveness-pod` (metadata)
 * `image: nginx:mainline`
 
-Either check the official [API reference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#pod-v1-core) of the pod resource for help or use `kubectl explain pod` to get a command-line based description of the resource. By appending `.<field>` to the resource type, the explain command will provide more details on the specified field (example: `kubectl explain pod.spec`).
+Either check the official [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/) of the pod resource for help or use `kubectl explain pod` to get a command-line based description of the resource. By appending `.<field>` to the resource type, the explain command will provide more details on the specified field (example: `kubectl explain pod.spec`).
 
 ```yaml
 apiVersion: v1
@@ -34,7 +34,7 @@ spec:
 ## Step 1: create the pod
 Now tell the cluster that you would like it to schedule the pod for you. Send the file "pod.yaml" to the API server for further processing. You can try this directly or use the `--dry-run=client` flag, if you are not sure yet:
 
-`kubectl apply -f pod.yaml --dry-run=client`
+`kubectl apply -f pod.yaml --dry-run=server`
 
 `kubectl apply -f pod.yaml`
 
@@ -52,7 +52,7 @@ You should see the liveness probe requests coming in.
 In case `logs` or `describe` or any other of the output generating commands don't help you to get to the root cause of an issue, you may want to take a look yourself.
 The `exec` command helps you in this situation. Adapt and run the following command, to open a shell session into the container running as part of the pod:
 
-`kubectl exec -ti <my-pod> -- bash`
+`kubectl exec -it <my-pod> -- bash`
 
 ## Step 5: clean up
 It's time to clean up - go and delete the pod you created. But before open a second shell and run `watch kubectl get pods`.
@@ -60,11 +60,9 @@ Now you can remove the pod from the cluster by running a `delete` command. Check
 Which phases of the pod do you observe in your second shell?
 
 ## Troubleshooting
-The structure of a pod can be found in the API documentation. Go to [API reference](https://kubernetes.io/docs/reference/) and choose the corresponding version (usually the training features a cluster with the latest or 2nd latest version). Within the API docs select the "Pod".
+The structure of a pod can be found in the API documentation. Go to [API reference](https://kubernetes.io/docs/reference/kubernetes-api/) and choose "Workload Resources". Within this section of the docs select the "Pod".
 
 Alternatively use `kubectl explain pod`. To get detailed information about a field within the pod use its "path" like this: `kubectl explain pod.spec.containers`.
-
-To create a new file with a skeleton of a pod, right-click the Desktop within the training VM, select the context menu "new document" and choose "pod".
 
 ## Further information & references
 - [Pod basics](https://kubernetes.io/docs/concepts/workloads/pods/pod/)

@@ -18,7 +18,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: setup
-        image: alpine:3.8
+        image: alpine:latest
         command:
         - /bin/sh
         - -c

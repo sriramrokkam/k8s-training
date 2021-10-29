@@ -20,7 +20,7 @@ If there are any issues, check with your trainer.
 ## Step 1 - init: prepare pods and services
 For this exercise you can either re-use already existing deployments, pods and services or create them from scratch. Please continue to use an nginx webserver as backend application. For the sake of resource consumption, please use `replica: 1` for new resources.
 
-When you create a new deployment, remember that you can generate a skeleton by right-clicking the VM desktop -> context menu "new documents" -> deployment. You could also try to add an [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/). The init container should write a string like the hostname or "hello world" to and `index.html` on an emptyDir volume. Use this volume in the nginx container as well to get a customized `index.html` page.
+When you create a new deployment you could also try to add an [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/). The init container should write a string like the hostname or "hello world" to and `index.html` on an `emptyDir` volume. Use this volume in the nginx container as well to get a customized `index.html` page.
 
 The snippets below might give an idea, how to create a cache volume and pass an appropriate command to a busybox running as init container.
 
@@ -42,11 +42,9 @@ More details about init containers can be found [here](https://kubernetes.io/doc
 ## Step 2 - write a simple ingress and deploy it
 To expose your application via an ingress, you need to construct a valid URL. Within the Gardener environment you have to use the following schema: `<your-custom-endpoint>.ingress.<GARDENER-CLUSTER-NAME>.<GARDENER-PROJECT-NAME>.shoot.canary.k8s-hana.ondemand.com`
 
-For `<your-custom-endpoint>` it is recommended to use your generated participant ID. You are going to expose the URL to public internet and most likely you don't want to publish information like your d/i -user there. Also insert the cluster and project names you obtained from your trainer accordingly.
+For `<your-custom-endpoint>` it is recommended to use your namespace number (run `kubectl config view` and look for the namespace). You are going to expose the URL to public internet and most likely you don't want to publish information like your d/i -user there. Also insert the cluster and project names you obtained from your trainer accordingly.
 
-Check the [help section](https://github.wdf.sap.corp/pages/kubernetes/gardener/doc/2017/01/16/howto-service-access.html) to get more information.
-
-Write the ingress yaml file and reference to your service. Use the following skeleton and check the [kubernetes API reference](https://kubernetes.io/docs/reference/) for details and further info. 
+Write the ingress yaml file and reference to your service. Use the following skeleton and check the [kubernetes API reference](https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-v1/) for details and further info. 
 
 ```yaml
 apiVersion: networking.k8s.io/v1

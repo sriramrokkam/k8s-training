@@ -25,7 +25,7 @@ spec:
        claimName: nginx-pvc
   containers:
   - name: helper
-    image: alpine:3.8
+    image: alpine:latest
     command: ["/bin/sh", "-c", "echo '<html><head><title>My first webpage...</title></head><body><h1>This is my custom webpage, this is so great.</h1></body></html>' > /usr/share/nginx/html/index.html"]
     volumeMounts:
     - mountPath: "/usr/share/nginx/html"
@@ -109,7 +109,7 @@ metadata:
   labels:
     tier: application
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: nginx-https

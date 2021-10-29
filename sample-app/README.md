@@ -4,8 +4,8 @@ In the following **5 exercises** you will learn how to deploy a microservice-bas
 As sample application we are using the **[Bulletinboard from the Cloud-Native-Boot-Camp](https://github.wdf.sap.corp/cloud-native-bootcamp/info)**. 
 
 The Bulletinboard is build up by two individual microservices:
-- **[Bulletinboard-Ads](https://github.wdf.sap.corp/cloud-native-bootcamp/bulletinboard-ads-java)** (Java), which can **list**, **create** and **delete advertisements**
-- **[Bulletinboard-Reviews](https://github.wdf.sap.corp/cloud-native-bootcamp/bulletinboard-reviews-nodejs)** (NodeJs), which contains ratings for users.
+- **[Bulletinboard-Ads](https://github.tools.sap/cloud-native-bootcamp/bulletinboard-ads-java)** (Java), which can **list**, **create** and **delete advertisements**
+- **[Bulletinboard-Reviews](https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs)** (NodeJs), which contains ratings for users.
 
 ## Scenario
 

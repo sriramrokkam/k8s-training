@@ -16,7 +16,7 @@ Now that you have the service, you meet the prerequisite to create a StatefulSet
 
 Next, describe your desired state in a yaml file. Use the snippets below to create a valid yaml file for a StatefulSet resource. Also fill in the blanks (marked with `???`) with values. Note that during the run of the `initContainer` the current host name will be written into the `index.html` file every time the pod is started.
 
-If you are looking for more info, check the official [api reference](https://kubernetes.io/docs/reference/) for StatefulSets.
+If you are looking for more info, check the official [api reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/stateful-set-v1/) for StatefulSets.
 
 ```yaml
 apiVersion: apps/v1

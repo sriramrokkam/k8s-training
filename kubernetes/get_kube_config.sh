@@ -26,7 +26,7 @@ else
 	read -sr PASSWORD
 fi
 
-PARTID=$(printf %04d $PARTID)
+PARTID=$(printf %04d $((10#$PARTID)))
 
 echo -e "\n"
 

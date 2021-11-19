@@ -33,7 +33,7 @@ echo -e "\n"
 if [ -f $TARGET ]; then
 	echo -e "${TARGET} already exists. Attempting to store kubeconfig file to ${HOME}/.kube/${TRAINING}.config."
 	echo "You can try to merge them manually or run 'export KUBECONFIG='${HOME}/.kube/${TRAINING}.config' to activate it for your current session."
-	TARGET=$HOME/.kube/$TRAINING.config.
+	TARGET=$HOME/.kube/$TRAINING.config
 fi
 
 CFG_URL="http://${TRAINING}${BASE_URL}/kubeconfigs/part-${PARTID}.yaml"

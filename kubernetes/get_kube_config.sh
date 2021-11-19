@@ -37,7 +37,7 @@ if [ -f $TARGET ]; then
 fi
 
 CFG_URL="http://${TRAINING}${BASE_URL}/kubeconfigs/part-${PARTID}.yaml"
-TMPFILE=`mktemp --dry-run`
+TMPFILE=$(mktemp -u)
 
 curl -u "${TRAINING}:${PASSWORD}" -s -S -k -o $TMPFILE $CFG_URL
 

@@ -46,4 +46,9 @@ Follow the instructions on the page [Prerequisites and Environment Setup](prepar
 ## Trainers and Course developers
 
 * As trainer please check out the [Trainer Guide](./admin/trainer-guide.md) in advance to the training.
+* Check out our [trainer badges](./admin/badges.md)
 * The VM to be used by participants is built here: https://github.wdf.sap.corp/cloud-native-dev/Cloud-Curriculum-VM
+
+**Interested in becoming a trainer as well?** 
+
+Check out this [page](.admin/becoming_a_trainer.md) to find out more :bulb:,

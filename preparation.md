@@ -12,13 +12,11 @@ Download the latest VM image from [here](https://objectstore-3.eu-de-2.cloud.sap
 ### Clone
 Once you have your VM up and running, **clone this repository to the VM**.
 
-Due to some [security restrictions](https://github.wdf.sap.corp/pages/github/authentification-enforcement), you cannot simply clone the repository anonymously or with username/password. You have to create a personal access token instead.
+Due to SAP's security restrictions, you cannot simply clone the repository anonymously or with username/password. You have to create a personal access token instead. Please follow these [instructions](https://docs.github.com/en/enterprise-server@2.22/github/authenticating-to-github/creating-a-personal-access-token) and enter the token as password when prompted during cloning.
 
-Follow these [instructions](https://docs.github.com/en/enterprise-server@2.22/github/authenticating-to-github/creating-a-personal-access-token) and enter the token as password when prompted during cloning.
 
-```bash
-git clone https://github.tools.sap/kubernetes/docker-k8s-training.git
-```
+    git clone https://github.tools.sap/kubernetes/docker-k8s-training.git
+
 
 ## Kubernetes cluster
 For regular classroom trainings a Kubernetes cluster will be provided & configured centrally. However, if you wish to look into the training material on your own, you may check the Gardener [trial cluster](https://github.wdf.sap.corp/pages/kubernetes/gardener/documentation/015-tutorials/content/howto/trial-account/) offering.

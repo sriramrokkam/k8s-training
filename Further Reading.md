@@ -6,19 +6,21 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - Our talk about the absolute container basics at SAP's *devX* event: [Container 101](https://video.sap.com/media/t/1_gxz1oox7/84675141)
 
-- The Dockerfile reference can be found on Docker's website: [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
+- The Dockerfile reference can be found on Docker's website: [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/) and [Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
-- Docker architecture - read about [containerd](https://containerd.io/) and how it [relates](https://hackernoon.com/docker-containerd-standalone-runtimes-heres-what-you-should-know-b834ef155426?gi=c8140ae48de2) to the docker universe.
+- Read about [containerd](https://containerd.io/).
 
-- You have to be careful about which Docker images you download - [this is why](https://kromtech.com/blog/security-center/cryptojacking-invades-cloud-how-modern-containerization-trend-is-exploited-by-attackers).
-
-- resource management with Docker - [how to limit a container's resources](https://docs.docker.com/config/containers/resource_constraints)
+- Docker [security](https://docs.docker.com/engine/security/) and [cgroups v2 in runC](https://github.com/opencontainers/runc/blob/43186447b99c81d7e12876dc8277e2f6fd538850/docs/cgroup-v2.md)
 
 - [dive](https://github.com/wagoodman/dive/blob/master/README.md) is a tool for image inspection
 
 - building images without docker is possible with [kaniko](https://github.com/GoogleContainerTools/kaniko)
 
+- resource management with Docker - [how to limit a container's resources](https://docs.docker.com/config/containers/resource_constraints)
+
 - If you are looking for incredibly slim container base images, have a look at Google's [distroless images](https://github.com/GoogleContainerTools/distroless).
+
+- [SAP slack channel](https://sap-ti.slack.com/archives/C86FTS4DN) covering Docker-related topics
 
 ### SAP specific
 
@@ -33,14 +35,18 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 ## Kubernetes
 
 #### @SAP: Gardener
-- First of all: SAP offers an internal Kubernetes platform offering that is called Project Gardener. If you need a Kubernetes environment, this is the place to go: [Gardener](https://github.wdf.sap.corp/pages/kubernetes/gardener/)
+- First of all: SAP offers an internal Kubernetes platform offering that is called Project Gardener. If you need a Kubernetes environment, this is the place to go: [Gardener](https://https://gardener.cloud.sap/)
 
-- If you are looking for more detailed information about Gardener, check out the kubernetes blog posts [part 1](https://kubernetes.io/blog/2018/05/17/gardener/) & [part 2](https://kubernetes.io/blog/2019/12/02/gardener-project-update/).
+- If you are looking for more detailed information about Gardener, check out the kubernetes blog posts [part 1](https://kubernetes.io/blog/2018/05/17/gardener/) & [part 2](https://kubernetes.io/blog/2019/12/02/gardener-project-update/) and take a look at the [hello world tutorial](https://pages.github.tools.sap/kubernetes/gardener/docs/012-getting-started/).
 
-- Interested in the architecture behind Gardener? There was a talk about it at *devX*, too:
-[Project Gardener: Multicloud Kubernetes Cluster Provisioning at Scale](https://video.sap.com/media/t/1_9ifoaxbx/84675141)
+- Interested in the architecture behind Gardener? Get started with the more technical [documentation](https://github.com/gardener/gardener/blob/master/docs/concepts/architecture.md) :)
 
-- Finally, the Gardener open source project hosts more [technical documentation](https://github.com/gardener/gardener/tree/master/docs).
+- Finally, the Gardener open source project can be found on [github.com](https://github.com/gardener/gardener/).
+
+#### Slack Channels at SAP
+- [sap-tech-gardener](https://sap-ti.slack.com/archives/C9CEBQPGE)
+- [sap-tech-kubernetes](https://sap-ti.slack.com/archives/C8R3WAGKB)
+- [sap-k8s-operators](https://sap-ti.slack.com/archives/CGULAG57C)
 
 #### in general
 - Do you want to watch Kelsey Hightower, one of the big brains behind Kubernetes play Tetris on the Jumbotron at d-Kom 2018 at SAP Arena? Check out [his keynote](https://broadcast.co.sap.com/event/dkom/2018#!video%2F18106).
@@ -54,32 +60,37 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - The Kubernetes API reference can be found here: [Kubernetes API reference Documentation](https://kubernetes.io/docs/reference/).
 
+- getting started locally - with [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/), [k3s](https://k3s.io/) or [kind](https://kind.sigs.k8s.io/)
+
+#### kubectl
+- Running `kubectl completion` guides you how to setup shell completion.
+
+- [kubectl plugins](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) can be managed with [krew](https://krew.sigs.k8s.io). It is a convenient way to get essentials like [oidc support](https://github.com/int128/kubelogin) or a [command](https://github.com/corneliusweig/ketall) that actually perfoms a `get all`.
+
+To work with multiple namespaces or even clusters, [kubectx and kubens](https://github.com/ahmetb/kubectx) get you started.
+
 - If you need to gather and combine the logs from several pods belonging to a deployment, you might want to have a look at [kubetail](https://github.com/johanhaleby/kubetail).
 
-- Cluster federation / multi cluster: if you want to join several clusters into a federation and run your workloads, here is your entrypoint into this (alpha) topic: https://kubernetes.io/docs/tasks/administer-federation/cluster/
-
-- with the introduction of the `horizontal pod autoscaler`, k8s is capable of auto scaling. Check the [documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) and [tutorial](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) for further details.
-
-- [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) is a tool which helps creating API extensions including their controller/reconcile loops
-
-- for managing access to multiple clusters, we put some small bash snippets into a [gist](https://github.wdf.sap.corp/gist/D051945/3f3daf9f71f7e012c1e25a48c1c6e8da). There are also tools like [kubectx](https://github.com/ahmetb/kubectx) or [kube-ps1](https://github.com/jonmosco/kube-ps1), which make your life a lot easier.
-
 - [kubectl efficiency](https://www.youtube.com/watch?v=vVAFctQP1Vg&list=PLj6h78yzYM2NDs-iu8WU5fMxINxHXlien&index=12&t=0s)
-
-- getting started locally - with [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/), [k3s](https://k3s.io/) or [kind](https://kind.sigs.k8s.io/)
 
 #### networking
 - The nitty gritty details about the networking in and behind Kubernetes are explained in the final *devX* talk we would like to point you to: [Insights into Kubernetes Networking](https://video.sap.com/media/t/1_8fawa5io/84675141)
 
 - More on networking? The [Life of a Packet](https://www.youtube.com/watch?v=0Omvgd7Hg1I) talk by Google's Michael Rubin at KubeCon EU '17 can be found [here on YouTube](https://www.youtube.com/watch?v=0Omvgd7Hg1I).
 
-- If you are more into reading - here is a very good [blog post](https://sookocheff.com/post/kubernetes/understanding-kubernetes-networking-model/) about networking in Kubernetes context.
-
 - If you are more into doing things - there is a [kubeCon2020 tutorial](https://www.youtube.com/watch?v=InZVNuKY5GY&list=PLj6h78yzYM2O1wlsM-Ma-RYhfT5LKq0XC&index=16&t=0s) digging into it.
 
 - SE radio: [container networking talk](http://www.se-radio.net/2018/10/se-radio-episode-341-michael-hausenblas-on-container-networking/)
 
 - [Envoy](https://kubernetespodcast.com/episode/033-envoy/), with Matt Klein
+
+### Writing your own controllers
+
+- [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) is a tool which helps creating API extensions including their controller/reconcile loops. There is also a pretty [detailed example](https://book.kubebuilder.io/introduction.html) how to use it.
+
+- [Controllers at scale](https://medium.com/@timebertt/kubernetes-controllers-at-scale-clients-caches-conflicts-patches-explained-aa0f7a8b4332) explains in more details, how the internals of a controller work and what you should have in mind, when writing your own controller.
+
+- The [kubelet pattern](https://github.tools.sap/NewHorizon/LifecycleManagement/blob/master/KubeletPattern.md) gives an outlook, how a Kubernetes based architecture could evolve.
 
 ### security
 - wordpress & reverse shell - k8s security talk @ContainerConf by Jen Tong: https://vimeo.com/306157921 (demo starts around 30:20)
@@ -106,19 +117,14 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 - [container reference architecture security procedure](https://wiki.wdf.sap.corp/wiki/x/HkxOcQ)
 - [Docker security procedure](https://wiki.wdf.sap.corp/wiki/x/Uk8GcQ)
 - [Security approved container base images](https://wiki.wdf.sap.corp/wiki/x/UYYRd)
-
+- [Kubernetes Container Orchestration - Hardening](https://wiki.wdf.sap.corp/wiki/x/KCNfc)
 ## General
-
 - Brendan Burns, Distinguished Engineer at Microsoft and Chief Architect behind the container infrastructure within Azure released one of his books on distributed software design for free: [Designing Distributed Systems](https://azure.microsoft.com/en-us/resources/designing-distributed-systems/)
 
 - [katacoda learning platform](https://www.katacoda.com/learn) offers browser-based tutorials around docker & kubernetes  
 
 - [CTO Circle – Container Delivery Guidance](https://sap.sharepoint.com/sites/60001485/Shared%20Documents/01_Communication/CTO%20Circle%20%26%20Technology%20Board%20Meetings/CTO%20Circle/Container%20Delivery_RELEASED.pdf?csf=1&e=THkcxG)
 
-## Further contact information
+- [Cross Product Architecture - Containerization & Application Runtimes](https://sap.sharepoint.com/teams/CPAInfrastructure/Shared%20Documents/WG%20Containerization%20and%20Application%20Runtimes/20_Docs_and_Material/Containerization_and_Application_Runtimes_Vision_v1.0.pdf?cid=018cde89-49bc-4307-9cc8-623283c9e99e)
 
-- [kubernetes mailing list @sap](https://listserv.sap.corp/mailman/listinfo/kubernetes-users)
-- [Cloud Platform enabling Team JAM Contact Page](https://go.sap.corp/cpet)
-- [Cloud Platform enabling Team offerings](https://github.wdf.sap.corp/pages/kubernetes/gardener/offering/)
-- [K8s Gardener Canary slack channel](https://sap-cp.slack.com/messages/CBV3JS9S4/)
-- [Gardener Jam Page](https://jam4.sapjam.com/groups/Niq7TSBxLlzgb3nroBZJVx/overview_page/e9uqTDxXBRFbk7FJXEA4Cd)
+- [Cross Product Architecture - Business Technology Platform go-to runtimes](https://sap.sharepoint.com/:b:/r/teams/CPADeveloperExperience/Shared%20Documents/WG%20Cloud%20Development/20_Docs_and_Material/BTP%20Go-To%20Runtimes/SAP%20BTP%20Go-To%20Runtimes.pdf?csf=1&web=1&e=MxCS7I)

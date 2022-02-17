@@ -29,36 +29,34 @@ The helm client uses the information stored in .kube/config to talk to the kuber
 Compared to the previous v2 setup procedure, this is a significant improvement. The server-side component `tiller` has been removed completely.
 
 ## Step 2: looking for charts?
-Helm organizes applications in so called charts, which contain parameters you can set during installation. By default, helm (v3) is not configured to search any remote repository for charts. So as a first step, add the `stable` repository, which hosts charts maintained on [github.com](https://github.com/helm/charts/tree/master/stable).
+Helm organizes applications in so-called charts, which contain parameters you can set during installation. By default, helm (v3) is not configured to search any remote repository for charts. 
 
-```bash
-helm repo add stable https://charts.helm.sh/stable
+Until recently, there was repository called `stable` on [github.com](https://github.com/helm/charts/tree/master/stable) where most of the relevant community helm charts where maintained.
+Hover it was moved to a `deprecated` status and over time, most charts migrated to custom repositories and can be found on [helm/artifact hub](https://artifacthub.io/).
 
-helm repo list
-```
 
-Check out the available charts and search for the chaoskube:
+So as a first step, visit the [artifact hub](https://artifacthub.io/) and take a look around. For this exercise, we are looking for a chart called `chaoskube`. Go ahead and look it up.
 
-```bash
-helm search repo chaoskube
-```
-
-Found it? Check the github [page](https://github.com/kubernetes/charts/tree/master/stable/chaoskube) for a detailed description of the chart.
-
-Of course, there are other ways to find charts. You can go to [charts org on github](https://github.com/kubernetes/charts) and take a look into the stable, test or incubator repositories. This is also where you find the yaml / template files of charts.
-
-**Note:** The `charts` repo is officially deprecated. The helm organization recently created [Artifact Hub](https://artifacthub.io/). It is a very convenient way to search for a chart and lets you access multiple / different repositories at once (like stable or incubator). However, not all charts from the former stable repo have been migrated (e.g. `chaoskube` is not yet availalbe). 
+Found it? Check the gitHub [page](https://github.com/linki/chaoskube) for a detailed description of the tool.
 
 ## Step 3: install a chart
-Run the following command to install the chaoskube chart. It installs everything that is associated with the chart into your namespace. Note the `--set` flags, which specify parameters of the chart.
+The [chart's page on artifact hub](https://artifacthub.io/packages/helm/cloudnativeapp/chaoskube) gives you all the information you need, in order to install the chart.
+
+To fulfill the prerequisites, you have to add the chart's repository to your local helm's repository list. The commands can be found, when you click the `install` button in right upper corner of the page. They look like this:
 
 ```bash
-helm install <any-name> stable/chaoskube --set namespaces=<your-namespace> --set rbac.serviceAccountName=chaoskube --debug
+helm repo add cloudnativeapp https://cloudnativeapp.github.io/charts/curated/
 ```
 
-The parameter `namespaces` defines in which namespaces the chaoskube will delete pods. `rbac.serviceAccountName` specifies which serviceAccount the scheduled chaoskube pod will use. Here we give it the `chaoskube` account, which has been created as part of the cluster setup already. This is mainly because chaoskube wants to query pods across all namespaces - which requires a `ClusterRoleBinding` to the `ClusterRole  training:cluster-view`. As participants are not allowed to modify resources on cluster level, it is part of the setup to prepare for this exercise. If you want to know more defails, take a look at the [kubecfggen](../admin/kubecfggen/kubecfggen.sh) script.
+Next, run the following command to install the chaoskube chart. It installs everything that is associated with the chart into your namespace. Note the `--set` flags, which specify parameters of the chart.
 
-To learn more about the configuration options the chaoskube chart provides, check again the github page mentioned above.
+```bash
+helm install <release-name> cloudnativeapp/chaoskube --set namespaces=<your-namespace> --set rbac.serviceAccountName=chaoskube --debug
+```
+
+The parameter `namespaces` defines in which namespaces the chaoskube will delete pods. `rbac.serviceAccountName` specifies which serviceAccount the scheduled chaoskube pod will use. Here we give it the `chaoskube` account, which has been created as part of the cluster setup already. This is mainly because chaoskube wants to query pods across all namespaces - which requires a `ClusterRoleBinding` to the `ClusterRole  training:cluster-view`.  
+
+To learn more about the configuration options the chaoskube chart provides, check again the chart's page mentioned above.
 
 ## Step 4: inspect your chaoskube
 Next, check your installation by running `helm list`. It returns all installed releases including your chaoskube. You can reference it by its name.
@@ -67,7 +65,16 @@ Get more information by running `helm status <your-releases-name>`
 Also check the pods running inside your kubernetes namespace. Don't forget to look into the logs of the chaoskube to see what would have happened without the dry-run flag set.
 `kubectl logs -f pod/<your chaoskube-pod-name>`
 
-## Step 5: clean up
+## Step 5 (optional): remove the dry-run flag
+To make the chaoskube actually do something, you can upgrade your release and set the dry-run flag to false.
+
+```bash
+helm upgrade <release-name> cloudnativeapp/chaoskube --reuse-values --set dryRun=false
+```
+
+Note, that you have to use `--reuse-values` to keep the non-default parameter you specified upon installation of the chart.
+
+## Step 6: clean up
 Clean up by deleting the chaoskube release:
 `helm delete <your-releases-name>`
 

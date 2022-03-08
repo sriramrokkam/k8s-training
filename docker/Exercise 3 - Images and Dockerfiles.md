@@ -74,12 +74,12 @@ With `docker tag`, give your image a nice name such as *secure_nginx* and a rele
 ## Step 8: Explore the registry
 The K8s cluster prepared for the training is also serving a [Harbor](https://goharbor.io/) registry at  **h.ingress.*\<cluster-name\>*.*\<project-name\>*.shoot.canary.k8s-hana.ondemand.com** to which you can push your image. The values for *\<cluster-name\>* and *\<project-name\>* will be given to you by your trainer and **must be substituted** respectively.
 
-Harbor is setup with a generic user called `participant` and the password is **`2r4!rX6u5-qH`**. Open the URL in a browser and logon. You will be able to see a project called `training`. Navigate to the training project's `repositories` view. On the right upper side you will find a button "push command". It has some convenient inforamtion about how to tag and push an image to this repository.
+Harbor is setup with a generic user called `participant` and the password is **`2r4!rX6u5-qH`**. Open the URL in a browser and logon. You will be able to see a project called `training`. Navigate to the training project's `repositories` view. On the right upper side you will find a button "push command". It has some convenient information about how to tag and push an image to this repository.
 
 Once you have finished exploring the UI, move on and upload your custom image.
 
 ## Step 9: Push the image to a registry
-Before you can push an image to the registy, have to login and Docker provides a way to manage your login data. With `docker login <registry-URL>` you can authenticate once and store the credentials in `~/.docker/config.json`. For our registry **the username is `participant` and the password is `2r4!rX6u5-qH`**.
+Before you can push an image to the registry, have to login and Docker provides a way to manage your login data. With `docker login <registry-URL>` you can authenticate once and store the credentials in `~/.docker/config.json`. For our registry **the username is `participant` and the password is `2r4!rX6u5-qH`**.
 
 Next, use the `docker tag` command to tag your image correctly so that the registry is used. The name of your image should be **secure_nginx**. As release tag make something up that you can remember and is unique to you. 
 Remember that your image's name needs to contain the full & lengthy URL of the registry as a prefix.

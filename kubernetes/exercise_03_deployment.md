@@ -95,7 +95,7 @@ Now create the deployment again. Remember that you can always use the `--dry-run
 ## Step 7: kubectl diff
 Congratulations - you have described a more complex resource in yaml format and deployed it to the cluster! But the above step had a bug and instead of `mainline` images with the `latest` tag are used. To switch to `mainline` you could use the `edit` mechanism again. However this will only affect the live version, not the file on disk. Instead of implementing the same change twice, let's use a more efficient way:
 - edit the local yaml file and change the image's tag to `mainline`
-- run `kubectl diff -f <your-file>.yaml` to make sure only, the image has been changed. `diff` compares the live version with the given file. It allows you to evaluate the result before acctually making the change.
+- run `kubectl diff -f <your-file>.yaml` to make sure only, the image has been changed. `diff` compares the live version with the given file. It allows you to evaluate the result before actually making the change.
 - update the live version with `kubectl apply --record -f <your-file>.yaml`
 
 ## Finally, do not delete the latest version of your deployment. It will be used throughout the following exercises.

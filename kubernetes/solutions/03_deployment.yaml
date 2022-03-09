@@ -6,7 +6,7 @@ kind: Deployment
 # The value has to be unique for this type of resource within the namespace
 metadata:
   name: nginx-deployment
-  # labels is anothre map and contains one to many key:value pairs
+  # labels is another map and contains one to many key:value pairs
   labels:
     # the deployment will be labeled with a key 'tier' that has a value 'application'
     tier: application

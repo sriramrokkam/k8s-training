@@ -91,11 +91,11 @@ With the index page in place, try to access the webserver via the service you cr
 ## Step 4: Scaling does not work, does it?
 In the previous step, the deployment was deliberately created with only one replica since the access mode "ReadWriteOnce" does not allow multiple consumers. In this section we will take a closer look at the implications of the access mode.
 
-Firstly, try to bring up more pods by increasing the deployment's replica count to 5. Use `kubectl get pods -o wide` to monitor on which nodes pods are scheduled and on which node copies acutally transition to status "Running".  
+Firstly, try to bring up more pods by increasing the deployment's replica count to 5. Use `kubectl get pods -o wide` to monitor on which nodes pods are scheduled and on which node copies actually transition to status "Running".  
 
-Is there a node, where multiple pods successully started?
+Is there a node, where multiple pods successfully started?
 
-If a pod stays in status `Pending` or `ContainerCreating` you could use `kubectl describe pod <pod-name>` to check the events logged for this pod. They give a first idea, of what is acutally happening (or not working). 
+If a pod stays in status `Pending` or `ContainerCreating` you could use `kubectl describe pod <pod-name>` to check the events logged for this pod. They give a first idea, of what is actually happening (or not working). 
 
 If you compare the age of the pods, you will like find that only on the node, where the very first pod runs other pods managed to start up. Essentially, this is because the access mode limits only the number of nodes, you could mount a volume to. Within the context of a node, multiple bind-mounts are very well possible. Hence be careful with scaling operations and the use of storage.
 

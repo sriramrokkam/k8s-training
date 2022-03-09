@@ -22,9 +22,9 @@ In case you are running things locally on your machine (without the VM): The `ge
 
 ### Scenario 2 - use a local environment
 
-**This will work only with a local bash enviroment like on MacOS or WSL**
+**This will work only with a local bash environment like on MacOS or WSL**
 
-While using the VM makes life for your trainers easiert (one standardized environment), it is very well possible to do the Kubernetes exercises on you local machine. 
+While using the VM makes life for your trainers easier (one standardized environment), it is very well possible to do the Kubernetes exercises on you local machine. 
 In case you want to go this way, please install `kubectl` for your platform as [described here](https://kubernetes.io/de/docs/tasks/tools/install-kubectl/) and clone the training repository locally.
 
 ```bash
@@ -77,5 +77,5 @@ There is a forum-like page hosted by K8s with lots of information around `kubect
 - kubectl command documentation: https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
 - a small [gist](https://github.wdf.sap.corp/gist/D051945/3f3daf9f71f7e012c1e25a48c1c6e8da) with bash function to manage multiple config files
 - shell autocompletion (should work for the VM already): https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion
-- kubectl cheat sheet:(https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+- kubectl cheat sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 - jsonpath in kubectl: https://kubernetes.io/docs/reference/kubectl/jsonpath/

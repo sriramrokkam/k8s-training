@@ -10,7 +10,7 @@ spec:
  # specify how incoming traffic should be handled / filtered  
   ingress:
   - from:
-    # allow traffic originating from pods labeled with keys and values matching this selctor
+    # allow traffic originating from pods labeled with keys and values matching this selector
     - podSelector:
         matchLabels:
           access: "true" # pods sending request require to have a label "access=true"

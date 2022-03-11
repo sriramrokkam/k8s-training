@@ -20,7 +20,7 @@ Start by creating a new certificate:
 ## Step 2: Store the certificate in Kubernetes
 In order to use the certificate with our nginx, you need to add it to kubernetes and store it in a `secret` resource of type `tls` in your namespace. Note that Kubernetes changes the names of the files to a standardized string. For example, `nginx.crt` should become `tls.crt`.
 
-`kubectl  create secret tls nginx-sec --cert=/tmp/nginx.crt --key=/tmp/nginx.key`
+`kubectl create secret tls nginx-sec --cert=/tmp/nginx.crt --key=/tmp/nginx.key`
 
 Check, if the secret is present by running `kubectl get secret nginx-sec`.
 

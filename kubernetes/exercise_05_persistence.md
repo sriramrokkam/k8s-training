@@ -111,7 +111,7 @@ In case the pods of the deployment stay in status `Pending` or `ContainerCreatio
 You can try to see if the storage device is unmounted by:
 1. Use `kubectl get pvc <pcv-name>` to get the name of the bounded persistent volume.
 2. Use `kubectl get pv <pv-name> -o json | jq ".spec.gcePersistentDisk"` to get the name of the physical disk used by the persistent volume.
-3. Use `kubectl get nodes -o yaml | grep <physical-disk-name>` to see if the physical disk is still conected to a node? If it is you get  3 lines per connected node. 
+3. Use `kubectl get nodes -o yaml | grep <physical-disk-name>` to see if the physical disk is still connected to a node? If it is you get  3 lines per connected node. 
 
 #### Service Problems
 
@@ -122,7 +122,7 @@ In case your service is not routing traffic properly, run `kubectl describe serv
 Finally, there might be some caching on various levels of the used infrastructure. To break caching on corporate proxy level and display the custom page, append a URL parameter with a random number (like 15): `http:<LoadBalancer IP>/?random=15`.
 
 ## Further information & references
-- descripton of the [volumes API](https://kubernetes.io/docs/concepts/storage/volumes/)
+- description of the [volumes API](https://kubernetes.io/docs/concepts/storage/volumes/)
 - how to use [PV & PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 - [storage classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
 - [volume snapshots](https://kubernetes.io/docs/concepts/storage/volume-snapshots/)

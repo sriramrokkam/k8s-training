@@ -125,6 +125,6 @@ To be able to use the headless service in combination with the pod names for DNS
 
 ## Further information & references
 - [statefulset documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
-- [cassandara deployed as a statefulset](https://kubernetes.io/docs/tutorials/stateful-application/cassandra/)
+- [cassandra deployed as a statefulset](https://kubernetes.io/docs/tutorials/stateful-application/cassandra/)
 - [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
 - [debugging of init containers](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-init-containers/)

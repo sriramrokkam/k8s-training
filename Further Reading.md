@@ -92,6 +92,8 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 
 - The [kubelet pattern](https://github.tools.sap/NewHorizon/LifecycleManagement/blob/master/KubeletPattern.md) gives an outlook, how a Kubernetes based architecture could evolve.
 
+- [Programming Kubernetes](https://programming-kubernetes.info/) is an awesome book, if you really want to get started. There is also [sample code on github](https://github.com/programming-kubernetes).
+
 ### security
 - wordpress & reverse shell - k8s security talk @ContainerConf by Jen Tong: https://vimeo.com/306157921 (demo starts around 30:20)
 

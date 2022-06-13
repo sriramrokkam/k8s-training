@@ -27,7 +27,7 @@ cp <path-to-cloned-repository>/docker/res/wiki.go .
 
 ## Step 1: Creating the Dockerfile
 
-Create an new Dockerfile that starts `FROM golang:1.12-alpine as builder`. Note, the `as builder` extension - it allows you to reference files present at this stage and copy them over to another stage.
+Create an new Dockerfile that starts `FROM golang:1.18-alpine as builder`. Note, the `as builder` extension - it allows you to reference files present at this stage and copy them over to another stage.
 To prepare for the build, change the `WORKDIR` to `/go/src/` and `COPY` the `wiki.go` file over.
 
 ## Step 2: Compile wiki.go

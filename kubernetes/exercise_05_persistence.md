@@ -35,7 +35,7 @@ spec:
       storage: 1Gi
 ```
 
-Create the resource: `kubectl create -f pvc.yaml` and verify that your respective claim has been created. 
+Create the resource: `kubectl apply -f pvc.yaml` and verify that your respective claim has been created. 
 
 Given the policy of the storage class, a PV might not be provisioned immediately and the PVC is "stuck" in status `Pending`. This is perfectly fine, but take a closer look with `kubectl describe pvc <pvc-name>`.
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-if [ `id -u` -eq 0 ]; then
+if [ "$(id -u)" -eq 0 ]; then
 	echo "ERROR: Please do not run this script as root."
 	exit 1
 fi
@@ -30,26 +30,26 @@ PARTID=$(printf %04d $((10#$PARTID)))
 
 echo -e "\n"
 
-if [ -f $TARGET ]; then
+if [ -f "$TARGET" ]; then
 	echo -e "${TARGET} already exists. Attempting to store kubeconfig file to ${HOME}/.kube/${TRAINING}.config."
 	echo "You can try to merge them manually or run 'export KUBECONFIG='${HOME}/.kube/${TRAINING}.config' to activate it for your current session."
 	TARGET=$HOME/.kube/$TRAINING.config
 fi
 
-CFG_URL="http://${TRAINING}${BASE_URL}/kubeconfigs/part-${PARTID}.yaml"
+CFG_URL="https://${TRAINING}${BASE_URL}/kubeconfigs/part-${PARTID}.yaml"
 TMPFILE=$(mktemp -u)
 
-curl -u "${TRAINING}:${PASSWORD}" -s -S -k -o $TMPFILE $CFG_URL
+curl -u "${TRAINING}:${PASSWORD}" -s -S -k -o "$TMPFILE" "$CFG_URL"
 
 if [ $? -ne 0 ] || [ -n "$(grep '<html>' $TMPFILE)" ]; then
 	echo "ERROR: Did not receive a valid kube.config file."
 	echo "       Please check that you entered the correct training ID and participant ID."
-	rm -f $TMPFILE
+	rm -f "$TMPFILE"
 	exit 1
 fi
 
-mkdir -p `dirname $TARGET`
-mv $TMPFILE $TARGET
+mkdir -p "$(dirname $TARGET)"
+mv "$TMPFILE" "$TARGET"
 
 echo -e "\n*** Successfully copied kube config to local $TARGET"
 

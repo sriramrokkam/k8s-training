@@ -73,7 +73,8 @@ ${HELM} install $HELM_LOKI_RELEASE_NAME grafana/loki-stack \
 	--set grafana.sidecar.datasources.enabled=true \
 	--set prometheus.enabled=false \
 	--set filebeat.enabled=false \
-	--set logstash.enabled=false
+	--set logstash.enabled=false \
+	--set loki.image.tag=2.2.1
 
 # install prometheus chart
 echo "installing Prometheus helm chart and waiting until all pods are up and running..."
@@ -85,7 +86,8 @@ ${HELM} install $HELM_PROMETHEUS_RELEASE_NAME prometheus-community/kube-promethe
 	--set grafana.ingress.hosts[0]=$INGRESS_HOSTNAME_SHORT \
 	--set grafana.ingress.hosts[1]=$INGRESS_HOSTNAME_LONG \
 	--set grafana.ingress.tls[0].hosts[0]=$INGRESS_HOSTNAME_SHORT \
-	--set grafana.ingress.tls[0].hosts[1]=$INGRESS_HOSTNAME_LONG
+	--set grafana.ingress.tls[0].hosts[1]=$INGRESS_HOSTNAME_LONG \
+	--set grafana.image.tag=7.5.16
 
 echo "Grafana Ingress Host: ${INGRESS_HOSTNAME_LONG}"
 

@@ -26,6 +26,6 @@ Use the `docker stop` command to end your nginx container.
 
 ## Step 4: Clean up
 
-Get a list of all currently running and already exited containers. Remove them with `docker rm`.
+Get a list of all currently running and already exited containers. Stop and remove the containers created in this exercise with `docker stop` and `docker rm`.
 
-**Hint:** To clean up _all_ containers on your host, you can combine the `docker rm` with the `docker ps` command: `docker rm $(docker ps -aq)`.  **Use with caution.**
+**Hint:** You can also use `docker container prune` to clean up all stopped containers. 

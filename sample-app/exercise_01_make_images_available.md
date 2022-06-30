@@ -11,7 +11,7 @@
 Now proceed with the [bulletinboard-reviews](https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs) microservice. Clone the repository to your VM.
 
 ```SHELL
-git clone https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs
+git clone --branch k8s https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs
 ```
 
 ## Step 2: build and push the reviews image

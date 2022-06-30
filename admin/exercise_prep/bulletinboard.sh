@@ -15,7 +15,7 @@ docker login -u $HARBOR_USER -p $HARBOR_PWD $INGRESS_HOSTNAME
 
 ## clone reviews
 echo -e "\n\n > Clone Bulletinboard Reviews to /tmp/bulletinboard-reviews-nodejs ..."
-git clone https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs/ /tmp/bulletinboard-reviews-nodejs
+git clone --branch k8s https://github.tools.sap/cloud-native-bootcamp/bulletinboard-reviews-nodejs/ /tmp/bulletinboard-reviews-nodejs
 
 ## build reviews
 echo -e "\n\n > Building Bulletinboard Reviews Docker Image ..."

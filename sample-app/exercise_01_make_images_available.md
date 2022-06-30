@@ -76,6 +76,7 @@ The registry is secured with basic authentication. You need to provide the crede
 Let's be prepared for that and create the secret already.
 
 ```bash
-kubectl create secret docker-registry training-registry --docker-server=<registry-url> --docker-username=<registry-username> --docker-password=<registry-password>
+kubectl create secret docker-registry training-registry --docker-server=<registry-url> --docker-username=<registry-username> --docker-password='<registry-password>'
 ```
 
+Note: The quotes around the registry password are only needed if the password contains special characters like an `!`.

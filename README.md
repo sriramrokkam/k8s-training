@@ -3,6 +3,10 @@
 This is the repo for the "docker & kubernetes fundamentals course". Gain basic Docker knowledge and learn to orchestrate your containers with Kubernetes. Get started with Docker and run your first container as well as build custom Docker images. When working with Kubernetes you will get to know the common entities in Kubernetes and apply your knowledge during exercises.
 For an overview of topics see the agenda pages on top level.
 
+## How to Register:
+- Request a team training:  <a href="mailto:cctop@sap.com?subject=Docker%20and%20Kubernetes%20Course%20request&body=Please%20provide%20the%20following%20information:%0D%0D-%20unit%20or%20area%0D-%20requestor%0D-%20desired%20time%20frames%0D-%20number%20of%20participants%0D-%20desired%20language">Send a team training request</a> and we will check for available trainers in your region
+- Register as an individual: [Register in the interest group](https://fiorilaunchpad.sap.com/sites#my-events&/ig=10301003) to get notified when the next public training gets scheduled
+
 ## Course outline
 High level topics are:
 

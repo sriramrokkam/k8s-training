@@ -28,9 +28,29 @@ spec:
   - to:
     - podSelector:
         matchLabels: {{- include "labels.reviews.db" . | indent 10}}
+  - to:
+    - podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      namespaceSelector:
+        matchLabels:
+          gardener.cloud/purpose: kube-system
+    ports:
+    - port: 8053
+      protocol: UDP
+    - port: 8053
+      protocol: TCP
+  - to:
     - namespaceSelector:
         matchLabels:
           gardener.cloud/purpose: kube-system
       podSelector:
         matchLabels:
-          k8s-app: kube-dns
+          k8s-app: node-local-dns
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP

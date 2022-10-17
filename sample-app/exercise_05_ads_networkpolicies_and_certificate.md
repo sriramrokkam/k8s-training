@@ -100,7 +100,7 @@ Before we continue with the egress traffic, let us apply the ingress restriction
 - Test that everything still works fine.
 
 Furthermore we want to restrict the egress traffic from __ads:app__ to certain pods only. This would be __ads:db__ and the DNS server in our cluster as well as the reviews service.
-  - The DNS server is also in the `kube-system` namespace and has a label `k8s-app: kube-dns`
+  - The DNS server is also in the `kube-system` namespace and has a label `k8s-app: kube-dns`. However there is an additional DNS cache on each node, which we have to allow traffic to as well ([see: node-local-dns](https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/)).
   - The bulletinboard-reviews
   - The bulletinboard-ads database pod was labeled earlier by ourselves
 
@@ -110,9 +110,41 @@ component: reviews
 module: app
 ```
 
-- Restrict the egress traffic, to only allow the necessary traffic mentioned above.
+Restrict the egress traffic, to only allow the necessary traffic mentioned above. You may use the following snippet to enable DNS queries:
 
-- Again test the bulletinboard, if everything still works.
+```yaml
+# allow traffic to core DNS pods running in kube-system namespace
+  - to:
+    - podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      namespaceSelector:
+        matchLabels:
+          gardener.cloud/purpose: kube-system
+    ports:
+    - port: 8053
+      protocol: UDP
+    - port: 8053
+      protocol: TCP
+# allow traffic to node-local-dns pods. Since they run within the host network, we have to allow this as well
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          gardener.cloud/purpose: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: node-local-dns
+    - ipBlock:
+        # if you knew the CIDR ranges for the cluster nodes, you could make this more specific
+        cidr: 0.0.0.0/0
+    ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+```
+
+Again test the bulletinboard, if everything still works.
 
 ## Step 3: TLS
 

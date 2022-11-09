@@ -51,4 +51,4 @@ Follow the instructions on the page [Prerequisites and Environment Setup](prepar
 
 **Interested in becoming a trainer as well?** 
 
-Check out this [page](.admin/becoming_a_trainer.md) to find out more :bulb:
+Check out this [page](./admin/becoming_a_trainer.md) to find out more :bulb:

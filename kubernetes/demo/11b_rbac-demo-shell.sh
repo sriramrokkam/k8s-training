@@ -1,5 +1,20 @@
 #!/bin/bash
 
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pod-master-secret
+  annotations:
+    kubernetes.io/service-account.name: pod-master
+type: kubernetes.io/service-account-token
+EOF
+
+kubectl patch sa pod-master --type merge -p '{"secrets": [{"name": "pod-master-secret"}]}'
+
+sleep 3
+
+
 CA_CERT=$(kubectl config view --minify --flatten -o json | jq ".clusters[0].cluster.\"certificate-authority-data\"" | sed -e "s/^\"//g" -e "s/\"$//g")
 API_SERVER=$(kubectl config view --minify --flatten -o json | jq ".clusters[0].cluster.server" | sed -e "s/^\"//g" -e "s/\"$//g")
 SA_SECRET=$(kubectl get sa pod-master -o json | jq ".secrets[0].name" | sed -e "s/^\"//g" -e "s/\"$//g")

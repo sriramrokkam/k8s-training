@@ -1,13 +1,17 @@
-# Docker and Kubernetes fundamentals  
+# Docker and Kubernetes Fundamentals  
 
-This is the repo for the "docker & kubernetes fundamentals course". Gain basic Docker knowledge and learn to orchestrate your containers with Kubernetes. Get started with Docker and run your first container as well as build custom Docker images. When working with Kubernetes you will get to know the common entities in Kubernetes and apply your knowledge during exercises.
+This is the repo for the "Docker & Kubernetes Fundamentals" course. Gain basic Docker knowledge and learn to orchestrate your containers with Kubernetes. Get started with Docker and run your first container as well as build custom Docker images. When working with Kubernetes you will get to know the common entities in Kubernetes and apply your knowledge during exercises.
 For an overview of topics see the agenda pages on top level.
 
-## How to Register:
+## How to Register
 
-[Register in the interest group](https://fiorilaunchpad.sap.com/sites#my-events&/ig=10301003) to get notified when the next training gets scheduled
+- Check for [available classes in SuccessMap Learning](https://performancemanager5.successfactors.eu/sf/learning?destUrl=https%3A%2F%2Fsap%2eplateau%2ecom%2Flearning%2Fuser%2Fdeeplink%5fredirect%2ejsp%3FlinkId%3DITEM%5fDETAILS%26componentID%3DDEV%5fCC%5fPA%5fKuber%5f1803%5fILT%26componentTypeID%3DCOURSE%26revisionDate%3D1521715320000%26fromSF%3DY&company=SAP)
+- If there is no class that matches your region or available dates, [register in the interest group](https://fiorilaunchpad.sap.com/sites#my-events&/ig=10301003) to get notified when new classes get scheduled
 
-## Course outline
+**Cancellation Policy:**
+Cancellation is possible until 1 week (5 working days) before training start. If later, a clear reason must be provided. No shows will be charged EUR 1000. Incomplete attention (missing parts of 4-16 hours) will be charged EUR 300. Missing more than 50% will be considered a no-show.
+
+## Course Outline
 High level topics are:
 
 ### [Why Docker & Kubernetes?](./00_why_docker_k8s.pptx)

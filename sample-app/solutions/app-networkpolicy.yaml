@@ -1,0 +1,57 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-access
+  labels:
+    component: fortune-cookies
+    module: app
+spec:
+  podSelector:
+    matchLabels:
+      component: fortune-cookies
+      module: app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: nginx-ingress
+          component: controller
+          origin: gardener
+      namespaceSelector:
+        matchLabels:
+          gardener.cloud/purpose: kube-system
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          component: fortune-cookies
+          module: db
+  - to:
+    - podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      namespaceSelector:
+        matchLabels:
+          gardener.cloud/purpose: kube-system
+    ports:
+    - port: 8053
+      protocol: UDP
+    - port: 8053
+      protocol: TCP
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          gardener.cloud/purpose: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: node-local-dns
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP

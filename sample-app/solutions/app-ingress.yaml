@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fortune-cookies
+  labels:
+    component: ads
+    module: app
+    garden.sapcloud.io/purpose: managed-cert
+spec:
+  rules:
+  - host: <Hostname>.ingress.<CLUSTER_NAME>.<PROJECT_NAME>.shoot.canary.k8s-hana.ondemand.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: fortune-cookies
+            port:
+              name: http
+  tls:
+    - hosts:
+      - <Hostname>.ingress.<CLUSTER_NAME>.<PROJECT_NAME>.shoot.canary.k8s-hana.ondemand.com
+      secretName: fortune-cookies-tls-secret

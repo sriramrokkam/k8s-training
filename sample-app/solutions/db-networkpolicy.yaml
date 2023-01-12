@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-access
+  labels:
+    component: fortune-cookies
+    module: db
+spec:
+  podSelector:
+    matchLabels:
+      component: fortune-cookies
+      module: db
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          component: fortune-cookies
+          module: app
+  egress: []
+

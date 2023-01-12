@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fortune-cookies
+  labels:
+    component: fortune-cookies
+    module: app
+data:
+  postgres_url: jdbc:postgresql://postgres-0.db:5432/postgres
+  

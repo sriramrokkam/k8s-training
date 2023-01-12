@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fortune-cookies
+  labels:
+    component: fortune-cookies
+    module: app
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: app-port
+    name: http
+  selector:
+    component: fortune-cookies
+    module: app
+  type: ClusterIP

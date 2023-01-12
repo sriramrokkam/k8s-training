@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fortune-cookies
+  labels:
+    component: fortune-cookies
+    module: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: fortune-cookies
+      module: app
+  template:
+    metadata:
+      labels:
+        component: fortune-cookies
+        module: app
+    spec:
+      imagePullSecrets:
+      - name: training-registry
+      containers:
+      - name: app
+        image: <image pull reference>
+        ports:
+        - containerPort: 8080
+          name: app-port
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: postgres_url
+              name: fortune-cookies
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: postgres_password
+              name: db-credentials
+        - name: SPRING_DATASOURCE_USERNAME
+          value: postgres
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 800Mi

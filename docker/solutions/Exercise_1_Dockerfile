@@ -1,0 +1,11 @@
+FROM nginx:mainline
+
+# copy the custom website into the image
+COPY index.html /usr/share/nginx/html
+COPY evil.jpg /usr/share/nginx/html
+
+# copy the configuration file into the image
+COPY docker-nginx.conf /etc/nginx/conf.d/nginx.conf
+
+# expose the port
+EXPOSE 8080

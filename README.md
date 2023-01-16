@@ -22,7 +22,7 @@ High level topics are:
 - Image lifecycle and Dockerfiles: ([slides](./docker/03_Image_Lifecycle.pptx), [exercise 1](./docker/Exercise_1_Dockerfiles.md) & [exercise 2](./docker/Exercise_2_Multistage_Dockerfiles.md))
 - Working locally ([slides](./docker/04_Working_locally.pptx) & [exercise 3](./docker/Exercise_3_Ports_Volumes.md))
 
-### [Kubernetes](./kubernetes) (day 2+3)
+### [Kubernetes](./kubernetes) (day 2+3+4)
 - Introduction ([slides](./kubernetes/00_intro.pptx))
 - Components of a Kubernetes cluster ([slides](./kubernetes/01_k8s_core_components.pptx) & [exercise 1](./kubernetes/exercise_01_kubectl_basics.md))
 - Scheduling of workloads with
@@ -39,8 +39,8 @@ High level topics are:
 - introduction to Gardener ([slides](./kubernetes//11_4_Gardener.pptx)
 - deploy packaged applications with Helm ([slides](./kubernetes/12_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))
 - write a Helm chart ([slides](./kubernetes/12_helm.pptx) & [exercise 11](./kubernetes/exercise_11_write_a_helm_chart.md))
+- [fortune cookies](./sample-app/README.md) - apply the learned concepts and build + deploy a sample application
 
-### [Kubernetes: HowTo 'bring' Bulletinboard in K8s](./sample-app/README.md) (day 4)
 
 ## Preparation and Setup
 

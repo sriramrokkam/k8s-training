@@ -77,7 +77,7 @@ Technically it would be possible to run most of the exercises also with Docker o
 - There should be a tab "My Classes" (if not, likely you are not the _main_ trainer), click on it
 - Then, find your training entry and check the "Users" tab 
 - **IMPORTANT:** make sure you filter only for the people who are registered, by default, also the waitlisted people are included
-    <img width="50%" src="images/sml-users.png"/>
+    <img width="50%" src="images/smlUsers.png"/>
 
 ## Setting you up for the training
 **Important: Forking is no longer necessary! But feel free to do so, if you feel more comfortable with it.**

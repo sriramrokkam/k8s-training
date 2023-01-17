@@ -72,6 +72,13 @@ An other option would be to take one of our **mail templates**, we have prepared
 
 Technically it would be possible to run most of the exercises also with Docker on Windows/Mac and a local kubectl. **However, we would recommend explicitly exclude support for this setup during the training.**
 
+**Hint:** If you want get a list of the course participants, as the _main trainer_ you can
+- Go to <a target="_blank" href="https://sap.plateau.com/learning/user/deeplink_redirect.jsp?linkId=HOME_PAGE&fromSF=Y">SuccessMap Learning</a>
+- There should be a tab "My Classes" (if not, likely you are not the _main_ trainer), click on it
+- Then, find your training entry and check the "Users" tab 
+- **IMPORTANT:** make sure you filter only for the people who are registered, by default, also the waitlisted people are included
+    <img width="50%" src="images/smlUsers.png"/>
+
 ## Setting you up for the training
 **Important: Forking is no longer necessary! But feel free to do so, if you feel more comfortable with it.**
 

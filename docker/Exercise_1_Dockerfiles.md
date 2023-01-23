@@ -9,8 +9,9 @@ Create an empty directory, change into it and create an empty `Dockerfile`.
 We want to copy a custom (yet very simple) website to the image. You can either write your own _index.html_ or you can copy a ready-made website with an image into your build context. The prepared files can be found in the training repository's `docker/res/` subfolder:
 
 ```bash
-cp <path-to-cloned-training-repo>/docker/res/evil.jpg .
-cp <path-to-cloned-training-repo>/docker/res/evil.html .
+PATH_TO_CLONED_TRAINING_REPO=<anypath>
+cp $PATH_TO_CLONED_TRAINING_REPO/docker/res/evil.jpg .
+cp $PATH_TO_CLONED_TRAINING_REPO/docker/res/evil.html .
 mv evil.html index.html
 ```
 

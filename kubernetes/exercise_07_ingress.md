@@ -94,7 +94,7 @@ In addition to the checking of service <> deployment connection via labels and s
 Get the full name of the `addons-nginx-ingress-controller` pod running in `kube-system` and check the last 50 log entries for occurrences of your ingress name or host name and related errors. Increase the number (--tail=100), when your resource is not part of the output:
 
 ```bash
-kubectl -n kube-system get pods
+kubectl -n kube-system get pods | grep addons-nginx-ingress-controller
 
 kubectl -n kube-system logs --tail=50 addons-nginx-ingress-controller-<some ID>
 ```

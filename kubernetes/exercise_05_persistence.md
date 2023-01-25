@@ -110,7 +110,7 @@ In case the pods of the deployment stay in status `Pending` or `ContainerCreatio
 
 You can try to see if the storage device is unmounted by:
 1. Use `kubectl get pvc <pcv-name>` to get the name of the bounded persistent volume.
-2. Use `kubectl get pv <pv-name> -o json | jq ".spec.gcePersistentDisk"` to get the name of the physical disk used by the persistent volume.
+2. Use `kubectl get pv <pv-name> -o json | jq ".spec.csi.volumeHandle"` to get the name of the physical disk used by the persistent volume.
 3. Use `kubectl get nodes -o yaml | grep <physical-disk-name>` to see if the physical disk is still connected to a node? If it is you get  3 lines per connected node. 
 
 #### Service Problems

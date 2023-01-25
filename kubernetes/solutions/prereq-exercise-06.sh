@@ -9,7 +9,7 @@ metadata:
 spec:
   storageClassName: default
   accessModes:
-    - ReadOnlyMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi

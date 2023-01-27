@@ -1,4 +1,4 @@
-# Solution to Exercise 3 - Images
+# Solution to Exercise 1 - Images
 
 In this exercise, you will build an image with a Dockerfile, tag it and upload it to a registry. You will use the Dockerfile to extend the NGINX image to another port and deliver a custom website that is embedded into the image.
 

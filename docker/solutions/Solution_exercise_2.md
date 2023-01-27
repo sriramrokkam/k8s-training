@@ -1,6 +1,6 @@
-# Solution to optional Exercise 4 - Dockerfiles Extended: Multi-stage build
+# Solution to Exercise 2 - Dockerfiles Extended: Multi-stage build
 
-In this exercise, you will create a Dockerfile consisting of two stages. Within a build stage you will compile a go-based web app. Next, copy the binary to run stage, which consists of a minimal set of libs only. (and yes, you could also link everything statically and have an image with the binary only). 
+In this exercise, you will create a Dockerfile consisting of two stages. Within a *build* stage you will compile a go-based web app. Next, copy the binary to the *run* stage, which consists of a minimal set of libs only. (and yes, you could also link everything statically and have an image with the binary only). 
 
 The app is a simple webserver providing view and edit functionality for "wiki pages" and is based on this [tutorial](https://golang.org/doc/articles/wiki/). It serves on port 8080, renders web pages based on templates parsed from files and can persist pages on the filesystem.
 

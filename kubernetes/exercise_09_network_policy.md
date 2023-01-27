@@ -1,8 +1,8 @@
-# Exercise - Network Policy
+# Exercise 9 - Network Policy
 
 In this exercise, you will be dealing with _Pods_, _Deployments_, _Labels & Selectors_, _Services_ and **_Network Policies_**.
 
-Network policies in your namespace help you restrict access to your nginx deployment. From within any pod that is not labeled correctly you will not be able to access your nginx instances.
+Network policies in your namespace help you to restrict access to your nginx deployment. From within any pod that is not labeled correctly you will not be able to access your nginx instances.
 
 **Note:** This exercise loosely builds on the previous exercises as you will need a deployment and a service. In case you do not have a deployment with a service ready because you did not manage to finish [exercise 5](exercise_05_persistence.md), use the script  [prereq-exercise-06.sh](solutions/prereq-exercise-06.sh) in the *solutions* folder. Please use this script only if you do not have a working deployment that has been exposed through a service.
 
@@ -71,11 +71,11 @@ spec:
         # Montreal
         cidr: 208.49.239.224/28
 ```
-If you're location is not on the list, check with your trainer to get the address blocks. You can also check the [network information portal](https://nip.wdf.sap.corp/nip2/faces/networking/wan/PublicAddresses.xhtml) and search for your location.
+If your location is not on the list, check with your trainer to get the address blocks. You can also check the [network information portal](https://nip.wdf.sap.corp/nip2/faces/networking/wan/PublicAddresses.xhtml) and search for your location.
 
 If you are unsure about the labels, run the queries you are about to implement manually - e.g. `kubectl get pods -l <my-ke>=<my-value>`. This way you can check, if the results match your intention.
 
-Create the resource as usual with `kubectl apply -f <your file>.yaml` and check its presence with `kubectl get networkpolicy`
+Create the resource as usual with `kubectl apply -f <your file>.yaml` and check its presence with `kubectl get networkpolicy`.
 
 ## Step 2: Trying to connect, please wait ...
 Again, connect to the busybox pod you used in step 0 or spin up a new one. Run the same `wget` command and check the output.

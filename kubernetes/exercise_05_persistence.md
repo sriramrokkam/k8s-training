@@ -16,7 +16,7 @@ By the way, you don't have to type `persistentvolume` all the time. You can abbr
 
 ## Step 1: Create a PersistentVolume and a corresponding claim
 Instead of creating a PersistentVolume (PV) first and then bind it to a PersistentVolumeClaim (PVC), you will directly request storage via a PVC using the default storage class.
-This is not only convenient, but also helps to avoid confusion. PVC are bound to a namespace, PV resource are not. When there is a fitting PV, it can be bound to any PVC in any namespace. So there is some conflict potential, if your colleagues always claim your PV's :)
+This is not only convenient, but also helps to avoid confusion. PVC's are bound to a namespace, PV resources are not. When there is a fitting PV, it can be bound to any PVC in any namespace. So there is some conflict potential, if your colleagues always claim your PV's :)
 The concept of the storage classes overcomes this problem. The tooling masked by the storage class auto-provisions PV's of a defined volume type for each requested PVC.
 
 Use the resource stored in the [repository](./solutions/05_pvc.yaml) or copy the snippet from below to your VM:
@@ -60,12 +60,12 @@ spec:
 
 __Important__: The PVC's access mode is `ReadWriteOnce`. Hence, reduce the number of replicas in your deployment to 1. 
 
-Once you re-created the deployment, make sure to check that the pod is status `Running` before you continue. You can also have a look at the PVC again. It should be backed by PV by now.
+Once you re-created the deployment, make sure to check that the pod has status `Running` before you continue. You can also have a look at the PVC again. It should be backed by PV by now.
 
 ## Step 3: create custom content
 If you would try to access the nginx running in your pod, you would probably get an error message `403 Forbidden`. This is expected since you are hiding the original `index.html` with a bind-mount. So let's move on and create some content on the volume we have available. 
 
-Locate the nginx pod and open a shell session into it: `kubectl exec -it <pod-name> -- bash`
+Locate the nginx pod and open a shell session into it: `kubectl exec -it <pod-name> -- bash`.
 Navigate to the directory mentioned in the `volumeMounts` section and create a custom `index.html`. You can re-use the code you used in the docker exercises the other day. Once you are done, disconnect from the pod and close the shell session.
 
 <details><summary>__Hint__</summary>
@@ -97,7 +97,7 @@ Is there a node, where multiple pods successfully started?
 
 If a pod stays in status `Pending` or `ContainerCreating` you could use `kubectl describe pod <pod-name>` to check the events logged for this pod. They give a first idea, of what is actually happening (or not working). 
 
-If you compare the age of the pods, you will like find that only on the node, where the very first pod runs other pods managed to start up. Essentially, this is because the access mode limits only the number of nodes, you could mount a volume to. Within the context of a node, multiple bind-mounts are very well possible. Hence be careful with scaling operations and the use of storage.
+If you compare the age of the pods, you will likely find that only on the node, where the very first pod runs other pods managed to start up. Essentially, this is because the access mode limits only the number of nodes, you could mount a volume to. Within the context of a node, multiple bind-mounts are very well possible. Hence be careful with scaling operations and the use of storage.
 
 Finally, scale the deployment back to a replica count of 1.
 

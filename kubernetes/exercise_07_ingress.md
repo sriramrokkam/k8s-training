@@ -20,7 +20,7 @@ If there are any issues, check with your trainer.
 ## Step 1 - init: prepare pods and services
 For this exercise you can either re-use already existing deployments, pods and services or create them from scratch. Please continue to use an nginx webserver as backend application. For the sake of resource consumption, please use `replica: 1` for new resources.
 
-When you create a new deployment you could also try to add an [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/). The init container should write a string like the hostname or "hello world" to and `index.html` on an `emptyDir` volume. Use this volume in the nginx container as well to get a customized `index.html` page.
+When you create a new deployment you could also try to add an [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/). The init container should write a string like the hostname or "hello world" to an `index.html` file on an `emptyDir` volume. Use this volume in the nginx container as well to get a customized `index.html` page.
 
 The snippets below might give an idea, how to create a cache volume and pass an appropriate command to a busybox running as init container.
 
@@ -74,18 +74,18 @@ Finally, deploy your ingress and test the URL.
 
 ## Step 3 - annotate!
 Besides the labels, K8s uses also a concept called "[annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)". Annotations are part of the metadata section and can be written directly to the yaml file as well as added via `kubectl annotate ...`. Similar to the labels, annotations are also key-value pairs.
-Most commonly annotations are used to store additional information, describe a resource more detailed or tweak it's behavior.
+Most commonly annotations are used to store additional information, describing a resource more detailed or tweak it's behavior.
 
 In our case, the used ingress controller knows several annotations and reacts to them in a predefined way. The known annotations and their effect are described [here]( https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/).
 
 So let's assume, you want to change the timeout behavior of the nginx exposed via the ingress. Check the list of [annotations](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/) for the `proxy-connect-timeout` and apply a suitable configuration to your ingress. Of course don't forget to test the URL.
 
 ## optional step 4 - rewrite target
-Now that you know how an annotation works and how it affects your ingress, lets move on the fanout scenario. Assume you want your ingress to serve something different at its root level `/` and you want to move your application to `/my-app`. Your URL would look like this `<your-custom-endpoint>.ingress.<GARDENER-CLUSTER-NAME>.<GARDENER-PROJECT-NAME>.shoot.canary.k8s-hana.ondemand.com/my-app`.
+Now that you know how an annotation works and how it affects your ingress, lets move on to the fanout scenario. Assume you want your ingress to serve something different at its root level `/` and you want to move your application to `/my-app`. Your URL would look like this `<your-custom-endpoint>.ingress.<GARDENER-CLUSTER-NAME>.<GARDENER-PROJECT-NAME>.shoot.canary.k8s-hana.ondemand.com/my-app`.
 
-In a first step, you need to add `path: /my-app(.*)` to your backend configuration within the ingress. Take a look at the [fanout demo](./demo/09b_fanout_and_virtual_host_ingress.yaml), if you need inspiration. Once you applied your the change, go to your URL and test the different paths. But don't be surprised, if you don't see the expected pages.
+In a first step, you need to add `path: /my-app(.*)` to your backend configuration within the ingress. Take a look at the [fanout demo](./demo/09b_fanout_and_virtual_host_ingress.yaml), if you need inspiration. Once you applied the change, go to your URL and test the different paths. But don't be surprised, if you don't see the expected pages.
 
-The ingress is forwarding traffic to `/my-app` also to `/my-app` at the backend. So unless you configured your nginx pods to serve at `/my-app` there is no valid endpoint available. You can solve the issue by rewriting the target to `/$1` of the backend pods. Check the `rewrite-target` [annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#rewrite) for details and apply it accordingly. The documentation features an [example](https://kubernetes.github.io/ingress-nginx/examples/rewrite/) as well.
+The ingress is forwarding traffic to `/my-app` and also to `/my-app` at the backend. So unless you configured your nginx pods to serve at `/my-app` there is no valid endpoint available. You can solve the issue by rewriting the target to `/$1` of the backend pods. Check the `rewrite-target` [annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#rewrite) for details and apply it accordingly. The documentation features an [example](https://kubernetes.github.io/ingress-nginx/examples/rewrite/) as well.
 
 
 ## Troubleshooting

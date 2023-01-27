@@ -32,17 +32,17 @@ Compared to the previous v2 setup procedure, this is a significant improvement. 
 Helm organizes applications in so-called charts, which contain parameters you can set during installation. By default, helm (v3) is not configured to search any remote repository for charts. 
 
 Until recently, there was repository called `stable` on [github.com](https://github.com/helm/charts/tree/master/stable) where most of the relevant community helm charts where maintained.
-Hover it was moved to a `deprecated` status and over time, most charts migrated to custom repositories and can be found on [helm/artifact hub](https://artifacthub.io/).
+However it was moved to a `deprecated` status and over time, most charts migrated to custom repositories and can be found on [helm/artifact hub](https://artifacthub.io/).
 
 
 So as a first step, visit the [artifact hub](https://artifacthub.io/) and take a look around. For this exercise, we are looking for a chart called `chaoskube`. Go ahead and look it up.
 
-Found it? Check the gitHub [page](https://github.com/linki/chaoskube) for a detailed description of the tool.
+Found it? Check the GitHub [page](https://github.com/linki/chaoskube) for a detailed description of the tool.
 
 ## Step 3: install a chart
 The [chart's page on artifact hub](https://artifacthub.io/packages/helm/cloudnativeapp/chaoskube) gives you all the information you need, in order to install the chart.
 
-To fulfill the prerequisites, you have to add the chart's repository to your local helm's repository list. The commands can be found, when you click the `install` button in right upper corner of the page. They look like this:
+To fulfill the prerequisites, you have to add the chart's repository to your local helm's repository list. The commands can be found, when you click the `install` button in the right upper corner of the page. They look like this:
 
 ```bash
 helm repo add cloudnativeapp https://cloudnativeapp.github.io/charts/curated/

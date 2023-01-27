@@ -1,12 +1,12 @@
 # Exercise 3 - Ports and Volumes
 
-In this exercise, you will run the _nginx_ webserver image build in exercise 1 to serve a custom website to the outside world.
+In this exercise, you will run the _nginx_ webserver image built in exercise 1 to serve a custom website to the outside world.
 
 ## Step 0: forward NGINX' port
 
 Start a new `nginx` container and export the ports of the _nginx_ webserver to random ports that are chosen by Docker with the `-P` switch. Since you have exposed 2 ports (80 + 8080) during the image's build process, Docker will create a forwarding to both.
 
-Use the `docker ps` command to find you which ports the webserver is forwarded to and use your web browser to connect to it to both - the result should be the same.
+Use the `docker ps` command to find you which ports the webserver is forwarded to and use your web browser to connect to both of them - the result should be the same.
 
 You can use the lengthy image name (with the remote repository's hostname), the short name (`nginx:awesome-<some random characters>`) or the image's ID to run the container.
 

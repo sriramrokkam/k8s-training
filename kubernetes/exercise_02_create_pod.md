@@ -2,7 +2,7 @@
 
 In this exercise you will be dealing with **_Pods_**.
 
-Now that you know, how kubectl works and what the smallest entity on kubernetes looks like, it is time to create your own pod.
+Now that you know how `kubectl` works and what the smallest entity on kubernetes looks like, it is time to create your own pod.
 
 ## Step 0: prepare a yaml file
 In kubernetes all resources have a well-described schema that is documented in the API definition. For example, the `Pod` resource is defined by `kind: Pod` and contains a `PodSpec`, which has a `Container`, which has an `Image`, which specifies the docker image to use, when running the pod.
@@ -12,7 +12,7 @@ In this step you are going to describe a pod in a yaml file (`pod.yaml`). Take t
 * `name: nginx-liveness-pod` (metadata)
 * `image: nginx:mainline`
 
-Either check the official [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/) of the pod resource for help or use `kubectl explain pod` to get a command-line based description of the resource. By appending `.<field>` to the resource type, the explain command will provide more details on the specified field (example: `kubectl explain pod.spec`).
+Either check the official [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/) of the pod resource for help or use `kubectl explain pod` to get a command-line based description of the resource. By appending `.<field>` to the resource type, the `explain` command will provide more details on the specified field (example: `kubectl explain pod.spec`).
 
 ```yaml
 apiVersion: v1
@@ -41,7 +41,7 @@ Now tell the cluster that you would like it to schedule the pod for you. Send th
 If it does not work as expected, check the indentation and consult the API reference linked above. You can also use `kubectl explain pod` instead. To get more details about fields like `spec` simply append the field name with a "." like this: `kubectl explain pod.spec`
 
 ## Step 2: verify that the pod is running
-Use `kubectl` with the `get` verb, to check, if your pod has been scheduled. It should be up and running after a few seconds. Check the [cheat-sheet](./cheat-sheet.md) for help.
+Use `kubectl` with the `get` verb to check if your pod has been scheduled. It should be up and running after a few seconds. Check the [cheat-sheet](./cheat-sheet.md) for help.
 Experiment with `-o=yaml` to modify the output. Compare the result with your local `pod.yaml` file. Can you spot the odd/differences?
 
 ## Step 3: get the logs
@@ -50,7 +50,7 @@ You should see the liveness probe requests coming in.
 
 ## Step 4: exec into your pod
 In case `logs` or `describe` or any other of the output generating commands don't help you to get to the root cause of an issue, you may want to take a look yourself.
-The `exec` command helps you in this situation. Adapt and run the following command, to open a shell session into the container running as part of the pod:
+The `exec` command helps you in this situation. Adapt and run the following command to open a shell session into the container running as part of the pod:
 
 `kubectl exec -it <my-pod> -- bash`
 

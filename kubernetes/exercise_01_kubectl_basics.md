@@ -1,4 +1,4 @@
-# Exercise 01 - kubectl basics
+# Exercise 1 - kubectl basics
 
 In this exercise you will learn how the command line interface (CLI) `kubectl` can be used to communicate with the Kubernetes cluster ([kubectl documentation](https://kubernetes.io/docs/reference/kubectl/overview/)).
 
@@ -10,7 +10,7 @@ In this exercise you will learn how the command line interface (CLI) `kubectl` c
 
 Login to your VM and locate the kubectl binary by running `which kubectl`. The result should return the path to the binary.
 
-Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_ , _<participant_id>_ and _<password>_ with the values that have been given to you by your trainer.
+Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_ , _<participant_id>_ and _\<password>_ with the values that have been given to you by your trainer.
 
 ```bash
 ~/setup/get_kube_config.sh <training_id> <participant_id> <password>
@@ -33,7 +33,7 @@ git clone https://github.tools.sap/kubernetes/docker-k8s-training.git
 ```
 
 To download the credentials file to access the cluster, please run the `get_kube_config.sh` script located in our [repository](./get_kube_config.sh).
-Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_, _<participant_id>_ and <password> with the values that have been given to you by your trainer.
+Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_, _<participant_id>_ and _\<password>_ with the values that have been given to you by your trainer.
 
 ```bash
 cd <cloned_training_repository>/kubernetes
@@ -54,9 +54,9 @@ The `kubectl proxy` command allows you to open a tunnel to the API server and ma
 Run the proxy command in a new terminal window and open `localhost:8001/api/v1` in your VM's browser. The API path is important here, since you are only allowed to access certain parts of the API. Just opening `localhost:8001` will return an error. Traverse through the `api/v1/` tree and search for the cluster nodes.  
 
 ## Step 4: api-versions & api-resources
-Dealing with the API directly can be cumbersome. If you want to get an overview of existing APIs `kubectl` offers the `api-versions` command. Give it a try and compare the output with APIs you found in step 3.
+Dealing with the API directly can be cumbersome. If you want to get an overview of existing APIs, `kubectl` offers the `api-versions` command. Give it a try and compare the output with APIs you found in step 3.
 
-With kubernetes version 1.11 the `kubectl` binary was extend with an `api-resources` function. It is even more convenient and lets you discover resources available in your cluster.
+With kubernetes version 1.11 the `kubectl` binary was extended with an `api-resources` function. It is even more convenient and lets you discover resources available in your cluster.
 Firstly, check your `kubectl version`. If it is 1.11.x or higher, run the `api-resources` command and search for the short name for the `nodes` resource. Can you `describe` a node using the short name notation?  
 
 ## Step 5: talk to kubernetes like an application
@@ -65,7 +65,7 @@ In this step of the exercise, you will send an HTTP request directly to the clus
 
 To figure out, how `kubectl` converts your query into HTTP requests, run the command from step 1 again and add a `-v=9` flag to it. This increases the verbosity of `kubectl` drastically, showing you all the information you need. Go through the command's output and find the correct curl request.
 
-Before you continue, make sure `kubectl proxy` is running and serving on `localhost:8001`. Now modify the request to be send via the proxy. Since the proxy has already taken care of authentication, you can omit the bearer token in your request.
+Before you continue, make sure `kubectl proxy` is running and serving on `localhost:8001`. Now modify the request to be sent via the proxy. Since the proxy has already taken care of authentication, you can omit the bearer token in your request.
 
 Hint: if the output is not as readable as you expect it, consider changing the accepted return format to `application/yaml`.
 

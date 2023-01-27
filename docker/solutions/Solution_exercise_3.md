@@ -1,12 +1,12 @@
 # Solution to Exercise 3 - Ports and Volumes
 
-In this exercise, you will run an _nginx_ webserver in a container and server a custom website to the outside world.
+In this exercise, you will run a _nginx_ webserver in a container and serve a custom website to the outside world.
 
 ## Step 0: forward NGINX' port
 
-If you have already deleted it, you download it (or any other) from the trainins registry using `docker pull`. 
+If you have already deleted it, download the `nginx:mainline` image (or any other tag) again from the trainings registry using `docker pull`. 
 
-Start a new container in detachted mode and export the portd of the _nginx_ webserver to semi-randoms port that is chosen by Docker.
+Start a new container in detached mode and export the port of the _nginx_ webserver to a semi-random port that is chosen by Docker.
 
 ```bash
 $ docker run -d -P <image name / ID>

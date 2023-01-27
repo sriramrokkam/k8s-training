@@ -43,7 +43,7 @@ tls.key:  1708 bytes
 ## Step 3: Create a nginx configuration
 Once the certificate secret is prepared, create a configuration and store it to kubernetes as well. It will enable nginx to serve HTTPS traffic on port 443 using a certificate located at `/etc/nginx/ssl/`.
 
-Download from [gitHub](./solutions/06_default.conf) or create a file `default.conf` with the following content. In any case, ensure the file's name is `default.conf`.
+Download from the [GitHub Training Repo](./solutions/06_default.conf) or create a file `default.conf` with the following content. In any case, ensure the file's name is `default.conf`.
 
 ```nginx
 server {
@@ -85,7 +85,7 @@ Run `kubectl create configmap nginxconf --from-file=<path/to/your/>default.conf`
 Verify the configmap exists with `kubectl get configmap`.
 
 ## Step 5: Combine everything into a deployment
-Now it is time to combine the persistentVolumeClaim, secret and configMap in a new deployment. As a result nginx should display the custom index.html page, serve HTTP traffic on port 80 and HTTPS on port 443. In order for new the setup to work, use `app: nginx-https` as label/selector for the "secured" nginx.
+Now it is time to combine the persistentVolumeClaim, secret and configMap in a new deployment. As a result nginx should display the custom index.html page, serve HTTP traffic on port 80 and HTTPS on port 443. In order for the new setup to work, use `app: nginx-https` as label/selector for the "secured" nginx.
 
 Complete the snippet below by inserting the missing parts (look for `???` blocks):
 
@@ -149,7 +149,7 @@ Finally, you have to create a new service to expose your https-deployment.
 
 Derive the ports you have to expose and extend the service.yaml from the previous exercise. Make sure, that the labels used in the deployment and the selector specified by the service match.
 
-Once the service has an external IP try to call it with an HTTPS prefix. Check the certificate it returns - it should match the subject and organization specified in step 1. Since we signed the certificate ourself, your Browser will complain about the certificate (depending on your browser) and you have to accept the risk browsing the url. 
+Once the service has an external IP, try to call it with an HTTPS prefix. Check the certificate it returns - it should match the subject and organization specified in step 1. Since we signed the certificate ourself, your Browser will complain about the certificate (depending on your browser) and you have to accept the risk browsing the URL. 
 
 **Important: do not delete this setup with deployment, PVC, configMap, secret and service.**
 

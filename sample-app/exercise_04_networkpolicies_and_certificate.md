@@ -67,7 +67,7 @@ kubectl run helper -it --restart=Never --rm --image=postgres:13-alpine --env="PG
 ```
 Again you should get a root prompt, execute `psql -h postgres-0.db -p 5432 -U postgres -W postgres` which, after you entered the password, should return with `timeout expired` after 5 seconds.
 
-To test the egress `kubectl exec -it postgres-0 -- aash` and try to "ping" any page/pod e.g. `wget google.de`.
+To test the egress `kubectl exec -it postgres-0 -- ash` and try to "ping" any page/pod e.g. `wget google.de`.
 It should fail.
 If `wget` is not there, try e.g. `apt-get update`.
 This will also timeout.

@@ -58,16 +58,16 @@ kubectl run helper -it --restart=Never --rm --image=postgres:13-alpine --labels=
 ```
 
 A prompt with root@... should come up. You are now connected to the pod, here we can use psql to try to connect to our postgres Pod:
-`psql -h postgres-0.db -p 5432 -U postgres -W postgres`. You will be asked for the password, which you stored in the Secret `db-credentials`. After this you should connect to the database, a prompt `postgres=>` will ask you for the next command. Type `\q` to quit psql since we only wanted to test that we can connect. Also exit the pod with the `exit` command.
+`psql -h <name-of-headless-service> -p 5432 -U postgres -W postgres`. You will be asked for the password, which you stored in the Secret `db-credentials`. After this you should connect to the database, a prompt `postgres=>` will ask you for the next command. Type `\q` to quit psql since we only wanted to test that we can connect. Also exit the pod with the `exit` command.
 
 To test that no one else can connect, change the labels in the kubectl command to anything different (or just leave them out) and repeat the steps above:
 
 ```bash
 kubectl run helper -it --restart=Never --rm --image=postgres:13-alpine --env="PGCONNECT_TIMEOUT=5" --command -- ash
 ```
-Again you should get a root prompt, execute `psql -h postgres-0.db -p 5432 -U postgres -W postgres` which, after you entered the password, should return with `timeout expired` after 5 seconds.
+Again you should get a root prompt, execute `psql -h <name-of-headless-service> -p 5432 -U postgres -W postgres` which, after you entered the password, should return with `timeout expired` after 5 seconds.
 
-To test the egress `kubectl exec -it postgres-0 -- aash` and try to "ping" any page/pod e.g. `wget google.de`.
+To test the egress `kubectl exec -it postgres-0 -- ash` and try to "ping" any page/pod e.g. `wget google.de`.
 It should fail.
 If `wget` is not there, try e.g. `apt-get update`.
 This will also timeout.

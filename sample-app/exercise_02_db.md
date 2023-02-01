@@ -50,7 +50,7 @@ We make use of the feature to describe multiple K8s entities in just one YAML fi
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-0.db
+  name: <name-of-headless-service>
   labels:
     component: <name-of-component>
     module: <name-of-module>

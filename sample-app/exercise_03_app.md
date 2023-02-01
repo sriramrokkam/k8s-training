@@ -18,7 +18,7 @@ In this exercise we will focus on the **setup of fortune cookie frontend** itsel
 Purpose: Create a **ConfigMap** containing the value for the environment variable `SPRING_DATASOURCE_URL`.
 
 - Specify a **ConfigMap** with name `app-configmap`, with one key-value pair and with proper labels for component and module.
-- The datasource url given through the headless-service is `jdbc:postgresql://postgres-0.db:5432/postgres`.
+- The datasource url given through the headless-service is `jdbc:postgresql://<name-of-headless-service>:5432/postgres`.
 - Remember the keys you use for these values. You need them in yaml-file for the **Deployment** in the next step.
 - Save your **ConfigMap** under the filename `app-configmap.yaml`.
 - Now apply the configmap to the cluster `kubectl apply -f app-configmap.yaml`

@@ -152,5 +152,5 @@ kubectl run tester -it --restart=Never --rm --image=postgres:13-alpine --env="PG
 ```
 
 A prompt with root@... should come up. You are now connected to the pod, here we can use psql to try to connect to our postgres Pod:
-`psql -h postgres-0.db -p 5432 -U postgres -W postgres`. You should be prompted for the password of the database, which was specified in the secret. After this you should connect to the postgres db, a prompt `postgres=>` will ask you for the next command. If this does, all is correctly set up!  
+`psql -h <name-of-headless-service> -p 5432 -U postgres -W postgres`. You should be prompted for the password of the database, which was specified in the secret. After this you should connect to the postgres db, a prompt `postgres=>` will ask you for the next command. If this does, all is correctly set up!  
 Type `\q` to quit psql since we only wanted to test that we can connect. Also exit the pod with the `exit` command. The pod should be removed after this automatically.

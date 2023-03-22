@@ -12,15 +12,15 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - Docker [security](https://docs.docker.com/engine/security/) and [cgroups v2 in runC](https://github.com/opencontainers/runc/blob/43186447b99c81d7e12876dc8277e2f6fd538850/docs/cgroup-v2.md)
 
-- [dive](https://github.com/wagoodman/dive/blob/master/README.md) is a tool for image inspection
-
 - building images without docker is possible with [kaniko](https://github.com/GoogleContainerTools/kaniko)
+
+- mutli-arch iamges with [docker buildx](https://github.com/docker/buildx)
 
 - resource management with Docker - [how to limit a container's resources](https://docs.docker.com/config/containers/resource_constraints)
 
 - If you are looking for incredibly slim container base images, have a look at Google's [distroless images](https://github.com/GoogleContainerTools/distroless).
 
-- [SAP slack channel](https://sap-ti.slack.com/archives/C86FTS4DN) covering Docker-related topics
+- [sap-tech-docker on Slack](https://sap-ti.slack.com/archives/C86FTS4DN) covering Docker-related topics
 
 ### SAP specific
 

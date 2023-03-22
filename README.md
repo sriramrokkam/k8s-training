@@ -17,7 +17,7 @@ High level topics are:
 ### [Why Docker & Kubernetes?](./00_why_docker_k8s.pptx)
 
 ### [Docker](./docker) (day 1)
-- Linux foundations: containers under the hood ([slides](./docker/01_Basics_of_containers.pptx))
+- Linux building blocks: containers under the hood ([slides](./docker/01_Basics_of_containers.pptx))
 - Container lifecycle ([slides incl. exercises](./docker/02_Container_Lifecycle.pptx))
 - Image lifecycle and Dockerfiles: ([slides](./docker/03_Image_Lifecycle.pptx), [exercise 1](./docker/Exercise_1_Dockerfiles.md) & [exercise 2](./docker/Exercise_2_Multistage_Dockerfiles.md))
 - Working locally ([slides](./docker/04_Working_locally.pptx) & [exercise 3](./docker/Exercise_3_Ports_Volumes.md))
@@ -35,16 +35,19 @@ High level topics are:
 - Expose applications via `Ingress` ([slides](./kubernetes/09_ingress.pptx) & [exercise 7](./kubernetes/exercise_07_ingress.md))
 - Run stateful applications with `StatefulSets` ([slides](./kubernetes/10_statefulset.pptx) & [exercise 8](./kubernetes/exercise_08_statefulset.md))
 - Security: RBAC, resource limits, security policies, network policies ([slides part 1](./kubernetes/11_1_accessControll_and_resourceConsumption.pptx), ([slides part 2](./kubernetes/11_2_security.pptx), & [exercise 9](./kubernetes/exercise_09_network_policy.md)) and some attack scenarios
-- introduction to jobs, scheduling, image pulling, kubernetes dashboard [slides](./kubernetes/11_3_morePods_Sheduling.pptx)
-- introduction to Gardener ([slides](./kubernetes//11_4_Gardener.pptx)
-- deploy packaged applications with Helm ([slides](./kubernetes/12_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))
-- write a Helm chart ([slides](./kubernetes/12_helm.pptx) & [exercise 11](./kubernetes/exercise_11_write_a_helm_chart.md))
+- Introduction to jobs, scheduling, image pulling, kubernetes dashboard [slides](./kubernetes/11_3_morePods_Sheduling.pptx)
+- Introduction to Gardener ([slides](./kubernetes//11_4_Gardener.pptx)
+- Deploy packaged applications with Helm ([slides](./kubernetes/12_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))
+- (Optionally) Write a Helm chart ([slides](./kubernetes/12_helm.pptx) & [exercise 11](./kubernetes/exercise_11_write_a_helm_chart.md))
 - [fortune cookies](./sample-app/README.md) - apply the learned concepts and build + deploy a sample application
 
 
 ## Preparation and Setup
 
 Follow the instructions on the page [Prerequisites and Environment Setup](preparation.md).
+
+## Looking for an alternative learning path or additional content?
+Check out this [list of online learning resources](./additional_learning_resources.md).
 
 ## Trainers and Course developers
 

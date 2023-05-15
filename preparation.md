@@ -13,7 +13,7 @@ We prepared a Linux VM (Ubuntu based) that contains all the required tools.
 
 Follow the instructions on the [Getting Started with the k8s training VM Image](https://github.wdf.sap.corp/cloud-native-dev/Cloud-Curriculum-VM/blob/master/Getting_Started_Running_KubernetesVM.md) page to install VMWare (VirtualBox= Blacklisted !) and download and configure the VM image.
 
-Download the latest VM image from [here](https://objectstore-3.eu-de-2.cloud.sap:443/v1/AUTH_3c8352cd3ffd4aa1945d50133b40bef0/k8s-vm/k8s-trainings-vm-20230418-150102.ova).
+Download the latest VM image from [here](https://objectstore-3.eu-de-2.cloud.sap:443/v1/AUTH_3c8352cd3ffd4aa1945d50133b40bef0/k8s-vm/k8s-trainings-vm-20230512.ova).
 
 
 #### Option B - Using your local machine

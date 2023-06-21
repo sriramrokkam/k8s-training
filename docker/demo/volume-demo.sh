@@ -1,16 +1,16 @@
 #!/bin/bash
 clear
-echo "docker run -it --mount type=bind,source=/home/vagrant,target=/mnt/home alpine:3.8"
+echo "docker run -it --mount type=bind,source=/home/vagrant,target=/mnt/home alpine:3.18"
 echo ""
-docker run -it --name demo --mount type=bind,source=/home/vagrant,target=/mnt/home alpine:3.8
+docker run -it --name demo --mount type=bind,source=/home/vagrant,target=/mnt/home alpine:3.18
 echo "press enter to continue"
 read
 docker rm demo
 clear
 
-echo "docker run -it --mount type=bind,source=/home/vagrant,target=/etc alpine:3.8"
+echo "docker run -it --mount type=bind,source=/home/vagrant,target=/etc alpine:3.18"
 echo ""
-docker run -it --name demo --mount type=bind,source=/home/vagrant,target=/etc alpine:3.8
+docker run -it --name demo --mount type=bind,source=/home/vagrant,target=/etc alpine:3.18
 echo "press enter to continue"
 read
 docker rm demo
@@ -18,10 +18,10 @@ clear
 
 
 echo "Now something security relevant"
-echo "docker run -it --mount type=bind,source=/etc,target=/hostetc alpine:3.8"
+echo "docker run -it --mount type=bind,source=/etc,target=/hostetc alpine:3.18"
 echo ""
 echo "We mount host etc into our pod, and due to root rights in it we can e.g. see the shadow"
-docker run -it --name hackerpod --mount type=bind,source=/etc,target=/hostetc alpine:3.8
+docker run -it --name hackerpod --mount type=bind,source=/etc,target=/hostetc alpine:3.18
 echo "press enter to continue"
 read
 docker rm hackerpod

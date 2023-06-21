@@ -32,11 +32,11 @@ docker network create customNetwork
 echo "docker run -d --name nginx --network customNetwork nginx:mainline"
 echo ""
 docker run -d --name nginx --network customNetwork nginx:mainline
-echo "docker run -it --name helper --network customNetwork alpine:3.8"
+echo "docker run -it --name helper --network customNetwork alpine:3.18"
 echo ""
 echo "you are inside the helper container now. Please do your tests!"
 echo ""
-docker run -it --name helper --network customNetwork alpine:3.8
+docker run -it --name helper --network customNetwork alpine:3.18
 
 echo "press enter to continue"
 read

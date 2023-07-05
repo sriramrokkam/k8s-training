@@ -12,7 +12,7 @@
 
 Example: `kubectl get pod -n=my-namespace -o=wide`
 
-Detailed information can be found [here](https://kubernetes.io/docs/user-guide/kubectl-overview/)
+Detailed information can be found [here](https://kubernetes.io/docs/reference/kubectl/)
 
 ## most common kubectl commands
 

@@ -61,19 +61,13 @@ metadata:
     # check this tutorial to see how the cert-manager works
     # https://github.com/gardener/cert-management#requesting-a-certificate-for-ingress
     # use kubectl describe ingress simple-nginx-ingress to view cert-manager events
+    # we use the annotation to set the certifcate's CN to a string with <= 64 characters
+    # the SAN matches the ingress' desired host name and can have more than 64 characters
     cert.gardener.cloud/purpose: managed
+    cert.gardener.cloud/commonname: sg.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
+    cert.gardener.cloud/dnsnames: simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
 spec:
   rules:
-  - host: n.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service: 
-            name: simple-nginx-service
-            port: 
-              number: 80
   - host: simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
@@ -86,8 +80,6 @@ spec:
               number: 80
   tls:
   - hosts:
-    - n.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     - simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     secretName: simple-nginx-ingress-tls
-
 ---

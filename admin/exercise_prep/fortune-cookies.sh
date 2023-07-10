@@ -9,6 +9,11 @@ INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot
 HARBOR_USER=participant
 HARBOR_PWD='2r4!rX6u5-qH'
 
+## create new builder and switch to it
+docker buildx create --name fortunecookiesbuilder --driver docker-container
+docker buildx use fortunecookiesbuilder
+docker buildx inspect --bootstrap
+
 ## docker login to harbor
 echo -e "\n > Trying to login to Harbor $INGRESS_HOSTNAME using docker login ..."
 docker login -u $HARBOR_USER -p $HARBOR_PWD $INGRESS_HOSTNAME
@@ -19,8 +24,9 @@ git clone --branch cloud-platforms https://github.tools.sap/cloud-curriculum/exe
 
 ## build and push fortune cookies
 echo -e "\n\n > Building Fortune Cookies Docker Image ..."
-docker build -t $INGRESS_HOSTNAME/training/fortune-cookies:v1 -f ../../sample-app/solutions/Dockerfile --push /tmp/cloud-platforms-java-k8s
+docker buildx build --platform linux/amd64 -t $INGRESS_HOSTNAME/training/fortune-cookies:v1 -f ../../sample-app/solutions/Dockerfile --push /tmp/cloud-platforms-java-k8s
 
 ## clean up
 rm -rf /tmp/cloud-platforms-java-k8s
 docker logout $INGRESS_HOSTNAME
+docker buildx rm fortunecookiesbuilder

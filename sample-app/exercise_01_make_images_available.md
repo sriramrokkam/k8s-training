@@ -37,9 +37,27 @@ Go ahead and create a new `Dockerfile` within the cloned repository. Fill it wit
 
 Now go ahead, build your image and push it to the registry. Remember to give it a unique name, e.g. `fortune-cookies-<participant-id>`.
 
+If you are working on a machine with x86 architecture, those commands will be fully sufficient: 
+
 ```SHELL
 docker build -t <registry-url>/training/fortune-cookies-<participant-id>:<participant-id> .
 docker push <registry-url>/training/fortune-cookies-<participant-id>:<participant-id>
+```
+
+However, if you are using an ARM based machine (e.g. MacBook with Apple Silicon), you need to build the image specifically for x86, because it has to match the architecture of the nodes in our K8s cluster:
+
+```shell
+# create a dedicated builder for docker and use buildkit explicitly
+docker buildx create --name fortunecookiesbuilder
+docker buildx use fortunecookiesbuilder
+docker buildx inspect --bootstrap
+
+# use the builder to specify the target platform's architecture
+docker buildx build --platform linux/amd64 -t <registry-url>/training/fortune-cookies-<participant-id>:<participant-id> .
+docker push <registry-url>/training/fortune-cookies-<participant-id>:<participant-id>
+
+# cleanup
+docker buildx rm fortunecookiesbuilder
 ```
 
 In case you're missing the credentials to push, check the [solution to exercise 1](../docker/solutions/Solution_exercise_1.md#step-2--push-the-image-to-a-registry).

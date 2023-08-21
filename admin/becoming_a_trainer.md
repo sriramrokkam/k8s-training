@@ -29,7 +29,7 @@ New trainers are not expected to host a complete training all by themselves. Ins
 Ideally, you team-up for multiple trainings so you can get some feedback and gradually take over more content. For your very first training, it would be expected of you to prepare one topic per day.
 
 ## Get started
-To join the trainer community, please get in touch with the maintainers of this repository or drop a mail to [Cloud Curriculum K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20trainer%20onboarding]).
+To join the trainer community, please get in touch with the maintainers of this repository or drop a mail to [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20trainer%20onboarding]).
 
 You may also join this slack channel [#sap-training-k8s](https://sap-ti.slack.com/archives/CLXFTBCP3).
 

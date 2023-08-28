@@ -46,8 +46,9 @@ High level topics are:
 
 Follow the instructions on the page [Prerequisites and Environment Setup](preparation.md).
 
-## Looking for an alternative learning path or additional content?
-Check out this [list of online learning resources](./additional_learning_resources.md).
+## Alternative Learning Resources
+
+Classroom training is not your cup of tea? Check out the [list of alternative learning resources](./alternative_learning_resources.md).
 
 ## Trainers and Course developers
 

@@ -43,8 +43,6 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -104,8 +102,6 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -150,8 +146,6 @@ spec:
         ports:
         - name: mysql
           containerPort: 3306
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -199,8 +193,6 @@ spec:
             add:
               - NET_BIND_SERVICE
           readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -248,8 +240,6 @@ spec:
             drop:
               - all
           readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -275,20 +265,19 @@ metadata:
   labels:
     name: front-end
   annotations:
+    # check this tutorial to see how the cert-manager works
+    # https://github.com/gardener/cert-management#requesting-a-certificate-for-ingress
+    # use kubectl describe ingress simple-nginx-ingress to view cert-manager events
+    # we use the annotation to set the certifcate's CN to a string with <= 64 characters
+    # the SAN matches the ingress' desired host name and can have more than 64 characters
+    # use "openssl s_client -connect sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com:443 -showcerts  | openssl x509 -text -noout"
+    # to show the obtained certificate
     cert.gardener.cloud/purpose: managed
+    cert.gardener.cloud/commonname: s.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
+    cert.gardener.cloud/dnsnames: sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
   namespace: sock-shop
 spec:
   rules:
-  - host: s.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: front-end
-            port:
-              name: http
   - host: sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
@@ -301,7 +290,6 @@ spec:
               name: http
   tls:
   - hosts:
-    - s.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     - sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     secretName: garden-sock-shop
 ---
@@ -344,8 +332,6 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -405,8 +391,6 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -454,8 +438,6 @@ spec:
             add:
               - NET_BIND_SERVICE
           readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -494,8 +476,6 @@ spec:
         image: weaveworksdemos/queue-master:0.3.1
         ports:
         - containerPort: 80
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -546,8 +526,6 @@ spec:
               - SETUID
               - DAC_OVERRIDE
           readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -607,8 +585,6 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service
@@ -716,8 +692,6 @@ spec:
             add:
               - NET_BIND_SERVICE
           readOnlyRootFilesystem: true
-      nodeSelector:
-        beta.kubernetes.io/os: linux
 ---
 apiVersion: v1
 kind: Service

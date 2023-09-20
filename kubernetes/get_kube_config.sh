@@ -32,7 +32,9 @@ echo -e "\n"
 
 if [ -f "$TARGET" ]; then
 	echo -e "${TARGET} already exists. Attempting to store kubeconfig file to ${HOME}/.kube/${TRAINING}.config."
-	echo "You can try to merge them manually or run 'export KUBECONFIG='${HOME}/.kube/${TRAINING}.config' to activate it for your current session."
+	echo "You can try to merge them manually or run"
+	echo "  export KUBECONFIG='${HOME}/.kube/${TRAINING}.config'"
+	echo "to activate it for your current session."
 	TARGET=$HOME/.kube/$TRAINING.config
 fi
 
@@ -52,4 +54,3 @@ mkdir -p "$(dirname $TARGET)"
 mv "$TMPFILE" "$TARGET"
 
 echo -e "\n*** Successfully copied kube config to local $TARGET"
-

@@ -29,7 +29,7 @@ metadata:
 spec:
   storageClassName: default
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOncePod
   resources:
     requests:
       storage: 1Gi
@@ -58,7 +58,7 @@ spec:
       name: ???
 ```
 
-__Important__: The PVC's access mode is `ReadWriteOnce`. Hence, reduce the number of replicas in your deployment to 1. 
+__Important__: The PVC's access mode is `ReadWriteOncePod`. Hence, reduce the number of replicas in your deployment to 1. 
 
 Once you re-created the deployment, make sure to check that the pod has status `Running` before you continue. You can also have a look at the PVC again. It should be backed by PV by now.
 
@@ -96,8 +96,6 @@ Firstly, try to bring up more pods by increasing the deployment's replica count 
 Is there a node, where multiple pods successfully started?
 
 If a pod stays in status `Pending` or `ContainerCreating` you could use `kubectl describe pod <pod-name>` to check the events logged for this pod. They give a first idea, of what is actually happening (or not working). 
-
-If you compare the age of the pods, you will likely find that only on the node, where the very first pod runs other pods managed to start up. Essentially, this is because the access mode limits only the number of nodes, you could mount a volume to. Within the context of a node, multiple bind-mounts are very well possible. Hence be careful with scaling operations and the use of storage.
 
 Finally, scale the deployment back to a replica count of 1.
 

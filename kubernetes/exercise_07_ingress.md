@@ -6,8 +6,6 @@ Ingress resources allow us to expose services through a URL. In addition, it is 
 
 In addition to all that, you will use Init-Containers to initialize your nginx deployment and load the application's content.
 
-**Note**: This exercise builds upon the previous exercises. If you did not manage to finish the previous exercises successfully, you can use the script [prereq-exercise-07.sh](solutions/prereq-exercise-07.sh) in the *solutions* folder to create the prerequisites. Please use this script only if you did not manage to complete the previous exercises.
-
 ## Step 0 - obtain necessary detail information
 Since the ingress controller is specific to the cluster, you need some information to construct a valid URL processable by the controller.
 
@@ -18,7 +16,7 @@ echo "Clustername: $(kubectl config view -o json | jq  ".clusters[0].cluster.ser
 If there are any issues, check with your trainer.
 
 ## Step 1 - init: prepare pods and services
-For this exercise you can either re-use already existing deployments, pods and services or create them from scratch. Please continue to use an nginx webserver as backend application. For the sake of resource consumption, please use `replica: 1` for new resources.
+For this exercise we start over again and do not build upon the deployments, services or pvc created before. Please continue to use an nginx webserver as backend application. For the sake of resource consumption, please use `replica: 1` for new resources.
 
 When you create a new deployment you could also try to add an [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/). The init container should write a string like the hostname or "hello world" to an `index.html` file on an `emptyDir` volume. Use this volume in the nginx container as well to get a customized `index.html` page.
 

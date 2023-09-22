@@ -24,7 +24,7 @@ You can use the participant VM also for all work as a trainer.
 
 ### K8s cluster in Gardener
 
-- **Contact the [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<Location>-<DateOfYourTraining>) to get a Gardener K8s Cluster** for the training (~ 2 weeks in advance to the training), in case you want to use the Cloud Curriculum Resources in [Gardener](https://github.wdf.sap.corp/pages/kubernetes/gardener/) (incl. Cloud Curriculum Google Account). 
+- **Contact the [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<Location>-<DateOfYourTraining>) to get a Gardener K8s Cluster** for the training (~ 2 weeks in advance to the training), in case you want to use the central resources in [Gardener](https://gardener.cloud.sap). 
 
 In the email body please refer to the corresponding event by attaching a SuccessMap screenshot. Go to `My Classes` and take a screenshot of the respective session in the `Scheduled Classes` section. It not only helps us to link the events properly, but we can size the cluster according to the number of registered participants.
 
@@ -50,7 +50,7 @@ Start preparing a cluster by following the steps outlined [here](https://github.
 
 **Make sure to note down the training name/id as well as the URL and password displayed at the end of the process. It is displayed only ONCE.**
 
-Those information will be needed by the participants during the training. In case you missed or lost these information, please contact [Cloud Curriculum K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap) for recovery.
+Those information will be needed by the participants during the training. In case you missed or lost these information, please contact [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap) for recovery.
 
 **Please note:** The process creates not only the namespaces. It also deploys a ResourceQuota & LimitRange to each namespace. With this, abuse of the training cluster should become harder. The ResourceQuota limits the number of pods accepted by each namespace to 15. Any participant trying to scale a deployment to a hundred pods or more will not harm other participants. The LimitRange assigns default values for memory and CPU requested by a pod. It also give a default limit. If a pod does not specify any of these it will inherit the defaults. In other terms, by specifying a cpu/memory request & limit, the defaults can be overwritten.
 

@@ -21,7 +21,7 @@ mv evil.html index.html
 
 ## Step 3: Create a configuration for _nginx_
 
-Create a new file `nginx.conf` inside your build context and paste the following configuration into it.
+Create a new file `docker-nginx.conf` inside your build context and paste the following configuration into it.
 
 ```bash
 cat << __EOF > nginx.conf

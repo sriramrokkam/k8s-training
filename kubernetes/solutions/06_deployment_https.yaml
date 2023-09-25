@@ -16,16 +16,11 @@ spec:
     spec:
        # list of volumes that can be mounted by containers belonging to the pod
       volumes:
-        # make the persistentVolumeClaim with the index.html page available
-      - name: content-storage
-        persistentVolumeClaim:
-          claimName: nginx-pvc
-          readOnly: true
-        # make the secret with the TLS certificates available
+      # make the secret with the TLS certificates available
       - name: tls-secret
         secret:
           secretName: nginx-sec
-        # make the configMap with the server configuration available
+      # make the configMap with the server configuration available
       - name: nginxconf
         configMap:
           name: nginxconf
@@ -47,9 +42,6 @@ spec:
           periodSeconds: 5
         # define how/where to container can acces the available volumes
         volumeMounts:
-        - mountPath: "/usr/share/nginx/html"
-          name: content-storage
-          readOnly: true
         - mountPath: /etc/nginx/ssl
           name: tls-secret
           readOnly: true

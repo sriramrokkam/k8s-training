@@ -137,13 +137,13 @@ Again test the app, if everything still works.
 We also want to enable TLS for our communication with the fortune cookies app. Therefore, we activate TLS on our ingress service. 
 
 To secure an ingress we need to configure the ingress resource and provide a secret containing the certificate. 
-Gardener has implemented a controller which is automatically looking for ingress resources with the label `garden.sapcloud.io/purpose: managed-cert`, creates trusted certificates for them using `Let'sEncrypt` and puts those into secrets. 
+Gardener has implemented a controller which is automatically looking for ingress resources certain annotations, creates trusted certificates for them using `Let'sEncrypt` and puts those into secrets.
 The only thing we have to do configure the ingress and wait for the controller to do its work.
 
-To learn more about the cert manager, take a look at this [Gardener tutorial](https://pages.github.tools.sap/kubernetes/gardener/docs/015-guides/030-networking-lb/certificate-extension-default-domain/).
+To learn more about the cert manager, take a look at this [Gardener tutorial](https://gardener.cloud/docs/extensions/others/gardener-extension-shoot-cert-service/usage/request_cert/#using-an-ingress-resource).
 
 This feature is limited to URLs with 64 characters or fewer. Or, to be more precise, we need at least one URL which fits into the 64 characters of the common name field of the certificate request. Any URL with more characters may be added to the certificate request via the subject alternative name field.
-To construct a URL of suitable length, let us use a four letter hostname pattern: A `fc` for "fortune cookies" and the last two digits of your participant number. 
+To construct a URL of suitable length, let us use a four letter hostname pattern: A `fc` for "fortune cookies" and the last two digits of your participant number.
 So we get for example `fc40.ingress.cw43.k8s-train.shoot.canary.k8s-hana.ondemand.com` when your participant number is `part-0040` and the cluster name is `cw43`.
 
 To check the length of such a string, run this command:
@@ -151,7 +151,7 @@ To check the length of such a string, run this command:
 echo fc40.ingress.cw43.k8s-train.shoot.canary.k8s-hana.ondemand.com | wc -c
 ```
 
-Now configure the yaml accordingly. For the secret-name you can choose anything you like, the controller will pick it up and generate the required secret with the given name. But be careful with the order of elements in the hosts array. The `short-hostname` has to be the first element as only this will be written into the CN field. 
+Now configure the yaml accordingly. For the secret-name you can choose anything you like, the controller will pick it up and generate the required secret with the given name. But be careful with the order of elements in the hosts array. The `short-hostname` constructed above will be used for the annotation only.
 Finally, don't forget to put in the necessary label!
 
 ```yaml
@@ -161,15 +161,12 @@ metadata:
   name:fortune-cookies
   labels:
     ...
+  annotations:
+    cert.gardener.cloud/purpose: managed
+    cert.gardener.cloud/commonname: <short-name>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
+    cert.gardener.cloud/dnsnames: <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
 spec:
   rules:
-  - host: <short-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: fortune-cookies
-          servicePort: app-port
   - host: <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
@@ -179,7 +176,6 @@ spec:
           servicePort: app-port
   tls:
     - hosts:
-      - <short-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
       - <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
       secretName: <secret-name>
 ```

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-server-pvc
+spec:
+  storageClassName: default
+  accessModes:
+# ref- https://kubernetes.io/blog/2021/09/13/read-write-once-pod-access-mode-alpha/
+    - ReadWriteOncePod
+  resources:
+    requests:
+      storage: 1Gi

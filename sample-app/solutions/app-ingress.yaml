@@ -6,10 +6,13 @@ metadata:
   labels:
     component: ads
     module: app
-    garden.sapcloud.io/purpose: managed-cert
+  annotations:
+    cert.gardener.cloud/purpose: managed
+    cert.gardener.cloud/commonname: <short-name>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
+    cert.gardener.cloud/dnsnames: <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
 spec:
   rules:
-  - host: <Hostname>.ingress.<CLUSTER_NAME>.<PROJECT_NAME>.shoot.canary.k8s-hana.ondemand.com
+  - host: <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /
@@ -21,5 +24,5 @@ spec:
               name: http
   tls:
     - hosts:
-      - <Hostname>.ingress.<CLUSTER_NAME>.<PROJECT_NAME>.shoot.canary.k8s-hana.ondemand.com
+      - <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
       secretName: fortune-cookies-tls-secret

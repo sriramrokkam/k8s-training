@@ -55,7 +55,7 @@ spec:
     - containerPort: 80
     volumeMounts:
     - mountPath: "/usr/share/nginx/html"
-      name: ???
+      name: content-storage
 ```
 
 __Important__: The PVC's access mode is `ReadWriteOncePod`. Hence, reduce the number of replicas in your deployment to 1. 

@@ -62,10 +62,14 @@ for i in `pidof dd`; do
         [ $k -eq 2 ] && break
 done
 
-p "# we can even control how many CPU shares these processes get by altering the value in cpu.shares"
-pe "cat cpu.shares"
+p "# we can even control how many CPU shares these processes get by altering the values in cpu.cfs_period_us and cpu.cfs_quota_us"
+pe "cat cpu.cfs_period_us"
+pe "cat cpu.cfs_quota_us"
 p "# watch how the following command affects the CPU consumption of our dd's"
-pe "sudo echo 10 > cpu.shares"
+pe "sudo cgset -r cpu.cfs_period_us=1000000 mydemocpugroup"
+pe "sudo cgset -r cpu.cfs_quota_us=100000 mydemocpugroup"
+pe "cat cpu.cfs_period_us"
+pe "cat cpu.cfs_quota_us"
 p "# this is used to limit resources to individual processes or process groups - very useful for containers"
 p "# before we finish, we better stop those dd's..."
 pe "killall dd"

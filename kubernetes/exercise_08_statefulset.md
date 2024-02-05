@@ -83,13 +83,16 @@ Before you create the StatefulSet, open a 2nd terminal and start to watch the po
 
 Now post your yaml file to the API server and monitor the upcoming new pods. You should observe the **ordered creation** of pods (by their ordinal index). Note that the **pod name does not have any randomly generated string** (as with deployments), but consists of the statefulset's name + the index.
 
-Additionally you should find new `PVC` resources in your namespace.
+Additionally you should find new `PVC` resources in your namespace. When you run `kubectl get pods -o wide`, you should also see the IP addresses of your pods.
 
-Quickly spin up a temporary pod and directly connect to it: `kubectl run dns-test -i --tty --restart=Never --rm --image=alpine:3.18 -- ash`
+Quickly spin up a temporary pod and directly connect to it: `kubectl run dns-test -i --tty --restart=Never --rm --image eu.gcr.io/sap-se-gcr-k8s-public/eu_gcr_io/gardener-project/gardener/ops-toolbelt:latest`
 
-Within pod's shell context, run `nslookup [pod-name].[service-name]` to check, if your individual pods are accessible via the service. 
 
-Also download the `index.html` page of each instance using `wget -q -O - [pod-name].[service-name]`.
+Within pod's shell context, run a few commonads to check if your individual pods are accessible via the service:
+- `nslookup [service-name]` -> this should return two addresses matching the pod IPs you obtained above
+- `nslookup [pod-name].[service-name]` -> get the IP address of an individual pod identified by its name.
+
+Also download the `index.html` page of each instance using `curl [pod-name].[service-name]`.
 You should get the corresponding host name that was written by the `initContainer`.
 
 ## Step 3: Stable hostnames
@@ -108,7 +111,7 @@ Firstly increase the number of replicas to 3. Then continue by patching your Sta
 
 Examine the result (`get -o yaml`) or continue with the next step. Start a watch for the pods in you namespace. Then again, use the json path with the patch command to change the image version in your podSpec template:
 
-`kubectl patch statefulset web --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"nginx:1.13.12"}]'`
+`kubectl patch statefulset web --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"nginx:1.24"}]'`
 
 Observe, how the pod `web-2` will be terminated and re-created. Check the image version of the updated pod:
 

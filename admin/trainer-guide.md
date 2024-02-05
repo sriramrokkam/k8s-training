@@ -102,7 +102,7 @@ Check the following files for `<cluster-name>` and `<project-name>` placeholders
 * [fanout & virtual host ingress](../kubernetes/demo/09b_fanout_and_virtual_host_ingress.yaml)
 
 ### Setup helm
-To continue with the setup, you need `helm`. Run the [helm_init](helm_init.sh) script within your VM to download the helm client (if not present) and add some repositories.
+To continue with the setup, you need `helm`. If you do not have it installed already, follow the instructions here: https://helm.sh/docs/intro/install/
 
 ### Setup a docker registry (~1 day before course starts)
 For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. After using a plain docker registry for quite some time, we decided to swith to [Harbor](https://goharbor.io/). It comes with a UI and some more useful features.
@@ -110,11 +110,6 @@ In the admin folder of this repo, you find a registry folder with `install_harbo
 
 ### Build and push sample app artefacts
 For the day 4 exercises, you will need to build and push the images of bulletinboard-ads and bulletinboard-reviews. This can be done automatically using this [script](./exercise_prep/bulletinboard.sh). It will clone both repositories, build the images and push them to the Harbor registry using the `participant` credentials.
-
-### Setup cluster monitoring & logging (~1 day before course starts)
-If you want to keep track of things happening in the cluster, you can use this [script](./monitoring) to setup prometheus/loki based monitoring & logging. Both can be accessed via Grafana.
-
-### (Optional) [Gain access to the Dashboard](accessDashboard.md)
 
 ## During the Course
 

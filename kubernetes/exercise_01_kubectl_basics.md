@@ -51,17 +51,16 @@ Now that you know the cluster's node names, query more information about a speci
 ## Step 3: kubectl proxy
 The `kubectl proxy` command allows you to open a tunnel to the API server and make it available locally - usually on `localhost:8001` / `127.0.0.1:8001`. When you want to explore the API, this is an easy way to gain access.
 
-Run the proxy command in a new terminal window and open `localhost:8001/api/v1` in your VM's browser. The API path is important here, since you are only allowed to access certain parts of the API. Just opening `localhost:8001` will return an error. Traverse through the `api/v1/` tree and search for the cluster nodes.  
+Run the proxy command in a new terminal window and open `localhost:8001/api/v1` in your (VM's) browser. The API path is important here, since you are only allowed to access certain parts of the API. Just opening `localhost:8001` will return an error. Traverse through the `api/v1/` tree and search for the cluster nodes.
 
 ## Step 4: api-versions & api-resources
 Dealing with the API directly can be cumbersome. If you want to get an overview of existing APIs, `kubectl` offers the `api-versions` command. Give it a try and compare the output with APIs you found in step 3.
 
-With kubernetes version 1.11 the `kubectl` binary was extended with an `api-resources` function. It is even more convenient and lets you discover resources available in your cluster.
-Firstly, check your `kubectl version`. If it is 1.11.x or higher, run the `api-resources` command and search for the short name for the `nodes` resource. Can you `describe` a node using the short name notation?  
+Next, run `kubectl api-resources`. It is even more convenient and lets you discover resource types available in your cluster. In addition, the output contains short names for various resources. Can you find the short name for the `nodes` resource? And can you `describe` a node using the short name notation?
 
-## Step 5: talk to kubernetes like an application
-If you access kubernetes as an application rather than an administrator, you cannot use the convenient syntax of `kubectl`. Instead you have to send HTTP requests to the cluster. Though there are client libraries available, in the end everything boils down to an HTTP request.
-In this step of the exercise, you will send an HTTP request directly to the cluster asking for the available nodes. Instead of `kubectl` you can use the program `curl`.
+## optional Step 5: if it is an API, I can curl it
+There will be scenarios, where you want to interact with the Kubernetes API directly from within your application. Instead of compiling `kubectl` into everything, you can simply send HTTP requests to the cluster's API server. Of course, there are SDKs and client libraries available, but in the end everything boils down to an HTTP request.
+In this step of the exercise, you will send an HTTP request directly to the cluster asking for the available nodes. Instead of `kubectl` you will use the program `curl`.
 
 To figure out, how `kubectl` converts your query into HTTP requests, run the command from step 1 again and add a `-v=9` flag to it. This increases the verbosity of `kubectl` drastically, showing you all the information you need. Go through the command's output and find the correct curl request.
 

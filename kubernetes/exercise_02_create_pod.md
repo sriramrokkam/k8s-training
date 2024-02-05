@@ -5,7 +5,7 @@ In this exercise you will be dealing with **_Pods_**.
 Now that you know how `kubectl` works and what the smallest entity on kubernetes looks like, it is time to create your own pod.
 
 ## Step 0: prepare a yaml file
-In kubernetes all resources have a well-described schema that is documented in the API definition. For example, the `Pod` resource is defined by `kind: Pod` and contains a `PodSpec`, which has a `Container`, which has an `Image`, which specifies the docker image to use, when running the pod.
+In Kubernetes, all resources have a well-described schema that is documented in the API definition. For example, the `Pod` resource is defined by `kind: Pod` and contains a `PodSpec`, which has a `Container`, which has an `Image`, which specifies the container image to use, when running the pod.
 
 In this step you are going to describe a pod in a yaml file (`pod.yaml`). Take the skeleton listed below and insert the field/values mentioned below at the right place.
 * `kind: Pod`

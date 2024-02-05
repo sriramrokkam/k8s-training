@@ -8,13 +8,9 @@ For further information, visit the official docs pages (https://docs.helm.sh/)
 **Note:** This exercise does not build on any of the previous exercises.
 
 ## Step 0: get the helm tool
-Download and unpack the helm client:
+Install the `helm` binary using one of the ways described here: https://helm.sh/docs/intro/install/
 
-```bash
-curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-```
-
-Check, if everything worked well. The 1st command should return the location of the helm binary. The 2nd command should return the version of the client. 
+To verify your installation, run the commands below. The 1st command should return the location of the helm binary. The 2nd command should return the version of the client. 
 
 ```bash
 which helm

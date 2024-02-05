@@ -3,9 +3,10 @@ kind: NetworkPolicy
 metadata:
   name: access-nginx
 spec:
-  # the network policy will handle traffic to pods labeled with keys and values matching this selector.  
+  # the network policy will handle traffic to pods labeled with keys and values matching this selector.
   podSelector:
     matchLabels:
+      # adapt to your target, if necessary
       run: nginx
  # specify how incoming traffic should be handled / filtered  
   ingress:
@@ -14,56 +15,3 @@ spec:
     - podSelector:
         matchLabels:
           access: "true" # pods sending request require to have a label "access=true"
-    # allow traffic originating from SAP networks
-    # filtering is based on source IP addresses
-    - ipBlock:
-        # Germany
-        cidr: 155.56.0.0/16
-    - ipBlock:
-        # Germany
-        cidr: 193.16.224.0/28
-    - ipBlock:
-        # Ireland
-        cidr: 84.203.229.48/29
-    - ipBlock:
-        # BLR
-        cidr: 203.13.146.0/24
-    - ipBlock:
-        # BLR
-        cidr: 125.16.22.176/28
-    - ipBlock:
-        # BLR
-        cidr: 123.63.99.32/28
-    - ipBlock:
-        # BLR
-        cidr: 121.244.154.220/30
-    - ipBlock:
-        # BLR
-        cidr: 14.142.206.80/28
-    - ipBlock:
-        # SOF
-        cidr: 193.57.20.0/24
-    - ipBlock:
-        # Montreal
-        cidr: 68.67.33.0/25
-    - ipBlock:
-        # Montreal
-        cidr: 208.49.239.224/28
-    - ipBlock:
-      # Palo Alto
-        cidr: 169.145.89.192/26
-    - ipBlock:
-      # Palo Alto
-        cidr: 169.145.92.72/32
-    - ipBlock:
-      # Palo Alto
-        cidr: 169.145.92.73/32
-    - ipBlock:
-      # Palo Alto
-        cidr: 169.145.92.74/32
-    - ipBlock:
-      # Palo Alto
-        cidr: 169.145.92.75/32
-# your location is missing or not working?
-# check with your trainers to get the local address blocks
-# add the blocks to this list

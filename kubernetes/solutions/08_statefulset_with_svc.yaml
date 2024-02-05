@@ -47,7 +47,7 @@ spec:
         - echo $(hostname) >> /work-dir/index.html
         volumeMounts:
         - name: www
-          mountPath: /work-dir      
+          mountPath: /work-dir
       containers:
       - name: nginx
         image: nginx:mainline

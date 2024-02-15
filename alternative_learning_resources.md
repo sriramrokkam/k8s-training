@@ -30,3 +30,6 @@ Regarding Pluralsight licences, please check the [central sharepoint](https://sa
 
 Those who want to be certified can learn from [Certified Kubernetes Application Developer (CKAD)](https://app.pluralsight.com/sso/sap?returnUrl=explore/certifications/topics/kubernetes?examPrepId=6ae9cedf-075b-4314-b01b-ca1e023ee791)
  
+
+## Dojo
+The `Dojo` offers a curated learning path for Kubernetes: https://pages.github.tools.sap/dojo/center/Kubernetes

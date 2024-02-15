@@ -2,13 +2,15 @@
 
 If you would like to get some more information on Docker and/or Kubernetes inside and outside of SAP, we would like to share some links with you.
 
-## Docker
+## Docker & Containers
 
 - Old - but still valid: Our talk about the absolute container basics at SAP's *devX* event: [Container 101](https://video.sap.com/media/t/1_gxz1oox7/84675141)
 
 - The Dockerfile reference can be found on Docker's website: [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/) and [Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
 - Read about [containerd](https://containerd.io/).
+
+- Container runtime details: https://iximiuz.com/en/posts/conman-the-container-manager-inception/
 
 - Docker [security](https://docs.docker.com/engine/security/) and [cgroups v2 in runC](https://github.com/opencontainers/runc/blob/43186447b99c81d7e12876dc8277e2f6fd538850/docs/cgroup-v2.md)
 
@@ -93,6 +95,8 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 
 - secret management with [sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) or [vault](https://www.vaultproject.io/docs/what-is-vault/index.html).
 
+- [Identity federation with OIDC in Kubernetes](https://community.sap.com/t5/open-source-blogs/kubernetes-cross-cluster-communication-ditching-long-lived-credentials/ba-p/13550286)
+
 ### SAP Kubernetes Summits
 - Slides and recordings from all the sessions at SAP's first Kubernetes Summit 2019 in Walldorf/Rot, Germany can be found in [Jam](https://jam4.sapjam.com/blogs/show/rW4XILnu81NbcUpiMQWWuu)
 
@@ -108,6 +112,7 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 - [Docker security procedure](https://wiki.wdf.sap.corp/wiki/x/Uk8GcQ)
 - [Security approved container base images](https://wiki.wdf.sap.corp/wiki/x/UYYRd)
 - [Kubernetes Container Orchestration - Hardening](https://wiki.wdf.sap.corp/wiki/x/KCNfc)
+
 ## General
 - Brendan Burns, Distinguished Engineer at Microsoft and Chief Architect behind the container infrastructure within Azure released one of his books on distributed software design for free: [Designing Distributed Systems](https://azure.microsoft.com/en-us/resources/designing-distributed-systems/)
 

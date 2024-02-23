@@ -6,7 +6,7 @@ kind: Service
 # metadata is an object/map and requires at least the key 'name'. 
 # The value has to be unique for this type of resource within the namespace
 metadata:
-  name: nginx-https-service
+  name: nginx-basic-auth
   # labels is another map and contains one to many key:value pairs
   labels:
     # the service itself will be labeled with a key 'tier' that has a value 'networking'
@@ -19,14 +19,11 @@ spec:
     # as 'targetPort' is not specified, the value of 'port' will be used
   - port: 80
     protocol: TCP
-    # since this is a multi-port service, each port requires a name
+    # it is good practice to assign a name to each port
+    # also it removes the requirement for a target port
     name: http
-  - port: 443
-    protocol: TCP
-    name: https
-  # Route service traffic to pods labeled with keys and values matching this selector.  
   selector:
-    app: nginx-https
+    app: auth-nginx
   # specify the service type: LoadBalancer, NodePort, ClusterIP
   # a service of type NodePort implicitly is also of type ClusterIP
   # a service of type LoadBalancer implicitly is also of type NodePort and ClusterIP

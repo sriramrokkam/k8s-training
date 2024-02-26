@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-auth-deployment
+  labels:
+    tier: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-nginx
+  template:
+    metadata:
+      labels:
+        app: auth-nginx
+    spec:
+      volumes:
+      - name: htpasswd-secret
+        secret:
+          secretName: nginx-basic-auth
+      - name: nginxconf
+        configMap:
+          name: nginxconf
+      containers:
+      - name: nginx
+        image: nginx:mainline
+        ports:
+        - containerPort: 80
+          name: http
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        volumeMounts:
+        - mountPath: /etc/nginx/auth.d
+          name: htpasswd-secret
+          readOnly: true
+        - mountPath: /etc/nginx/conf.d
+          name: nginxconf 

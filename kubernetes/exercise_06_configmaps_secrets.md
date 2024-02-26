@@ -5,64 +5,60 @@ In this exercise, you will be dealing with _Pods_, _Deployments_, _Services_, _L
 ConfigMaps and secrets bridge the gap between the requirements to build generic images but run them with a specific configuration in a secured environment.
 In this exercise you will move credentials and configuration into the Kubernetes cluster and make them available to your pods.
 
-This exercise does not build on any previous exercise - you will create all necessary resources during the course of this exercise.
+This exercise does not build on any previous exercise - you will create all the necessary resources during the course of this exercise.
 
-## Step 0: Create a certificate
+## Step 0: Create an `htpasswd` file
 
-In the first exercises you ran a webserver with plain HTTP. Now you are going to recreate this whole setup from scratch and add HTTPS to your nginx.
+In this exercise you will spin up another webserver but this time, it won't be open to everyone. Instead, it will use [HTTP basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) to hide (almost) everything bedind a login.
 
-Start by creating a new self-signed certificate (MacOS and Linux):
+Create an empty file which you call `htpasswd` (with no extension) and paste the following content into it:
 
-`openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/nginx.key -out /tmp/nginx.crt -subj "/CN=nginxsvc/O=nginxsvc"`
+```htpasswd
+training:$apr1$HR4pfg44$jsreGaf2LA2h/LEhw4eVa.
+```
 
+With this line, you will add a user `training` with the _super-secret_ password `kubernetes` to the nginx configuration.
 
-## Step 1: Store the certificate in Kubernetes
+## Step 1: Store the `htpasswd` file in Kubernetes
 
-In order to use the certificate with our nginx, you need to add it to kubernetes and store it in a `secret` resource of type `tls` in your namespace. 
-**Note:** Kubernetes changes the names of the certificate files to a standardized string (`tls.key` and `tls.crt`) when the secret is created. For example, `nginx.crt` will become `tls.crt`.
+In order to use the password file with your nginx webserver, you will need to add it to Kubernetes and store it in a `secret` resource of type `generic` (or opaque) in your namespace.
 
-`kubectl create secret tls nginx-sec --cert=/tmp/nginx.crt --key=/tmp/nginx.key`
+`kubectl create secret generic nginx-basic-auth --from-file=htpasswd`
 
-Check, if the secret is present by running `kubectl get secret nginx-sec`.
+Check, if the secret is present by running `kubectl get secret nginx-basic-auth`.
 
-Run `kubectl describe secret nginx-sec` to get more detailed information. The result should look like this:
+Run `kubectl describe secret nginx-basic-auth` to get more detailed information. The result should look like this:
 
 ```bash-output
-Name:         nginx-sec
+Name:         nginx-basic-auth
 ...
 
-Type:  kubernetes.io/tls
+Type:  Opaque
 
 Data
 ====
-tls.crt:  1143 bytes
-tls.key:  1708 bytes
+htpasswd:  47 bytes
 ```
 
-**Important: remember the file names in the data section of the output. They are relevant for the next step.**
+## Step 2: Create an _nginx_ configuration
 
-## Step 2: Create a nginx configuration
+Once the basic auth secret is prepared, you will have to create an _nginx_ configuration and store it to Kubernetes as well. It will tell nginx to puth an HTTP basic auth in front of the webpage it serves.
 
-Once the certificate secret is prepared, create a configuration and store it to Kubernetes as well. It will enable nginx to serve HTTPS traffic on port 443 using a certificate located at `/etc/nginx/ssl/`.
-
-Download from the [GitHub Training Repo](./solutions/06_default.conf) or create a file `default.conf` with the following content. In any case, ensure the file's name is `default.conf`.
+Create a file `default.conf` with the following content (or take it from the [solutions](./solutions/06_default.conf)):
 
 ```nginx
 server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
 
-        listen 443 ssl;
-
         root /usr/share/nginx/html;
         index index.html;
-
         server_name localhost;
-        ssl_certificate /etc/nginx/ssl/tls.crt;
-        ssl_certificate_key /etc/nginx/ssl/tls.key;
 
         location / {
                 try_files $uri $uri/ =404;
+                auth_basic "Restricted Area";
+                auth_basic_user_file auth.d/htpasswd;
         }
 
         location /healthz {
@@ -74,14 +70,25 @@ server {
         location = /50x.html {
             root   /usr/share/nginx/html;
         }
-
 }
 ```
 
-Make sure, the values for `ssl_certificate` and `ssl_certificate_key` match the names of the files within the secret - their filenames must be `tls.crt` and `tls.key`. Their actual location in the container's filesystem will be set via the `volumeMount` property when you later mount the TLS secret into your deployment.
-Also note, that there is a location explicitly defined for a healthcheck. If called, `/healthz` will return a status code `200` to satisfy a liveness probe.
+Make sure that the value for `auth_basic_user_file` is `auth.d/htpasswd` - it is the name of the file you created in step 1, prefixed with a directory name `auth.d`. This line tells nginx to load the credentials for HTTP basic auth from the file `htpasswd` which is located in the directory `auth.d`.
 
-## Step 3: Upload the configuration to kubernetes
+With this configuration, _nginx_ will expect the following directory structure:
+
+```plain
+|- conf.d
+|  \- default.conf
+\- auth.d
+   \- htpasswd
+```
+
+Once the deployment for nginx gets crafted in step 4, the `volumeMount` directive will be used to set up this directory structure.
+
+Also note, that there is a location for a healthcheck which is explicitly defined and which must not require any kind of authentication. The endpoint `/healthz` will just return a `200` status code to satisfy a liveness probe.
+
+## Step 3: Upload the configuration to Kubernetes
 
 Run `kubectl create configmap nginxconf --from-file=<path/to/your/>default.conf` to create a configMap resource with the corresponding content from default.conf.
 
@@ -89,31 +96,33 @@ Verify the configmap exists with `kubectl get configmap`.
 
 ## Step 4: Combine everything into a deployment
 
-Now it is time to combine the persistentVolumeClaim, secret and configMap in a new deployment. As a result nginx should display the custom index.html page, serve HTTP traffic on port 80 and HTTPS on port 443. In order for the new setup to work, use `app: nginx-https` as label/selector for the "secured" nginx.
+Now it is time to combine the secret and the configMap with a new deployment. As a result, nginx should display its default `index.html` page but will require you to log in first. It will still serve standard, unencrypted HTTP so this is certainly not how you would set up a production environment but for this training, it will suffice.
 
-Complete the snippet below by inserting the missing parts (look for `???` blocks):
+For the new setup to work, use `app: auth-nginx` as label/selector combination. 
+
+The following snippet contains some blanks to be filled in: we provide you with the basic structure of a deployment but the relevant parts which mount the configMap and secret into the Pods needs to be filled in by yourself (i.e. everywhere you see a `???`).
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-https-deployment
+  name: nginx-auth-deployment
   labels:
     tier: application
 spec:
   replicas: 1
   selector:
     matchLabels:
-      ???: ???
+      app: auth-nginx
   template:
     metadata:
       labels:
-        app: nginx-https
+        app: auth-nginx
     spec:
       volumes:
-      - name: tls-secret
+      - name: htpasswd-secret
         secret:
-          secretName: nginx-sec
+          secretName: nginx-basic-auth
       - name: nginxconf
         configMap:
           name: nginxconf
@@ -123,55 +132,53 @@ spec:
         ports:
         - containerPort: 80
           name: http
-        - containerPort: 443
-          name: https
         livenessProbe:
           httpGet:
-            path: ???
+            path: /healthz
             port: http
           initialDelaySeconds: 3
           periodSeconds: 5
         volumeMounts:
-        - mountPath: /etc/nginx/ssl
-          name: ???
+        - mountPath: /etc/nginx/auth.d
+          name: ??? # fill in which volume needs to be used
           readOnly: true
         - mountPath: /etc/nginx/conf.d
-          name: ???
+          name: ??? # fill in which volume needs to be used
 ```
 
-Verify that the newly created Pods use the configMap and secret by running `kubectl describe pod <pod-name>`.
+Use `kubectl apply` to create the new `nginx-auth-deployment`. Verify that the newly created Pods use the configMap and secret by running `kubectl describe pod <pod-name>`.
 
 ## Step 5: create a Service
 
-Finally, you have to create a new Service to expose your https-deployment.
+Finally, you have to create a new Service to expose your `nginx-auth-deployment`.
 
-Derive the ports you have to expose and create a `service.yaml`. You need to expose ports `80` and `443`.  You can use the following YAML snippet to create the Service, but you need to fill in the `ports` section yourself. Remember that this is a list...
+Create a simple `service.yaml` - you can use the following YAML snippet to get you started. Since your nginx is still plain HTTP, you need to expose port `80`.
 
-```
+ to create the Service, but you need to fill in the `ports` section yourself. Remember that this is a list...
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-https-service
+  name: nginx-basic-auth
 spec:
   selector:
-    ???: ???
+    ???: ??? # fill in on which Pod label to select
   type: LoadBalancer
   ports:
   - name: http
-    port: ???
+    port: ??? # fill in on which port the LoadBalancer should listen
     protocol: TCP
-    targetPort: ???
-  - ...
+    targetPort: ??? # fill in which port on the Pod to target
 ```
 
-Once the Service has an external IP, try to call it with an HTTPS prefix. You will probably receive an error from your browser that the connection is not secure - this is ok because we used a self-signed certificate. Just ignore that error and continue to the website.
-
+Once the Service has an external IP, try to call it. You will probably probably get asked by your browser for a username and a password. Do you still remember them? After all, you created them yourself in step 0...
 
 ## Troubleshooting
 
 The deployment should have two volumes specified as part of `deployment.spec.template.spec.volumes` (a configMap & a secret). Each item of the volumes list defines a (local/pod-internal) name and references the actual K8s object. Also these two volumes should be used and mounted to a specific location within the container (defined in `deployment.spec.template.spec.containers.volumeMount`). The local/pod-internal name is used for the `name` field.
 
-When creating the Service double check the used selector. It should match the labels given to any Pod created by the new deployment. The value can be found at `deployment.spec.template.metadata.labels`. In case your Service is not routing traffic properly, run `kubectl describe service <service-name>` and check, if the list of `Endpoints` contains at least 1 IP address. The number of addresses should match the replica count of the deployment it is supposed to route traffic to. 
+When creating the Service double check the used selector. It should match the labels given to any Pod created by the new deployment. The value can be found at `deployment.spec.template.metadata.labels`. In case your Service is not routing traffic properly, run `kubectl describe service <service-name>` and check, if the list of `Endpoints` contains at least 1 IP address. The number of addresses should match the replica count of the deployment it is supposed to route traffic to.
 
 Also check, if the IP addresses point to the Pods created during this exercise. In case of doubt check the correctness of the label - selector combination by running the query manually. Firstly, get the selector from the Service by running `kubectl get service <service-name> -o yaml`. Use the `<key>: <value>` pairs stored in `service.spec.selector` to get all Pods with the corresponding label set: `kubectl get pods -l <key>=<value>`. These Pods are what the Service is selecting / looking for. Quite often the selector used within Service is the same selector that is used within the deployment.
 

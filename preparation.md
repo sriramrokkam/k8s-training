@@ -24,8 +24,8 @@ Please clone the training repository to you VM/lcoal machine.
 
 Due to SAP's security restrictions, you cannot simply clone the repository anonymously or with username/password. You have to create a personal access token instead. Please follow these [instructions](https://docs.github.com/en/enterprise-server@2.22/github/authenticating-to-github/creating-a-personal-access-token) and enter the token as password when prompted during cloning.
 
-```shell
-git clone https://github.tools.sap/kubernetes/docker-k8s-training.git
+```
+git clone --filter=blob:none https://github.tools.sap/kubernetes/docker-k8s-training.git
 ```
 
 ## Kubernetes cluster

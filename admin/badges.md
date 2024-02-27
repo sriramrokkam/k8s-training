@@ -3,6 +3,7 @@
 In order to appreciate the efforts and dedication of our trainers, we offer SAP digital badges managed on [Credly](https://www.credly.com/organizations/sap/badges).
 
 Currently you can earn those two badges and become a:
+
 - [Kubernetes Training Crewmate](https://www.credly.com/org/sap/badge/technology-skills-2021-kubernetes-training-crewmate)
 - [Kubernetes Training Captain](https://www.credly.com/org/sap/badge/technology-skills-2021-kubernetes-training-captain)
 

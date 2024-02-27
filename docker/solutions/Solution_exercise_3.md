@@ -4,12 +4,12 @@ In this exercise, you will run a _nginx_ webserver in a container and serve a cu
 
 ## Step 0: forward NGINX' port
 
-If you have already deleted it, download the `nginx:mainline` image (or any other tag) again from the trainings registry using `docker pull`. 
+If you have already deleted it, download the `nginx:mainline` image (or any other tag) again from the trainings registry using `docker pull`.
 
 Start a new container in detached mode and export the port of the _nginx_ webserver to a semi-random port that is chosen by Docker.
 
 ```bash
-$ docker run -d -P <image name / ID>
+docker run -d -P <image name / ID>
 ```
 
 Use the `docker ps` command to find you which port the webserver is forwarded to. The result will look like this:
@@ -26,8 +26,8 @@ In this example, port 80 of the container was forwarded to port 55002 of the Doc
 Stop and remove your container:
 
 ```bash
-$ docker stop <container name>
-$ docker rm <containmer name>
+docker stop <container name>
+docker rm <containmer name>
 ```
 
 ## Step 1: forward NGINX' to a specified port
@@ -35,7 +35,7 @@ $ docker rm <containmer name>
 Start another _nginx_ container but this time, make sure the exposed port of the webserver is forwarded to port 8080 on your host.
 
 ```bash
-$ docker run -d -p 8080:80 <image name/ ID>
+docker run -d -p 8080:80 <image name/ ID>
 ```
 
 You can now connect to `http://localhost:8080` with your web browser and see the custom landing page.
@@ -43,8 +43,8 @@ You can now connect to `http://localhost:8080` with your web browser and see the
 Stop and remove your container.
 
 ```bash
-$ docker stop <container name>
-$ docker rm <container name>
+docker stop <container name>
+docker rm <container name>
 ```
 
 **Hint:** You can use `docker inspect` to find out which port is exposed by the image like this. The exposed port is clearly visible:
@@ -63,7 +63,6 @@ $ docker inspect <container name> | grep -2 ExposedPorts
     "80/tcp": {}
 },
 ```
-
 
 ## Step 2: import a volume
 
@@ -87,7 +86,7 @@ _EOF
 Start a new container that bind-mounts this directory to `/usr/share/nginx/html` as a volume.
 
 ```bash
-$ docker run -d -p 8081:80 --mount type=bind,source=`pwd`/nginx-html,target=/usr/share/nginx/html --name ex23nginx nginx
+docker run -d -p 8081:80 --mount type=bind,source=`pwd`/nginx-html,target=/usr/share/nginx/html --name ex23nginx nginx
 ```
 
 Now use your browser once again to go to `http://localhost:8081` - you will now see the webpage you just created.
@@ -95,6 +94,6 @@ Now use your browser once again to go to `http://localhost:8081` - you will now 
 Stop and remove your container once you are finished.
 
 ```bash
-$ docker stop ex23nginx
-$ docker rm ex23nginx
+docker stop ex23nginx
+docker rm ex23nginx
 ```

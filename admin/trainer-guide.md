@@ -2,8 +2,10 @@
 
 ## Overview
 
-#### Course Prep steps
+### Course Prep steps
+
 These are the logical steps for a trainer to prep for a course (details below):
+
 - Make sure your training is 'officially' requested and scheduled in SuccessMap Learning
 - Sent an email with preparation steps to participants
 - Request/create a Gardener cluster for your training
@@ -17,13 +19,14 @@ You can use the participant VM also for all work as a trainer.
 
 ### K8s cluster in Gardener
 
-- **Contact the [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<Location>-<DateOfYourTraining>) to get a Gardener K8s Cluster** for the training (~ 2 weeks in advance to the training), in case you want to use the central resources in [Gardener](https://gardener.cloud.sap). 
+- **Contact the [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<Location>-<DateOfYourTraining>) to get a Gardener K8s Cluster** for the training (~ 2 weeks in advance to the training), in case you want to use the central resources in [Gardener](https://gardener.cloud.sap).
 
 In the email body please refer to the corresponding event by attaching a SuccessMap screenshot. Go to `My Classes` and take a screenshot of the respective session in the `Scheduled Classes` section. It not only helps us to link the events properly, but we can size the cluster according to the number of registered participants.
 
 ### Create your trainer .kube/config to access the cluster
 
 On your VM / machine:
+
 - Create a directory `.kube` under `$HOME` (e.g. /home/vagrant on VM) and cd into it.
 - Create new file `config` and paste the kubeconfig yaml, you have got from the [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<DateOfYourTraining>) for your training.
 - run `kubectl get nodes` - this command must complete by giving you a short list of nodes in the cluster
@@ -32,12 +35,12 @@ On your VM / machine:
 
 **Please note, that the process has changed significantly. Please read this section carefully!** :clipboard:
 
-Instead of running things locally, we wrote a small webserver that runs within a Gardener Shoot Cluster on Converged Cloud. 
+Instead of running things locally, we wrote a small webserver that runs within a Gardener Shoot Cluster on Converged Cloud.
 In a nutshell, the server replaces `kubecfggen.sh` as well as the process of storing, uploading and sharing the results via Jenkins.
 
-To access the "admin server", you need to connect to the office network (via VPN when working remotely): 
+To access the "admin server", you need to connect to the office network (via VPN when working remotely):
 
-https://admin.ingress.trn-admin.k8s-trainings.c.eu-de-2.cloud.sap with username=`admin` and password=`ov9u4Z/#vc[3JuI`
+<https://admin.ingress.trn-admin.k8s-trainings.c.eu-de-2.cloud.sap> with username=`admin` and password=`ov9u4Z/#vc[3JuI`
 
 Start preparing a cluster by following the steps outlined [here](https://github.wdf.sap.corp/D044431/training-admin#usage).
 
@@ -47,18 +50,19 @@ Those information will be needed by the participants during the training. In cas
 
 **Please note:** The process creates not only the namespaces. It also deploys a ResourceQuota & LimitRange to each namespace. With this, abuse of the training cluster should become harder. The ResourceQuota limits the number of pods accepted by each namespace to 15. Any participant trying to scale a deployment to a hundred pods or more will not harm other participants. The LimitRange assigns default values for memory and CPU requested by a pod. It also give a default limit. If a pod does not specify any of these it will inherit the defaults. In other terms, by specifying a cpu/memory request & limit, the defaults can be overwritten.
 
-**Please also note:** Participant-kubeconfigs will be deleted automatically 3 weeks after they have been created. 
+**Please also note:** Participant-kubeconfigs will be deleted automatically 3 weeks after they have been created.
 
 ## Sending the preparation mail to participants
 
 You should send a **'preparation mail'** to all participants about a week before the course starts. You should add the below information in your mail:
 
-```
+```text
 ------- adapt & add this info
 - Please follow these instructions to download a VM and prep for the course:
   <link to repo>/blob/master/preparation.md
 ---------- end -----------
 ```
+
 Also it is recommended to refer to the cheat-sheets for [docker](../docker/Docker%20Cheat%20Sheet.docx) and [Kubernetes](../kubernetes/cheat%20sheet.docx). Ask participants to print and bring them along, if they deem it would be helpful.
 
 An other option would be to take one of our **mail templates**, we have prepared: [Template 1](preparation_email_sample1.txt), [Template 2](preparation_email_sample2.txt)
@@ -66,16 +70,19 @@ An other option would be to take one of our **mail templates**, we have prepared
 Technically it would be possible to run most of the exercises also with Docker on Windows/Mac and a local kubectl. **However, we would recommend explicitly exclude support for this setup during the training.**
 
 **Hint:** If you want get a list of the course participants, as the _main trainer_ you can
-- Go to <a target="_blank" href="https://sap.plateau.com/learning/user/deeplink_redirect.jsp?linkId=HOME_PAGE&fromSF=Y">SuccessMap Learning</a>
+
+- Go to [SuccessMap Learning](https://sap.plateau.com/learning/user/deeplink_redirect.jsp?linkId=HOME_PAGE&fromSF=Y)
 - There should be a tab "My Classes" (if not, likely you are not the _main_ trainer), click on it
-- Then, find your training entry and check the "Users" tab 
+- Then, find your training entry and check the "Users" tab
 - **IMPORTANT:** make sure you filter only for the people who are registered, by default, also the waitlisted people are included
-    <img width="50%" src="images/smlUsers.png"/>
+    ![SuccessMaps screenshot](images/smlUsers.png)
 
 ## Setting you up for the training
+
 **Important: Forking is no longer necessary! But feel free to do so, if you feel more comfortable with it.**
 
 ### Clone the repo
+
 There are demo scripts/files for the container, docker and kubernetes parts. Simply clone the repo to your VM and work with this copy:
 
 `git clone https://github.tools.sap/kubernetes/docker-k8s-training.git`
@@ -83,6 +90,7 @@ There are demo scripts/files for the container, docker and kubernetes parts. Sim
 We are referencing stable versions of our repo with a release tag, so you can use one of these for the training as well.
 
 ### Get the cluster and project name
+
 You will need the information to setup components like the registry. It is also required for some docker exercises and k8s demos.
 
 Look into your (trainer) kubeconfig. The file contains a URL for the API server of the cluster. You can derive the cluster as well as the project name from this URL.
@@ -94,34 +102,42 @@ The URL pattern on Gardener looks like this:
 **Example:** If your API server URL were `https://api.ccdev.k8s-train.shoot.canary.k8s-hana.ondemand.com`, the project name would be `k8s-train` and the cluster name would be `ccdev`.
 
 ### Adapt the ingress URLs
+
 Gardener deploys an ingress controller to each cluster and allows you to register custom URLs to a specific subdomain. Since the subdomain contains the name of the Gardener project as well as the cluster, you have to adapt the ingress resources locally (on your VM) to match with your setup.
 
 Check the following files for `<cluster-name>` and `<project-name>` placeholders and replace them with the actual cluster/project names:
-* [sock-shop](../kubernetes/demo/00_sock-shop.yaml)
-* [simple ingress with tls](../kubernetes/demo/09a_tls_ingress.yaml)
-* [fanout & virtual host ingress](../kubernetes/demo/09b_fanout_and_virtual_host_ingress.yaml)
+
+- [sock-shop](../kubernetes/demo/00_sock-shop.yaml)
+- [simple ingress with tls](../kubernetes/demo/09a_tls_ingress.yaml)
+- [fanout & virtual host ingress](../kubernetes/demo/09b_fanout_and_virtual_host_ingress.yaml)
 
 ### Setup helm
-To continue with the setup, you need `helm`. If you do not have it installed already, follow the instructions here: https://helm.sh/docs/intro/install/
+
+To continue with the setup, you need `helm`. If you do not have it installed already, follow the instructions here: <https://helm.sh/docs/intro/install/>
 
 ### Setup a docker registry (~1 day before course starts)
+
 For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. After using a plain docker registry for quite some time, we decided to swith to [Harbor](https://goharbor.io/). It comes with a UI and some more useful features.
 In the admin folder of this repo, you find a registry folder with `install_harbor_registry.sh` script. Check the prerequisites and run the script as described [here](./registry/readme.md) to deploy a registry and make it available via an ingress.
 
 ### Build and push sample app artefacts
+
 For the day 4 exercises, you will need to build and push the images of bulletinboard-ads and bulletinboard-reviews. This can be done automatically using this [script](./exercise_prep/bulletinboard.sh). It will clone both repositories, build the images and push them to the Harbor registry using the `participant` credentials.
 
 ## During the Course
 
 ### Assign participants to namespace numbers
+
 Feel free to use any suitable method to assign namespace numbers to participants and hand out the URL to download the kubeconfigs as well as training name and password to logon.
 
-### Use the "master" kube.config 
-For all demos to work properly (especially the RBAC demo), you have to use an "admin" user when talking to the cluster. When you use the `kube.config` you got along with the cluster details, you are on the save side. However if you use a participant user / namespace, the RBAC demo will fail due to missing authorization. 
+### Use the "master" kube.config
+
+For all demos to work properly (especially the RBAC demo), you have to use an "admin" user when talking to the cluster. When you use the `kube.config` you got along with the cluster details, you are on the save side. However if you use a participant user / namespace, the RBAC demo will fail due to missing authorization.
 
 Of course, you can create a separate namespace (!= `default`) and add it to the `kube.config` context definition to send requests to it by default.
 
 ### Add nodes to K8s cluster
+
 In exceptional cases it might happen that your cluster needs more resources to deal with all the participants pods because autoscaler configuration is not sufficient high. In order to scale the cluster up, get in contact with the [K8s Trainings DevOps Team](mailto:DL_5B2CDDFFECB21162D9000010@global.corp.sap?subject=[Docker%20and%20K8s%20fundamentals%20training]%20Request%20for%20trainings%20cluster%20-%20<DateOfYourTraining>).
 
 ## After the course

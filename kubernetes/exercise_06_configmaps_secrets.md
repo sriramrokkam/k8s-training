@@ -98,7 +98,7 @@ Verify the configmap exists with `kubectl get configmap`.
 
 Now it is time to combine the secret and the configMap with a new deployment. As a result, nginx should display its default `index.html` page but will require you to log in first. It will still serve standard, unencrypted HTTP so this is certainly not how you would set up a production environment but for this training, it will suffice.
 
-For the new setup to work, use `app: auth-nginx` as label/selector combination. 
+For the new setup to work, use `app: auth-nginx` as label/selector combination.
 
 The following snippet contains some blanks to be filled in: we provide you with the basic structure of a deployment but the relevant parts which mount the configMap and secret into the Pods needs to be filled in by yourself (i.e. everywhere you see a `???`).
 

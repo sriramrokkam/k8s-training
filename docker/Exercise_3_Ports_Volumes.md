@@ -38,4 +38,6 @@ Create a directory on your computer. Inside that directory, create a file `index
 
 **Hint:** the syntax of the `--mount` switch is
 
-    --mount type=bind,source=<some dir>,target=<some dir>
+```shell
+--mount type=bind,source=<some dir>,target=<some dir>
+```

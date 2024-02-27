@@ -1,23 +1,26 @@
-## Demo of Docker networks
+# Demo of Docker networks
 
-You can use network-demo.sh script. 
+You can use network-demo.sh script.
 It executes all necessary docker command for this demo and awaits a "enter" before it cleans up and goes to the next part.
 
-### Description
+## Description
 
 Let's get back to our nginx examples.
 
-#### First part
+### First part
+
 `docker run -d -p 8081:80 nginx:mainline`
 Access the nginx on port localhost:8081
 
-#### Second part
+### Second part
+
 Run the same with -P and get the port via docker container list
 Access the nginx via the random port
 
 It's important to remember – the first port is referencing the port that is opened on the docker host, the 2nd port is referencing the container port.
 
-#### Docker network
+### Docker network
+
 Talking about networking:
 `docker network list`
 Show the different docker networks and create a new bridge network (docker network create test)
@@ -32,7 +35,7 @@ Exit the pod and end the script
 
 ## Demo of Docker volumes
 
-You can use volume-demo.sh script. 
+You can use volume-demo.sh script.
 It executes all necessary docker command for this demo and awaits a "enter" before it cleans up and goes to the next part.
 
 ### First part
@@ -64,10 +67,10 @@ Let's move on to docker volumes. When working with a container, you might want t
 `docker run -d -P --mount source=jenkins_home,target=/var/jenkins_home jenkins/jenkins:lts`
 Next, get the ports and connect the port that forwards to container port 8080
 On the jenkins logon page, you're asked for a password, run "docker logs \<container name>"  and obtain the logon token
-Logon to the jenkins and choose "select plugins to install", select "none" (upper left corner) and continue. 
+Logon to the jenkins and choose "select plugins to install", select "none" (upper left corner) and continue.
 Create a user e.g 'root' with a simple password and finish the setup.
 Now stop the container and restart it – obviously you're still able to logon with the credentials created before.
-Finally, delete the container and with that also the RW layer and re-execute the docker run jenkins command. 
+Finally, delete the container and with that also the RW layer and re-execute the docker run jenkins command.
 Connect to your new jenkins (get the ports before) and logon with the same credentials as you're still referring to the same jenkins home.
 Inspect the jenkins_home volume (docker volume inspect jenkins_home) and go to it's path (probably you need to be root for that) and show the content.
 

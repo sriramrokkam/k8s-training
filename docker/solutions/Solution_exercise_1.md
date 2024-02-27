@@ -65,7 +65,6 @@ docker build .
 
 Write down (or memorize) the ID that Docker returns, you will need it for the next step.
 
-
 # Solution to the "type along" section for publishing the image.
 
 ## Step 1: Tag the image

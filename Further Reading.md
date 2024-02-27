@@ -10,7 +10,7 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - Read about [containerd](https://containerd.io/).
 
-- Container runtime details: https://iximiuz.com/en/posts/conman-the-container-manager-inception/
+- Container runtime details: <https://iximiuz.com/en/posts/conman-the-container-manager-inception/>
 
 - Docker [security](https://docs.docker.com/engine/security/) and [cgroups v2 in runC](https://github.com/opencontainers/runc/blob/43186447b99c81d7e12876dc8277e2f6fd538850/docs/cgroup-v2.md)
 
@@ -25,27 +25,31 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 - [sap-tech-docker on Slack](https://sap-ti.slack.com/archives/C86FTS4DN) covering Docker-related topics
 
 ### Alternatives
-- Colima: https://github.com/abiosoft/colima
-- Podman: https://podman.io
+
+- Colima: <https://github.com/abiosoft/colima>
+- Podman: <https://podman.io>
 
 ### SAP specific
 
-- Internal Artifactory Repository Services: https://pages.github.tools.sap/Common-Repository/Artifactory-Corp/
-- External Artifactory Repository Services: https://pages.github.tools.sap/Common-Repository/Artifactory-Internet-Facing/contactSupport/
+- Internal Artifactory Repository Services: <https://pages.github.tools.sap/Common-Repository/Artifactory-Corp/>
+- External Artifactory Repository Services: <https://pages.github.tools.sap/Common-Repository/Artifactory-Internet-Facing/contactSupport/>
 
 ## Kubernetes
 
-#### @SAP: Gardener
+### @SAP: Gardener
+
 - First of all: SAP offers an internal Kubernetes platform offering that is called Project Gardener. If you need a Kubernetes environment, this is the place to go: [Gardener](https://https://gardener.cloud.sap/)
-- Getting started with Gardener: https://pages.github.tools.sap/kubernetes/gardener/docs/getting-started/
+- Getting started with Gardener: <https://pages.github.tools.sap/kubernetes/gardener/docs/getting-started/>
 - Gardener is an open source project and can be found on [github.com](https://github.com/gardener/gardener/).
 
-#### Slack Channels at SAP
+### Slack Channels at SAP
+
 - [sap-tech-gardener](https://sap-ti.slack.com/archives/C9CEBQPGE)
 - [sap-tech-kubernetes](https://sap-ti.slack.com/archives/C8R3WAGKB)
 - [sap-k8s-operators](https://sap-ti.slack.com/archives/CGULAG57C)
 
-#### in general
+### in general
+
 - Do you want to watch Kelsey Hightower, one of the big brains behind Kubernetes play Tetris on the Jumbotron at d-Kom 2018 at SAP Arena? Check out [his keynote](https://broadcast.co.sap.com/event/dkom/2018#!video%2F18106).
 
 - the Cloud Native Computing Foundation publishes KubeCon talks on their [youtube channel](https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA)
@@ -54,7 +58,8 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - getting started locally - with [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/), [k3s](https://k3s.io/) or [kind](https://kind.sigs.k8s.io/)
 
-#### kubectl
+### kubectl
+
 - Running `kubectl completion` guides you how to setup shell completion.
 
 - [kubectl plugins](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) can be managed with [krew](https://krew.sigs.k8s.io). It is a convenient way to get essentials like [oidc support](https://github.com/int128/kubelogin) or a [command](https://github.com/corneliusweig/ketall) that actually perfoms a `get all`.
@@ -65,7 +70,8 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 
 - [kubectl efficiency](https://www.youtube.com/watch?v=vVAFctQP1Vg&list=PLj6h78yzYM2NDs-iu8WU5fMxINxHXlien&index=12&t=0s)
 
-#### networking
+### networking
+
 - More on details about networking? The [Life of a Packet](https://www.youtube.com/watch?v=0Omvgd7Hg1I) talk by Google's Michael Rubin at KubeCon EU '17 can be found [here on YouTube](https://www.youtube.com/watch?v=0Omvgd7Hg1I).
 
 - If you are more into doing things - there is a [kubeCon2020 tutorial](https://www.youtube.com/watch?v=InZVNuKY5GY&list=PLj6h78yzYM2O1wlsM-Ma-RYhfT5LKq0XC&index=16&t=0s) digging into it.
@@ -85,11 +91,12 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 - [Programming Kubernetes](https://programming-kubernetes.info/) is an awesome book, if you really want to get started. There is also [sample code on github](https://github.com/programming-kubernetes).
 
 ### Security
-- wordpress & reverse shell - k8s security talk @ContainerConf by Jen Tong: https://vimeo.com/306157921 (demo starts around 30:20)
+
+- wordpress & reverse shell - k8s security talk @ContainerConf by Jen Tong: <https://vimeo.com/306157921> (demo starts around 30:20)
 
 - another talk about Kubernetes security by Dirk Marwinski of SAP's Gardener team that he held at SAP's Security Summit 2019 can be found [here](https://video.sap.com/media/t/1_4g3e4aah) with the slides [here](https://jam4.sapjam.com/groups/0O5MDqirlZsPGRKP3y6Ydt/documents/GZr8SmrvBdWhP7miO0WhU9)
 
-- [Three Years of Lessons Running Potentially Malicious Code Inside Containers](https://www.youtube.com/watch?v=kbPEE33HEHw) - Ben Hall, Katacoda 
+- [Three Years of Lessons Running Potentially Malicious Code Inside Containers](https://www.youtube.com/watch?v=kbPEE33HEHw) - Ben Hall, Katacoda
 
 - [root container](https://www.youtube.com/watch?v=ltrV-Qmh3oY&feature=youtu.be) @KubeCon by Liz Rice
 
@@ -98,22 +105,26 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 - [Identity federation with OIDC in Kubernetes](https://community.sap.com/t5/open-source-blogs/kubernetes-cross-cluster-communication-ditching-long-lived-credentials/ba-p/13550286)
 
 ### SAP Kubernetes Summits
+
 - Slides and recordings from all the sessions at SAP's first Kubernetes Summit 2019 in Walldorf/Rot, Germany can be found in [Jam](https://jam4.sapjam.com/blogs/show/rW4XILnu81NbcUpiMQWWuu)
 
 ## Helm
-- overview of available charts: https://github.com/kubernetes/charts/tree/master/stable
-- official documentation: https://docs.helm.sh/
+
+- overview of available charts: <https://github.com/kubernetes/charts/tree/master/stable>
+- official documentation: <https://docs.helm.sh/>
 - Videos from internal events:
-  - https://video.sap.com/playlist/dedicated/31122632/1_b597m58u/1_910vsh7f
-  - https://video.sap.com/playlist/dedicated/31122632/1_b597m58u/1_hkwlxqmn
+  - <https://video.sap.com/playlist/dedicated/31122632/1_b597m58u/1_910vsh7f>
+  - <https://video.sap.com/playlist/dedicated/31122632/1_b597m58u/1_hkwlxqmn>
 
 ## SAP specific security aspects
+
 - [container reference architecture security procedure](https://wiki.wdf.sap.corp/wiki/x/HkxOcQ)
 - [Docker security procedure](https://wiki.wdf.sap.corp/wiki/x/Uk8GcQ)
 - [Security approved container base images](https://wiki.wdf.sap.corp/wiki/x/UYYRd)
 - [Kubernetes Container Orchestration - Hardening](https://wiki.wdf.sap.corp/wiki/x/KCNfc)
 
 ## General
+
 - Brendan Burns, Distinguished Engineer at Microsoft and Chief Architect behind the container infrastructure within Azure released one of his books on distributed software design for free: [Designing Distributed Systems](https://azure.microsoft.com/en-us/resources/designing-distributed-systems/)
 
 - [katacoda learning platform](https://www.katacoda.com/learn) offers browser-based tutorials around docker & kubernetes  

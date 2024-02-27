@@ -43,16 +43,15 @@ command:
 
 More details about init containers can be found [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/) and [here](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/).
 
-
 ## Step 2 - write a simple Ingress and deploy it
 
 To expose your application via an Ingress, you need to construct a valid URL. Within the Gardener environment you have to use the following schema: `<your-custom-endpoint>.ingress.<CLUSTER-NAME>.<PROJECT-NAME>.shoot.canary.k8s-hana.ondemand.com`. `CLUSTER-NAME` and `PROJECT-NAME` are those pieces of information you should have received in step 0 above.
 
-For `<your-custom-endpoint>` it is recommended to use your namespace number (run `kubectl config view` and look for the namespace). Please use just the number, strip the leading `part-` from it. 
+For `<your-custom-endpoint>` it is recommended to use your namespace number (run `kubectl config view` and look for the namespace). Please use just the number, strip the leading `part-` from it.
 
 As you are going to expose the URL to public internet you certainly don't want to publish information like your D/I-user there, so please use your namespace/participant number.
 
-Write the ingress yaml file and reference to your service. Use the following skeleton and check the [kubernetes API reference](https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-v1/) for details and further info. 
+Write the ingress yaml file and reference to your service. Use the following skeleton and check the [kubernetes API reference](https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-v1/) for details and further info.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -80,7 +79,6 @@ spec:
 
 Finally, deploy your ingress and test the URL.
 
-
 ## Step 3 - Annotate!
 
 Besides the labels, K8s uses also a concept called "[annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)". Annotations are part of the metadata section and can be written directly to the yaml file as well as added via `kubectl annotate ...`. Similar to the labels, annotations are also key-value pairs.
@@ -90,7 +88,6 @@ In our case, the used ingress controller knows several annotations and reacts to
 
 So let's assume, you want to change the timeout behavior of the nginx exposed via the ingress. Check the list of [annotations](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/) for the `proxy-connect-timeout` and apply a suitable configuration to your ingress. Of course don't forget to test the URL.
 
-
 ## optional step 4 - rewrite target
 
 Now that you know how an annotation works and how it affects your ingress, lets move on to the fanout scenario. Assume you want your ingress to serve something different at its root level `/` and you want to move your application to `/my-app`. Your URL would look like this `<your-custom-endpoint>.ingress.<GARDENER-CLUSTER-NAME>.<GARDENER-PROJECT-NAME>.shoot.canary.k8s-hana.ondemand.com/my-app`.
@@ -98,7 +95,6 @@ Now that you know how an annotation works and how it affects your ingress, lets 
 In a first step, you need to add `path: /my-app(.*)` to your backend configuration within the ingress. Take a look at the [fanout demo](./demo/09b_fanout_and_virtual_host_ingress.yaml), if you need inspiration. Once you applied the change, go to your URL and test the different paths. But don't be surprised, if you don't see the expected pages.
 
 The ingress is forwarding traffic to `/my-app` and also to `/my-app` at the backend. So unless you configured your nginx pods to serve at `/my-app` there is no valid endpoint available. You can solve the issue by rewriting the target to `/$1` of the backend pods. Check the `rewrite-target` [annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#rewrite) for details and apply it accordingly. The documentation features an [example](https://kubernetes.github.io/ingress-nginx/examples/rewrite/) as well.
-
 
 ## Troubleshooting
 

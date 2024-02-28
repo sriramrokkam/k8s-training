@@ -268,13 +268,9 @@ metadata:
     # check this tutorial to see how the cert-manager works
     # https://github.com/gardener/cert-management#requesting-a-certificate-for-ingress
     # use kubectl describe ingress simple-nginx-ingress to view cert-manager events
-    # we use the annotation to set the certifcate's CN to a string with <= 64 characters
-    # the SAN matches the ingress' desired host name and can have more than 64 characters
     # use "openssl s_client -connect sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com:443 -showcerts  | openssl x509 -text -noout"
     # to show the obtained certificate
     cert.gardener.cloud/purpose: managed
-    cert.gardener.cloud/commonname: s.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
-    cert.gardener.cloud/dnsnames: sock-shop.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
   namespace: sock-shop
 spec:
   rules:

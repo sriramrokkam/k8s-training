@@ -8,11 +8,9 @@ metadata:
     module: app
   annotations:
     cert.gardener.cloud/purpose: managed
-    cert.gardener.cloud/commonname: <short-name>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
-    cert.gardener.cloud/dnsnames: <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
 spec:
   rules:
-  - host: <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
+  - host: <hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /
@@ -24,5 +22,5 @@ spec:
               name: http
   tls:
     - hosts:
-      - <long-hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
+      - <hostname>.ingress.<your-trainings-cluster>.<your-project-name>.shoot.canary.k8s-hana.ondemand.com
       secretName: fortune-cookies-tls-secret

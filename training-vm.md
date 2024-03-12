@@ -96,3 +96,11 @@ sudo apt-get install -y code
 ```
 
 Restart the terminal session afterwards for the docker group to become active or run `newgrp docker`.
+
+## How to find key combinations
+
+The translation of host keyboard keys to guest VM keyboard keys might be a bit tricky at times and can result in a lot of frustration while trying to type. The best option is to check your individual mappings within the VM.
+
+As indicated by the screenshot, open the settins -> keyboard -> view keyboard layout. Now, when you start hitting keys on your keyboard, the mapped keys will be highlighted. For example, if you want to type `~` character you need to find the key triggering `Level3 S...`.
+
+![keyboard](https://media.github.tools.sap/user/1107/files/d555b218-7b71-49d1-be0f-fa6805e1d7ca)

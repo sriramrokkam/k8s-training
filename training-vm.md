@@ -6,11 +6,16 @@ You can use a Linux virtual machine to run kubectl and a container runtime. Whil
 
 ### Windows
 
-On Windows, you will need VMware as a virtualization solution to run a VM - VirtualBox is not permitted within SAP (and if you are thinking about using Hyper-V, you can skip reading this page - you are already used to pain and you know how to set things up).
+#### WSL2
+For this training, we recommend using WSL2 as you can install the community edition of Docker and do not need to purchase any licenses. If you plan to use Docker on a daily basis, you might want to switch to the Docker Desktop version.
+
+Checkout the official guide to setup your environment: https://learn.microsoft.com/en-gb/windows/wsl/install
+
+Next, continue with the preparation steps below.
 
 #### VMware Player
 
-Unfortunately, since VMware was purchased by Broadcom, VMware Player as a free product has been discontinued. Therefore, if you do not happen to have a license for VMware Workstation or are not willing to purchase one, this is not for you. You will have to resort to the [local setup](./preparation.md).
+Unfortunately, since VMware was purchased by Broadcom, VMware Player as a free product has been discontinued. Therefore, if you do not happen to have a license for VMware Workstation or are not willing to purchase one, this is not for you.
 
 #### WMware Workstation
 
@@ -97,7 +102,7 @@ sudo apt-get install -y code
 
 Restart the terminal session afterwards for the docker group to become active or run `newgrp docker`.
 
-## How to find key combinations
+## How to find key combinations for your VM
 
 The translation of host keyboard keys to guest VM keyboard keys might be a bit tricky at times and can result in a lot of frustration while trying to type. The best option is to check your individual mappings within the VM.
 

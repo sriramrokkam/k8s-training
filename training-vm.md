@@ -11,6 +11,10 @@ For this training, we recommend using WSL2 as you can install the community edit
 
 Checkout the official guide to setup your environment: https://learn.microsoft.com/en-gb/windows/wsl/install
 
+WSL2 gets a virtual NIC and a different IP address, just like a regular Virtual Machine. In SAP this situation causes the blockage of communication from the client-side. Therefore, McAfee/Trellix Endpoint Protect recognizes the WSL2 machine as a separate device.
+
+Checkout [This IT Knowledge Base document](https://itsupportportal.services.sap/itsupport?id=kb_article_view&table=kb_knowledge&sys_kb_id=c18a223edb129150064a5a3bd3961974) for detailed information and make your environment workable. 
+
 Next, continue with the preparation steps below.
 
 #### VMware Player
@@ -33,13 +37,13 @@ On Mac, the open-source [UTM app](https://getutm.app/) is the easiest way to get
 
 **Important:** You need to download an aarch64/ARM64 image of the operating system. For Ubuntu, that would be this ISO file: <https://cdimage.ubuntu.com/jammy/daily-live/current/jammy-desktop-arm64.iso>
 
-In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose "*Linux*" and finally make sure you check "*Use Apple Virtualization*". Do not enable "*Enable Rosetta (x86_64 emulation)*". For "*Boot ISO Image*", browse to the OS image you just downloaded. On the next page, assign two CPU cores and 4096MiB of memory to the virtual machine. Chose a small disk size (20GB is more than enough) and select no "*Shared Directories*". After reviewing your settings, simply save and start the VM.
+In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose "*Linux*" and finally make sure you leave "*Use Apple Virtualization*" unchecked. Do not enable "*Enable Rosetta (x86_64 emulation)*". For "*Boot ISO Image*", browse to the OS image you just downloaded. On the next page, assign two CPU cores and 4096MiB of memory to the virtual machine. Chose a small disk size (20GB is more than enough) and select no "*Shared Directories*". After reviewing your settings, DO check "*Open VM settings*" then save. In popup window, select "*Network*", in Network Mode area, select "*Emulated VLAN*", in Emulated Network Card, select "*Intel Gigabit Ethernet (e1000)*". Save and start the VM.
 
-#### Intel Silicon
+#### Apple Intel 
 
 You will need to download the x86_64/AMD64 image of your operating system. For Ubuntu, that would be this ISO file: <https://releases.ubuntu.com/22.04.4/ubuntu-22.04.4-desktop-amd64.iso>
 
-In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose "*Linux*" and finally make sure you check "*Use Apple Virtualization*". Do not enable "*Enable Rosetta (x86_64 emulation)*". For "*Boot ISO Image*", browse to the OS image you just downloaded. On the next page, assign two CPU cores and 4096MiB of memory to the virtual machine. Chose a small disk size (20GB is more than enough) and select no "*Shared Directories*". After reviewing your settings, simply save and start the VM.
+In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose "*Linux*" and finally make sure you leave "*Use Apple Virtualization*" unchecked. Do not enable "*Enable Rosetta (x86_64 emulation)*". For "*Boot ISO Image*", browse to the OS image you just downloaded. On the next page, assign two CPU cores and 4096MiB of memory to the virtual machine. Chose a small disk size (20GB is more than enough) and select no "*Shared Directories*". After reviewing your settings, DO check "*Open VM settings*" then save. In popup window, select "*Network*", in Network Mode area, select "*Emulated VLAN*", in Emulated Network Card, select "*Intel Gigabit Ethernet (e1000)*". Save and start the VM.
 
 ## Preparing the VM for the Docker/Kubernetes training
 

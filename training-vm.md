@@ -61,7 +61,7 @@ homedir=$(eval echo ~$username)
 sudo apt-get update
 sudo apt-get remove --purge -y gnome-initial-setup tracker-extract
 sudo apt autoremove -y
-sudp apt-get upgrade -y
+sudo apt-get upgrade -y
 sudo apt-get install -y curl wget ca-certificates apt-transport-https vim
 
 # ca

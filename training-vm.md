@@ -13,7 +13,7 @@ Checkout the official guide to setup your environment: https://learn.microsoft.c
 
 WSL2 gets a virtual NIC and a different IP address, just like a regular Virtual Machine. In SAP this situation causes the blockage of communication from the client-side. Therefore, McAfee/Trellix Endpoint Protect recognizes the WSL2 machine as a separate device.
 
-Checkout [This IT Knowledge Base document](https://itsupportportal.services.sap/itsupport?id=kb_article_view&table=kb_knowledge&sys_kb_id=c18a223edb129150064a5a3bd3961974) for detailed information and make your environment workable. 
+Checkout [This IT Knowledge Base document](https://itsupportportal.services.sap/itsupport?id=kb_article_view&sys_kb_id=2f71b3feeb714e94d707fe56cad0cdf5) for detailed information and make your environment workable. 
 
 Next, continue with the preparation steps below.
 

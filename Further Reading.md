@@ -41,6 +41,8 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 - First of all: SAP offers an internal Kubernetes platform offering that is called Project Gardener. If you need a Kubernetes environment, this is the place to go: [Gardener](https://https://gardener.cloud.sap/)
 - Getting started with Gardener: <https://pages.github.tools.sap/kubernetes/gardener/docs/getting-started/>
 - Gardener is an open source project and can be found on [github.com](https://github.com/gardener/gardener/).
+- What the heck is Gardener? [Part 1](https://sap.sharepoint.com/:v:/r/sites/201292/Recordings/What%20the%20Heck%20is%20Gardener_Part%201.mp4?csf=1&web=1&e=2NQvJ1) & [Part 2](https://sap.sharepoint.com/:v:/s/201292/EUtYrZ-9EQ1BrTN8awFHS6IBUDpo457A_bdDW697gnFWrQ?e=n3lANA)
+- [My workloads failed - a Kubernetes murder mystery](https://video.sap.com/media/t/1_9y1u6rf1) (advanced)
 
 ### Slack Channels at SAP
 
@@ -86,15 +88,15 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 
 - [Controllers at scale](https://medium.com/@timebertt/kubernetes-controllers-at-scale-clients-caches-conflicts-patches-explained-aa0f7a8b4332) explains in more details, how the internals of a controller work and what you should have in mind, when writing your own controller.
 
+- [Kubernetes Clients in Gardener](https://github.com/gardener/gardener/blob/master/docs/development/kubernetes-clients.md) - is a great overview / introduction to the various clients and their capabilities. It's also something that has to proven to work :)
+
 - The [kubelet pattern](https://github.tools.sap/NewHorizon/LifecycleManagement/blob/master/KubeletPattern.md) gives an outlook, how a Kubernetes based architecture could evolve.
 
 - [Programming Kubernetes](https://programming-kubernetes.info/) is an awesome book, if you really want to get started. There is also [sample code on github](https://github.com/programming-kubernetes).
 
 ### Security
 
-- wordpress & reverse shell - k8s security talk @ContainerConf by Jen Tong: <https://vimeo.com/306157921> (demo starts around 30:20)
-
-- another talk about Kubernetes security by Dirk Marwinski of SAP's Gardener team that he held at SAP's Security Summit 2019 can be found [here](https://video.sap.com/media/t/1_4g3e4aah) with the slides [here](https://jam4.sapjam.com/groups/0O5MDqirlZsPGRKP3y6Ydt/documents/GZr8SmrvBdWhP7miO0WhU9)
+- [SAPwned: SAP AI vulnerabilities expose customers’ cloud environments and private AI artifacts](https://www.wiz.io/blog/sapwned-sap-ai-vulnerabilities-ai-security)
 
 - [Three Years of Lessons Running Potentially Malicious Code Inside Containers](https://www.youtube.com/watch?v=kbPEE33HEHw) - Ben Hall, Katacoda
 

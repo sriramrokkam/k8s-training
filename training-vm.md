@@ -35,9 +35,12 @@ On Mac, the open-source [UTM app](https://getutm.app/) is the easiest way to get
 
 #### Apple Silicon
 
-**Important:** You need to download an aarch64/ARM64 image of the operating system. For Ubuntu, that would be this ISO file: <https://cdimage.ubuntu.com/jammy/daily-live/current/jammy-desktop-arm64.iso>
+**Important:** You need to download an aarch64/ARM64 image of the operating system. For Ubuntu, that would be this ISO file: <https://cdimage.ubuntu.com/jammy/daily-live/current/jammy-desktop-arm64.iso>.
+There might be cases, where the daily build fails to boot. Follow https://docs.getutm.app/guides/ubuntu/ as a fallback option and install the desktop environment separately.
 
 In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose "*Linux*" and finally make sure you leave "*Use Apple Virtualization*" unchecked. Do not enable "*Enable Rosetta (x86_64 emulation)*". For "*Boot ISO Image*", browse to the OS image you just downloaded. On the next page, assign two CPU cores and 4096MiB of memory to the virtual machine. Chose a small disk size (20GB is more than enough) and select no "*Shared Directories*". After reviewing your settings, DO check "*Open VM settings*" then save. In popup window, select "*Network*", in Network Mode area, select "*Emulated VLAN*", in Emulated Network Card area, select "*Intel Gigabit Ethernet (e1000)*". Save and start the VM.
+
+**Known Workarounds** In case the VM hangs upon rebooting after installation, try unmounting the ISO and reboot the image. The workaround is "documented" here: https://github.com/utmapp/UTM/issues/4173#issuecomment-1179718559
 
 #### Apple Intel 
 
@@ -62,7 +65,7 @@ sudo apt-get update
 sudo apt-get remove --purge -y gnome-initial-setup tracker-extract
 sudo apt autoremove -y
 sudo apt-get upgrade -y
-sudo apt-get install -y curl wget ca-certificates apt-transport-https vim
+sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent
 
 # ca
 pushd /usr/local/share/ca-certificates
@@ -81,6 +84,7 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo groupadd -f docker
 sudo usermod -a -G docker $username
+newgrp docker
 
 # kubectl
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg

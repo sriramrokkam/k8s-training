@@ -20,7 +20,7 @@ You can use a Linux virtual machine to run kubectl and a container runtime. Whil
 
 ## Clone
 
-Please clone the training repository to you VM/lcoal machine.
+Please clone the training repository to your VM/local machine.
 
 Due to SAP's security restrictions, you cannot simply clone the repository anonymously or with username/password. You have to create a personal access token instead. Please follow these [instructions](https://docs.github.com/en/enterprise-server@2.22/github/authenticating-to-github/creating-a-personal-access-token) and enter the token as password when prompted during cloning.
 
@@ -30,7 +30,7 @@ git clone --filter=blob:none https://github.tools.sap/kubernetes/docker-k8s-trai
 
 ## Kubernetes cluster
 
-For regular classroom trainings a Kubernetes cluster will be provided & configured centrally. However, if you wish to look into the training material on your own, you may check the Gardener [trial cluster](https://github.wdf.sap.corp/pages/kubernetes/gardener/documentation/015-tutorials/content/howto/trial-account/) offering.
+For regular classroom trainings a Kubernetes cluster will be provided & configured centrally. However, if you wish to look into the training material on your own, you may check the Gardener [trial cluster](https://pages.github.tools.sap/kubernetes/gardener/docs/guides/sap-internal/scp-starting-with-k8s/before-start/get-account/) offering.
 
 If you prefer to run everything locally, there is also a way to install [microk8s](https://microk8s.io/) within the VM. Check the [README](./microk8s/README.md) for details.
 

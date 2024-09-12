@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server
+  template:
+    metadata:
+      labels:
+        app: echo-server
+    spec:
+      imagePullSecrets:
+        - name: training-registry
+      containers:
+        - name: echo-server
+          image: <todo>
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP

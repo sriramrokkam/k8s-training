@@ -112,11 +112,12 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 
 ## Helm
 
-- overview of available charts: <https://github.com/kubernetes/charts/tree/master/stable>
+- overview of available charts: https://artifacthub.io
+- legacy charts: <https://github.com/kubernetes/charts/tree/master/stable>
 - official documentation: <https://docs.helm.sh/>
-- Videos from internal events:
-  - <https://video.sap.com/playlist/dedicated/31122632/1_b597m58u/1_910vsh7f>
-  - <https://video.sap.com/playlist/dedicated/31122632/1_b597m58u/1_hkwlxqmn>
+  - Cheat Sheet: https://helm.sh/docs/intro/cheatsheet/
+  - Writing a chart: https://helm.sh/docs/chart_template_guide/getting_started/
+- Alternative: https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 
 ## SAP specific security aspects
 

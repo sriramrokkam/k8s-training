@@ -38,7 +38,6 @@ High level topics are:
 - Introduction to jobs, scheduling, image pulling and extensibility concepts in K8s [slides](./kubernetes/11_3_morePods_Sheduling.pptx)
 - Introduction to Gardener ([slides](./kubernetes//11_4_Gardener.pptx)
 - Deploy packaged applications with Helm ([slides](./kubernetes/12_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))
-- (Optionally) Write a Helm chart ([slides](./kubernetes/12_helm.pptx) & [exercise 11](./kubernetes/exercise_11_write_a_helm_chart.md))
 - [fortune cookies](./sample-app/README.md) - apply the learned concepts and build + deploy a sample application
 
 ## Preparation and Setup

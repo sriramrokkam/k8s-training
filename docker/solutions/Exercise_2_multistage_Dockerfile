@@ -1,10 +1,10 @@
 # builder stage
-FROM golang:1.18-alpine as builder
+FROM golang:1.23-alpine AS builder
 
 ## copy the go source code over and build the binary
+COPY . /go/src
 WORKDIR /go/src
-COPY wiki.go /go/src/wiki.go
-RUN go build wiki.go
+RUN go build echo-server.go
 
 # app exec stage
 ####################################
@@ -13,11 +13,10 @@ RUN go build wiki.go
 FROM alpine:latest
 
 # prepare file system etc
-RUN mkdir -p /app/data /app/tmpl && adduser -S -D -H -h /app appuser
-COPY tmpl/* /app/tmpl/
+RUN mkdir -p /app && adduser -S -D -H -h /app appuser
 
 # get the compiled binary from the previous stage
-COPY --from=builder /go/src/wiki /app/wiki
+COPY --from=builder /go/src/echo-server /app/echo-server
 
 # prepare runtime env
 RUN chown -R appuser /app
@@ -26,4 +25,4 @@ WORKDIR /app
 
 # expose app port & set default command
 EXPOSE 8080
-CMD ["/app/wiki"]
+CMD ["/app/echo-server"]

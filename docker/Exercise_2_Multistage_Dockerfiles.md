@@ -2,42 +2,30 @@
 
 In this exercise, you will create a Dockerfile consisting of two stages. Within a build stage you will compile a go-based web app. Next, copy the binary to run stage, which consists of a minimal set of libs only. (and yes, you could also link everything statically and have an image with the binary only).
 
-The app is a simple webserver providing view and edit functionality for "wiki pages" and is based on this [tutorial](https://golang.org/doc/articles/wiki/). It serves on port 8080, renders web pages based on templates parsed from files and can persist pages on the filesystem.
-
-The structure looks like this
-
-```directory-structure
-/app
-+-- wiki                --> executable
-+-- tmpl                --> template for page rendering
-|   +-- edit.html
-|   +-- view.html
-+-- data                --> location to store pages as txt files
-|   +-- somepage.txt
-```
+The app is a minimal "echo" webserver printing the source IP of any incoming request to both, its HTTP response and its stdout.
 
 ## Step 0: Setting up your build context
 
-Create an empty directory on your VM that will be your build context. From your cloned training repository copy the `wiki.go` file and create a folder called `tmpl` where you place the `edit.html` and `view.html` template files.
+Create an empty directory on your VM that will be your build context. From your cloned training repository copy the [echo-server files](./res/echo-server) into the build context directory.
 
 ```bash
-cp <path-to-cloned-repository>/docker/res/edit.html ./tmpl/
-cp <path-to-cloned-repository>/docker/res/view.html ./tmpl/
-cp <path-to-cloned-repository>/docker/res/wiki.go .
+cp <path-to-cloned-repository>/docker/res/echo-sever/* <path-to-build-context-directory>
 ```
 
 ## Step 1: Creating the Dockerfile
 
-Create an new Dockerfile that starts `FROM golang:1.18-alpine as builder`. Note, the `as builder` extension - it allows you to reference files present at this stage and copy them over to another stage.
-To prepare for the build, change the `WORKDIR` to `/go/src/` and `COPY` the `wiki.go` file over.
+Create a new Dockerfile that starts with `FROM golang:1.23-alpine AS builder`. Note, the `AS builder` extension - it allows you to reference files present at this stage and copy them over to another stage.
+To prepare for the build:
+- `COPY` the files `echo-server.go` and `go.mod` to `/go/src/`.
+- change the `WORKDIR` to `/go/src`
 
-## Step 2: Compile wiki.go
+## Step 2: Compiling
 
-The next step should be to compile the go binary.
+The next step should be to compile the go binary as part of the first docker stage - so everything we do here still goes into the Dockerfile.
 
-`RUN go build wiki.go`
+`RUN go build echo-server.go`
 
-The result should be a binary called `wiki`.
+The result should be will be binary called `echo-server` to be created inside the container.
 
 ## Step 3: Add another stage
 
@@ -45,17 +33,17 @@ Multi-stage in the context of Docker means, you are allowed to have more than on
 
 `FROM alpine:latest`
 
-This will setup a completely new image which is initially independent of the previous. Since you want to get some credit for what you are doing, put a `LABEL maintainer="<some name>"` in there.
+This will set up a completely new image which is independent from the previous. Since you want to get some credit for what you are doing, put a `LABEL maintainer="<some name>"` in there.
 
 ## Step 4: Prepare runtime
 
-Let's create an environment that reflects the file system structure mentioned in the beginning. Use the `RUN` directive to `mkdir` the directories. Also you don't want to run a simple app like the wiki with root permissions. Create a new `appuser` with this command:
+Let's create an environment that allows us to run the app with minimal privileges. Create a new `appuser` with this command:
 
 `adduser -S -D -H -h /app appuser`
 
 ## Step 5: Get the executable
 
-Data from earlier stages can be consumed with `COPY --from=<previous stage name>` commands. Move the `wiki` executable to the runtime stage and place it directly in the `/app/` directory.
+Data from earlier stages can be consumed with `COPY --from=<previous stage name>` commands. Move the `echo-server` executable to the runtime stage and place it directly in the `/app/` directory.
 
 ## Step 6: Adapt the environment
 
@@ -64,7 +52,7 @@ So far all directories / files are owned by the `root` user. Time to change that
 Now you can use the `USER` directive to change to `appuser`. Also, the wiki expects to find files relative to its location. So you have to set the `WORKDIR` accordingly.
 
 What's still missing? Of course your image should `EXPOSE` a port and should have `CMD` that is invoked upon container start.
-The wiki app is listening on port 8080.
+The `echo-server` is listening on port 8080.
 
 ## Step 7: Build the images
 
@@ -81,6 +69,6 @@ $ docker run -d -P <image ID>
 
 # query running containers to get the port your traffic is forwarded to (55000 in this case)
 $ docker ps
->> CONTAINER ID   IMAGE          COMMAND       CREATED         STATUS        PORTS                     NAMES
->> ac40672a5efc   e3490867b037   "/app/wiki"   2 seconds ago   Up 1 second   0.0.0.0:55000->8080/tcp   vibrant_jepsen
+CONTAINER ID   IMAGE          COMMAND              CREATED         STATUS         PORTS                     NAMES
+0d9ecd4ff885   9663ef71d178   "/app/echo-server"   2 seconds ago   Up 2 seconds   0.0.0.0:55000->8080/tcp   bold_torvalds
 ```

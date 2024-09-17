@@ -25,7 +25,7 @@ Unfortunately, since VMware was purchased by Broadcom, VMware Player as a free p
 
 VMware Workstation requires a paid license that must be purchased through Ariba. If you already have one or are considering to get one, you can follow these steps here.
 
-You will need to download the x86_64/AMD64 image of your operating system. For Ubuntu, that would be this ISO file: <https://releases.ubuntu.com/22.04.4/ubuntu-22.04.4-desktop-amd64.iso>
+You will need to download the x86_64/AMD64 image of your operating system. For Ubuntu, that would be this ISO file: <https://releases.ubuntu.com/22.04/ubuntu-22.04.5-desktop-amd64.iso>
 
 Create a new VM in VMware workstation, assign at least two CPU cores and 4GB of memory to it and boot it from the Ubuntu Live-CD. If you want to, you can install the CD on your VMs disk but the live system will also be ok if you just want to do the exercises.
 
@@ -44,7 +44,7 @@ In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose
 
 #### Apple Intel 
 
-You will need to download the x86_64/AMD64 image of your operating system. For Ubuntu, that would be this ISO file: <https://releases.ubuntu.com/22.04.4/ubuntu-22.04.4-desktop-amd64.iso>
+You will need to download the x86_64/AMD64 image of your operating system. For Ubuntu, that would be this ISO file: <https://releases.ubuntu.com/22.04/ubuntu-22.04.5-desktop-amd64.iso>
 
 In UTM, chose "*Create a New Virtual Machine*", next chose "*Virtualize*", chose "*Linux*" and finally make sure you leave "*Use Apple Virtualization*" unchecked. Do not enable "*Enable Rosetta (x86_64 emulation)*". For "*Boot ISO Image*", browse to the OS image you just downloaded. On the next page, assign two CPU cores and 4096MiB of memory to the virtual machine. Chose a small disk size (20GB is more than enough) and select no "*Shared Directories*". After reviewing your settings, DO check "*Open VM settings*" then save. In popup window, select "*Network*", in Network Mode area, select "*Emulated VLAN*", in Emulated Network Card area, select "*Intel Gigabit Ethernet (e1000)*". Save and start the VM.
 

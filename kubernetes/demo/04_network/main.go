@@ -9,7 +9,7 @@ import (
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Source IP: %s", r.RemoteAddr)
-	log.Printf("Source IP: %s", r.RemoteAddr)
+	log.Printf("Source IP: %s, path: %s", r.RemoteAddr, r.URL.Path)
 }
 
 func main() {

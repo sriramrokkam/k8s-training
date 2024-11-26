@@ -6,7 +6,7 @@ For an overview of topics see the agenda pages on top level.
 ## How to Register
 
 - Check for [available classes in SuccessMap Learning](https://performancemanager5.successfactors.eu/sf/learning?destUrl=https%3A%2F%2Fsap%2eplateau%2ecom%2Flearning%2Fuser%2Fdeeplink%5fredirect%2ejsp%3FlinkId%3DITEM%5fDETAILS%26componentID%3DDEV%5fCC%5fPA%5fKuber%5f1803%5fILT%26componentTypeID%3DCOURSE%26revisionDate%3D1521715320000%26fromSF%3DY&company=SAP)
-- If there is no class that matches your region or available dates, [register in the interest group](https://fiorilaunchpad.sap.com/sites#my-events&/ig=10301003) to get notified when new classes get scheduled
+- If there is no class that matches your region or available dates, [register in the interest group](https://sapit-home-prod-004.launchpad.cfapps.eu10.hana.ondemand.com/site#my-events?&/ig=10301003) to get notified when new classes get scheduled
 
 **Cancellation Policy:**
 Cancellation is possible until 1 week (5 working days) before training start. If later, a clear reason must be provided. No shows will be charged EUR 1000. Incomplete attention (missing parts of 4-16 hours) will be charged EUR 300. Missing more than 50% will be considered a no-show.

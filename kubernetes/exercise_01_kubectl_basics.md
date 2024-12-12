@@ -4,23 +4,7 @@ In this exercise you will learn how the command line interface (CLI) `kubectl` c
 
 ## Step 0: check your environment
 
-### Scenario 1 - use the training VM
 
-**This is highly recommended for Windows users**
-
-Login to your VM and locate the kubectl binary by running `which kubectl`. The result should return the path to the binary.
-
-Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_ , _<participant_id>_ and _\<password>_ with the values that have been given to you by your trainer.
-
-```bash
-~/setup/get_kube_config.sh <training_id> <participant_id> <password>
-```
-
-Run `kubectl config get-contexts` to ensure a configuration file is available and/or `kubectl version` to test you can connect to the cluster. If you face any issue try to re-run the script and make sure the file `~/.kube/config` exist and is not empty.
-
-In case you are running things locally on your machine (without the VM): The `get_kube_config.sh` script is also part of the training repository which you have cloned. When executing it, the script will check, if `~/.kube/config` already exists and if this is the case create a new file `<training_name>.config` in your `~/.kube` directory (to prevent overwriting any existing configuration).
-
-### Scenario 2 - use a local environment
 
 **This will work only with a local bash environment like on MacOS or WSL**
 
@@ -32,15 +16,9 @@ cd <some_path_you_want_to_clone_to>
 git clone https://github.tools.sap/kubernetes/docker-k8s-training.git
 ```
 
-To download the credentials file to access the cluster, please run the `get_kube_config.sh` script located in our [repository](./get_kube_config.sh).
-Run the following commands, to download your personal `kubeconfig`. Replace _<training_id>_, _<participant_id>_ and _\<password>_ with the values that have been given to you by your trainer.
+To download the credentials file to access the cluster, please follow the email introduction to save & rename the attached yaml file to name `config` and save to `~/.kube/` folder on your virtual machine or local laptop.
 
-```bash
-cd <cloned_training_repository>/kubernetes
-./get_kube_config.sh <training_id> <participant_id> <password>
-```
-
-Run `kubectl config get-contexts` to ensure a configuration file is available and/or `kubectl version` to test you can connect to the cluster. If you face any issue try to re-run the script and make sure the file `~/.kube/config` exist and is not empty.
+Run `kubectl config get-contexts` to ensure a configuration file is available and/or `kubectl version` to test you can connect to the cluster. If you face any issue try to follow the email introduction and make sure the file `~/.kube/config` exist and is not empty.
 
 ## Step 1: check the nodes
 

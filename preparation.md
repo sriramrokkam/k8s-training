@@ -4,19 +4,28 @@ This page describes the necessary **preparation steps** before the course and as
 
 ## Environment setup
 
-During this course we will ask you to work with different tools using command line interfaces. We recommend you install the tools locally on your machine - continue reading about _Option A_.
+During this course we will ask you to work with different tools using command line interfaces. You may refer to below opetions:
 
-### Option A - use your local machine
 
-We actually encourage you to use your local machine directly to follow along with the training. You basically need three things to get along:
+### Option A -  Use a virtual machine
+
+You can use a Linux virtual machine to run kubectl and a container runtime. Use the Linux distribution of your preferred choice and set up the VM yourself. 
+
+|  Host OS|   Description |Reference  | 
+| :---         | :---     | :---     |
+|Windows 11| Run a WSL2:<br>- `docker community edition`: install on WSL<br>- `kubectl` commandline tool: install on WSL<br>- `vscode`: install on Windows 11 |1. Refer to [this document](training-vm.md#windows) for WSL installation<br>2. Run [this script](training-vm.md#if-you-are-running-a-wsl-on-windows-11) in WSL instance for `docker community edition` & `kubectl` commandline tool installation<br>3. Install [Visual Studio Code](https://code.visualstudio.com/) on Windows 11 |
+|MacOS| Run an open-source [UTM app](https://getutm.app/):<br>- `docker community edition`: install on UTM VM<br>- `kubectl` commandline tool: install on UTM VM<br>- `vscode`: install on UTM VM |1. Refer to [this document](training-vm.md#mac) for UTM installation & Virtual Machine deployment<br>2. Run [this script](training-vm.md#if-you-are-running-an-utm-vm-on-macos) in UTM VM for `docker community edition`, `kubectl` commandline tool & `Visual Studio Code` installation on UTM VM|
+
+
+### Option B - use your local machine
+
+If you want to use your local machine directly to follow along with the training. You basically need three things to get along:
 
 1. A text editor: use the editor that you feel most comfortable with (please do not consider Notepad) - if you do not have favorite text editor yet, you might want to give [Visual Studio Code](https://code.visualstudio.com/) a try
 2. kubectl: this is the most important tool you need to talk to Kubernetes clusters and you will definitely need it for the training - download it from its website at <https://kubernetes.io/docs/tasks/tools/>
 3. A container runtime: you can get Docker Desktop (it requires a paid license that must be purchased from Ariba) or you try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Installation instructions for Podman on Windows are [here](https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md), for MacOS are [here](https://podman.io/docs/installation#macos). Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it.
 
-### Option B - use a virtual machine
 
-You can use a Linux virtual machine to run kubectl and a container runtime. While we provided a dedicated VM image in the past, we nowadays encourage you to use the Linux distribution of your preferred choice and set up the VM yourself. Please refer to a the separate [`training-vm.md`](training-vm.md) file for more instructions.
 
 ## Clone
 

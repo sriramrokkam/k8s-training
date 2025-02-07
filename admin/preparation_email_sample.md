@@ -1,4 +1,4 @@
-# Template for invitation and preperation email
+# Template for invitation and preparation email
 
 It is good practice to send out an email to all participants of the training to welcome them and ask them to prepare for the training. The following template has proven its purpose over the years.
 

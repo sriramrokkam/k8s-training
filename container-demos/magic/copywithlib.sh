@@ -2,10 +2,10 @@
 # Author : vasu1124
 # License : MIT
 
-function useage()
+function usage()
 {
     cat << EOFmark
-Useage: $0 <binary> [destination]
+Usage: $0 <binary> [destination]
 copies all dependant libraries, preserving library paths into destination folder
 default destination is .
 library paths in destination are created dynamincally.
@@ -14,12 +14,12 @@ exit 1
 }
 
 #Validate the inputs
-[[ $# < 1 ]] && useage
+[[ $# < 1 ]] && usage
 dest=$2
 [[ $# < 2 ]] && dest=.
 
-#Check if the paths are vaild
-[[ ! -e $1 ]] && echo "Not a vaild input $1" && exit 1 
+#Check if the paths are valid
+[[ ! -e $1 ]] && echo "Not a valid input $1" && exit 1 
 [[ -d $dest ]] || echo "No such directory $dest ..." 
 
 lddtree -l $1 | while read lib

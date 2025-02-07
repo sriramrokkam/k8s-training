@@ -73,12 +73,14 @@ Run the image in detached mode and let Docker create a port forwarding to port `
 docker run -d -P echo-server:part-0001
 ```
 
-Query the running containers and identify the correct port (the port on your machine may vary - look for somthing like this: `0.0.0.0:55000->8080/tcp`):
+Query the running containers and identify the correct port (the port on your machine may vary - look for something like this: `0.0.0.0:55000->8080/tcp`):
+
 ```bash
 docker ps
 ```
 
 And finally, connect to the container:
+
 ```bash
 curl localhost:<port> # e.g. 55000
 ```

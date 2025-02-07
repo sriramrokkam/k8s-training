@@ -12,8 +12,8 @@ sudo microk8s.enable rbac
 sudo microk8s.enable cilium 
 sudo microk8s.enable storage
 
-microk8s.kubectl delete -f crb-dashbaord.yaml
-microk8s.kubectl create -f crb-dashbaord.yaml
+microk8s.kubectl delete -f crb-dashboard.yaml
+microk8s.kubectl create -f crb-dashboard.yaml
 # Simulate Loadbalancer
 microk8s.kubectl apply -f loadBalancerPatch.yaml
 # Create a storage calls with the name default

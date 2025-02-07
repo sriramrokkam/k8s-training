@@ -19,12 +19,12 @@ ${KUBECTL} get nodes &> /dev/null
 RC=$?
 if [ $RC -ne 0 ]; then
         echo "ERROR: Unable to get the nodes of your cluster ('kubectl get nodes' returned with RC $RC)."
-        echo "       Check that your kube.config is correct and points to the corrent cluster."
+        echo "       Check that your kube.config is correct and points to the correct cluster."
         exit 4
 fi
 
 # check if we have a working helm ready
-[ -z "$HELM" ] && HELM=`which helm`
+[ -z "$HELM" ] && HELM=$(which helm)
 if [ -z "$HELM" -o ! -x "$HELM" ]; then
         echo "Cannot find or execute helm. Download it from https://helm.sh/docs/intro/install/."
         exit 3
@@ -35,7 +35,7 @@ ${HELM} list &> /dev/null
 RC=$?
 if [ $RC -ne 0 ]; then
         echo "ERROR: helm does not work currently."
-        echo "       Please make sure tiller is installed & has required premissions."
+        echo "       Please make sure helm is installed & has required permissions to access the cluster."
         exit 4
 fi
 

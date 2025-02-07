@@ -16,7 +16,7 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - building images without docker is possible with [kaniko](https://github.com/GoogleContainerTools/kaniko)
 
-- mutli-arch images with [docker buildx](https://github.com/docker/buildx)
+- multi-arch images with [docker buildx](https://github.com/docker/buildx)
 
 - resource management with Docker - [how to limit a container's resources](https://docs.docker.com/config/containers/resource_constraints)
 
@@ -64,7 +64,7 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 - Running `kubectl completion` guides you how to setup shell completion.
 
-- [kubectl plugins](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) can be managed with [krew](https://krew.sigs.k8s.io). It is a convenient way to get essentials like [oidc support](https://github.com/int128/kubelogin) or a [command](https://github.com/corneliusweig/ketall) that actually perfoms a `get all`.
+- [kubectl plugins](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) can be managed with [krew](https://krew.sigs.k8s.io). It is a convenient way to get essentials like [oidc support](https://github.com/int128/kubelogin) or a [command](https://github.com/corneliusweig/ketall) that actually performs a `get all`.
 
 To work with multiple namespaces or even clusters, [kubectx and kubens](https://github.com/ahmetb/kubectx) get you started. Other tools like [kubeswitch](https://github.com/danielfoehrKn/kubeswitch) offer similar solutions.
 

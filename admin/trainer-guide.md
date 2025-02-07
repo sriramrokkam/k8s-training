@@ -117,7 +117,7 @@ To continue with the setup, you need `helm`. If you do not have it installed alr
 
 ### Setup a docker registry (~1 day before course starts)
 
-For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. After using a plain docker registry for quite some time, we decided to swith to [Harbor](https://goharbor.io/). It comes with a UI and some more useful features.
+For the docker exercises you need a private docker registry. Participants will upload their custom images to it during the course. After using a plain docker registry for quite some time, we decided to switch to [Harbor](https://goharbor.io/). It comes with a UI and some more useful features.
 In the admin folder of this repo, you find a registry folder with `install_harbor_registry.sh` script. Check the prerequisites and run the script as described [here](./registry/readme.md) to deploy a registry and make it available via an ingress.
 
 ### Build and push sample app artefacts

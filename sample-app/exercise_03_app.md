@@ -3,6 +3,7 @@
 ## Scope
 
 In this exercise we will focus on the **setup of fortune cookie frontend** itself (`module: app`):
+
 - Of course, we need to write a Deployment for this.
 - Additionally, we want to connect it with the database set up in the previous exercise.
 - And finally, make it available within a K8s cluster via a **Service** and publish externally via an **Ingress**.
@@ -78,13 +79,14 @@ spec:
           requests:
             memory: 800Mi
 ```
+
 - The missing environment variables in the snippet are `SPRING_DATASOURCE_URL` and `SPRING_DATASOURCE_PASSWORD`.
 
 - We also add a specific resource request for this app. The default memory-limit in each namespace is 500Mi which is not enough for a spring boot application. We request 800Mi and allow an increase to 1G of Memory to be consumed by each pod. 
 
 - When you are ready with the specification of the **Deployment** save it under the filename `fortune-cookies.yaml` and call `kubectl apply -f fortune-cookies.yaml` to create the **Deployment** `fortune-cookies`.
 
-- After successful creation of the **Deployment** check, if the Pod starts properly and runs withouth issues. You can use `kubectl get | describe | logs` commands.
+- After successful creation of the **Deployment** check, if the Pod starts properly and runs without issues. You can use `kubectl get | describe | logs` commands.
 
 ## Step 3: Service & Ingress
 
@@ -117,6 +119,7 @@ spec:
     module: <name-of-module>
   type: ClusterIP
 ```
+
 - When you are ready with the specification of the **Service** save it under the filename `fortune-cookies-service.yaml` and call `kubectl apply -f fortune-cookies-service.yaml` to create the **Service**.
 
 ### Ingress
@@ -149,6 +152,7 @@ spec:
             port:
               name: <name-of-fortune-cookies-port>
 ```
+
 - When you are ready with the specification of the **Ingress** save it under the filename `fortune-cookies-ingress.yaml` and call `kubectl apply -f fortune-cookies-ingress.yaml` to create the **Ingress**.
 
 - Check the **Ingress** and make sure it is properly created via `kubectl describe ingress fortune-cookies`.

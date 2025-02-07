@@ -39,7 +39,7 @@ fi
 
 _GOVERSION=$(go version)
 if [ $? -ne 0 -o -z "$_GOVERSION" ]; then
-	echo -e "${RED}For this demo we will need the GO programming language but 'go versin' did not work."
+	echo -e "${RED}For this demo we will need the GO programming language but 'go version' did not work."
 	echo "Please install and set up golang before running this demo."
 	exit 1
 fi

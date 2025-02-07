@@ -47,7 +47,7 @@ __EOF
 OLDKUBECONFIG=$KUBECONFIG
 export KUBECONFIG=$POD_MASTER_CONFIG
 echo "Starting a temporary shell with a kube.config for service account pod-master."
-echo -e "Exit from this shell once you are finised.\n"
+echo -e "Exit from this shell once you are finished.\n"
 bash --noprofile --norc
 export KUBECONFIG=$OLDKUBECONFIG
 rm -f $POD_MASTER_CONFIG

@@ -24,8 +24,6 @@ The helm client uses the information stored in .kube/config to talk to the kuber
 
 **And that's it - `helm` is ready to use!**
 
-Compared to the previous v2 setup procedure, this is a significant improvement. The server-side component `tiller` has been removed completely.
-
 ## Step 2: looking for charts?
 
 Helm organizes applications in so-called charts, which contain parameters you can set during installation. By default, helm (v3) is not configured to search any remote repository for charts.

@@ -75,7 +75,7 @@ spec:
         jsonPath: .spec.steak.spec.cookLevel
       - name: Fat
         type: string
-        description: The amout of fat i.e. how juiy the steak will be.
+        description: The amount of fat i.e. how juicy the steak will be.
         jsonPath: .spec.steak.spec.fat
       - name: Age
         type: date

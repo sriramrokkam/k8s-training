@@ -14,7 +14,7 @@ In order to teach a class you should feel comfortable in the role of an instruct
 
 ## Prerequisites
 
-Even the most motivated trainer candidate needs some time to prepare and host a class. Hence, a vital prerequisite is the backing of your manager and a capacity/time committment. The course duration is 4 days, but with some preparation work it can easily consume 6-7 working days per training.
+Even the most motivated trainer candidate needs some time to prepare and host a class. Hence, a vital prerequisite is the backing of your manager and a capacity/time commitment. The course duration is 4 days, but with some preparation work it can easily consume 6-7 working days per training.
 
 In addition you should already have a good understanding of:
 

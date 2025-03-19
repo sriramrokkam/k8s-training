@@ -74,7 +74,7 @@ spec:
           service: 
             name: <string>
             port:
-              number : <int>
+              number: <int>
 ```
 
 Finally, deploy your ingress and test the URL.

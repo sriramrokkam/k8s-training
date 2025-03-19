@@ -9,7 +9,7 @@ This exercise does not build on any previous exercise - you will create all the 
 
 ## Step 0: Create an `htpasswd` file
 
-In this exercise you will spin up another webserver but this time, it won't be open to everyone. Instead, it will use [HTTP basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) to hide (almost) everything bedind a login.
+In this exercise you will spin up another webserver but this time, it won't be open to everyone. Instead, it will use [HTTP basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) to hide (almost) everything behind a login.
 
 Create an empty file which you call `htpasswd` (with no extension) and paste the following content into it:
 

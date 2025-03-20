@@ -88,7 +88,7 @@ Now post your yaml file to the API server and monitor the upcoming new pods. You
 
 Additionally you should find new `PVC` resources in your namespace. When you run `kubectl get pods -o wide`, you should also see the IP addresses of your pods.
 
-Quickly spin up a temporary pod and directly connect to it: `kubectl run dns-test -i --tty --restart=Never --rm --image eu.gcr.io/sap-se-gcr-k8s-public/eu_gcr_io/gardener-project/gardener/ops-toolbelt:latest`
+Quickly spin up a temporary pod and directly connect to it: `kubectl run dns-test -i --tty --restart=Never --rm --image europe-docker.pkg.dev/gardener-project/releases/gardener/ops-toolbelt:latest`
 
 Within pod's shell context, run a few commonads to check if your individual pods are accessible via the service:
 

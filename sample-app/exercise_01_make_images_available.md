@@ -53,7 +53,7 @@ docker buildx use fortunecookiesbuilder
 docker buildx inspect --bootstrap
 
 # use the builder to specify the target platform's architecture
-docker buildx build --platform linux/amd64 -t <registry-url>/training/fortune-cookies-<participant-id>:<participant-id> .
+docker buildx build --platform linux/amd64 -t <registry-url>/training/fortune-cookies-<participant-id>:<participant-id> --load .
 docker push <registry-url>/training/fortune-cookies-<participant-id>:<participant-id>
 
 # cleanup

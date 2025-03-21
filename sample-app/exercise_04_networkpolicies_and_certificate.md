@@ -137,7 +137,7 @@ Again test the app, if everything still works.
 We also want to enable TLS for our communication with the fortune cookies app. Therefore, we activate TLS on our ingress service. 
 
 To secure an ingress we need to configure the ingress resource and provide a secret containing the certificate. 
-Gardener has implemented a controller which is automatically looking for ingress resources certain annotations, creates trusted certificates for them using `Let'sEncrypt` and puts those into secrets.
+Gardener has implemented a controller which is automatically looking for ingress resources certain annotations, creates trusted certificates for them using `Let's Encrypt` and puts those into secrets.
 The only thing we have to do configure the ingress and wait for the controller to do its work.
 
 To learn more about the cert manager, take a look at this [Gardener tutorial](https://gardener.cloud/docs/extensions/others/gardener-extension-shoot-cert-service/usage/request_cert/#using-an-ingress-resource).
@@ -149,7 +149,7 @@ Finally, don't forget to put in the necessary label instead of `...`!
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name:fortune-cookies
+  name: fortune-cookies
   labels:
     ...
   annotations:

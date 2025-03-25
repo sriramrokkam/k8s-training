@@ -69,7 +69,7 @@ Again you should get a root prompt, execute `psql -h <name-of-headless-service> 
 
 To test the egress `kubectl exec -it postgres-0 -- ash` and try to "ping" any page/pod e.g. `wget google.de`.
 It should fail.
-If `wget` is not there, try e.g. `apt-get update`.
+If `wget` is not there, try e.g. `apk update`.
 This will also timeout.
 
 ## Step 2: Network policy for the fortune cookies app

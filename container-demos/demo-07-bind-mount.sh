@@ -10,7 +10,8 @@ fi
 ########################
 dir=$(realpath $(dirname $0))
 PATH=$PATH:$dir/magic
-source $dir/magic/demo-magic.sh -w2
+# forwarding args if some exists
+source $dir/magic/demo-magic.sh $@
 
 TYPE_SPEED=50
 DEMO_PROMPT="${GREEN}➜ ${CYAN}\W $ "

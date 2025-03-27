@@ -19,7 +19,7 @@ TYPE_SPEED=20
 NO_WAIT=false
 
 # if > 0, will pause for this amount of seconds before automatically proceeding with any p or pe
-PROMPT_TIMEOUT=0
+PROMPT_TIMEOUT=2
 
 # handy color vars for pretty prompts
 BLACK="\033[0;30m"
@@ -43,7 +43,7 @@ function usage() {
   echo -e "\t-h\tPrints Help text"
   echo -e "\t-d\tDebug mode. Disables simulated typing"
   echo -e "\t-n\tNo wait"
-  echo -e "\t-w\tWaits max the given amount of seconds before proceeding with demo (e.g. `-w5`)"
+  echo -e "\t-w\tWaits max the given amount of seconds before proceeding with demo (e.g. '-w5')"
   echo -e ""
 }
 

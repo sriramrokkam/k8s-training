@@ -6,7 +6,7 @@ All scripts run fully automated until the end. However you can pause and continu
 
 **Use `ctrl + s` to pause and `ctrl + q` to continue script execution.**
 
-**Use `-h` to get more choise on how to run the script**
+**Use `-h` to get more choice on how to run the script**
 
 ## 01 chroot
 

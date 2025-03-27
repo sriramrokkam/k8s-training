@@ -4,8 +4,8 @@ GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].c
 GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
 INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
 
-HARBOR_USER=participant
-HARBOR_PWD='2r4!rX6u5-qH'
+HARBOR_USER=admin
+HARBOR_PWD='82rUHSy98xbZztm5MjLJ7Nf6'
 
 ## create new builder and switch to it
 docker buildx create --name kube-terminator-builder --driver docker-container
@@ -18,13 +18,16 @@ docker login -u $HARBOR_USER -p $HARBOR_PWD $INGRESS_HOSTNAME
 
 ## build and push kube-terminator container image
 echo -e "\n\n > Building kube-terminator Docker mage ..."
-docker buildx build --platform linux/amd64 -t $INGRESS_HOSTNAME/training/kube-terminator:v1 --push ../../kubernetes/demo/demo-chart/kube-terminator
+docker buildx build --platform linux/amd64 -t ${INGRESS_HOSTNAME}/library/kube-terminator:v1 --push ../../kubernetes/demo/demo-chart/kube-terminator
+
+## patch kube-terminator default values
+sed -i -e "s/repository\/image/${INGRESS_HOSTNAME}\/library\/kube-terminator/" ../../kubernetes/demo/demo-chart/chart/values.yaml
 
 ## push kube-terminator helm chart
 echo -e "\n\n > Bundling and pushing helm chart as OCI artifact ..."
 helm registry login $INGRESS_HOSTNAME -u $HARBOR_USER -p $HARBOR_PWD
 helm package ../../kubernetes/demo/demo-chart/chart/
-helm push kube-terminator-0.1.0.tgz oci://${INGRESS_HOSTNAME}/training
+helm push kube-terminator-0.1.0.tgz oci://${INGRESS_HOSTNAME}/library
 
 ## clean up
 docker logout $INGRESS_HOSTNAME

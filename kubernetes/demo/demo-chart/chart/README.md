@@ -6,13 +6,14 @@ The following values are available for configuration:
 image:
   # the repository where the image is stored
   repository: ""
+  # specify the image pull behavior
   pullPolicy: IfNotPresent
   # use the tag to pull a specific image
   tag: ""
   # use the digest to pull a specific image, if both are specified, the digest will be used
-  sha256: ""
+  digest: ""
 
-# refernce a secret to use for image pulling
+# reference a secret to use for image pulling
 imagePullSecrets: []
 # - name: secretName
 
@@ -24,8 +25,11 @@ rbac:
 
 # kube-terminator configuration
 configuration:
-  talkToTheHand: "true" # aka dryRun
+  # dry run mode
+  talkToTheHand: true
+  # interval to check for pods to delete
   interval: "1m"
-  labelSelector: "" # foo=bar
+  # select specific pods by their labels e.g. foo=bar
+  labelSelector: ""
 ```
 

@@ -31,8 +31,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 
 {{- define "image" -}}
-{{- if .Values.image.sha256 }}
-{{- .Values.image.repository }}@{{ .Values.image.sha256 }}
+{{- if .Values.image.digest }}
+{{- .Values.image.repository }}@{{ .Values.image.digest }}
 {{- else }}
 {{- .Values.image.repository }}:{{ .Values.image.tag }}
 {{- end -}}

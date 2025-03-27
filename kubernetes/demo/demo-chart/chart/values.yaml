@@ -1,9 +1,8 @@
 image:
-  repository: ""
-  # This sets the pull policy for images.
+  repository: "h.ingress.wdf12.k8s-train.shoot.canary.k8s-hana.ondemand.com/library/kube-terminator"
   pullPolicy: IfNotPresent
-  tag: ""
-  sha256: ""
+  tag: "v1"
+  digest: ""
 
 imagePullSecrets: []
 # - name: secretName
@@ -13,6 +12,6 @@ rbac:
   create: false
 
 configuration:
-  talkToTheHand: "true" # aka dryRun
+  talkToTheHand: true
   interval: "1m"
   labelSelector: "" # foo=bar

@@ -10,7 +10,8 @@ fi
 ########################
 dir=$(realpath $(dirname $0))
 PATH=$PATH:$dir/magic
-source $dir/magic/demo-magic.sh -w2
+# forwarding args if some exists
+source $dir/magic/demo-magic.sh $@
 
 TYPE_SPEED=50
 DEMO_PROMPT="${GREEN}➜ ${CYAN}\W $ "
@@ -22,7 +23,7 @@ clear
 # some preparation
 cat << _EOF > /tmp/_demo-02-unshare-1.sh
 #!/bin/bash
-source $dir/magic/demo-magic.sh -w2
+source $dir/magic/demo-magic.sh $@
 DEMO_PROMPT="${GREEN}➜ ${RED}USER namespace ${CYAN}\W # "
 TYPE_SPEED=50
 

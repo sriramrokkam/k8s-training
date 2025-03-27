@@ -6,6 +6,8 @@ All scripts run fully automated until the end. However you can pause and continu
 
 **Use `ctrl + s` to pause and `ctrl + q` to continue script execution.**
 
+**Use `-h` to get more choice on how to run the script**
+
 ## 01 chroot
 
 The script will do the setup of a minimal environment (basically only a bash + libs) and chroot into it.
@@ -33,3 +35,25 @@ Docker as well as Kubernetes can make use of cgroups to manage resources in a co
 The script will demonstrate how seccomp profiles can be used to control access to the kernel via syscalls. To make things easier, this demo is based on Docker so it might give already an impression on how Docker works.
 
 While the syscalls are blocked in this demo, it is worth to mention, that you can also implement trap wires to inform the underlying platform of what's going on and potentially invoke countermeasures.
+
+## Required tools
+
+- [demo-01-chroot.sh](./demo-01-chroot.sh)
+  - [lddtree](https://github.com/gentoo/pax-utils/blob/master/lddtree.sh)
+  - pv (`apt install pv`)
+  - build-essentials (`apt install build-essentials`)
+- [demo-02-unshare.sh](./demo-02-unshare.sh)
+  - 🤷‍♂️
+- [demo-03-cgroup.sh](./demo-03-cgroup.sh)
+  - killall
+  - cgroup-tools (`apt install cgroup-tools`)
+- [demo-03-cgroup_v2.sh](./demo-03-cgroup_v2.sh)
+  - killall
+- [demo-04-capabilities.sh](./demo-04-capabilities.sh)
+  - docker
+- [demo-05-seccomp.sh](./demo-05-seccomp.sh)
+  - golang
+- [demo-06-overlayfs.sh](./demo-06-overlayfs.sh)
+  - 🤷‍♂️
+- [demo-07-bind-mount.sh](./demo-07-bind-mount.sh)
+  - 🤷‍♂️

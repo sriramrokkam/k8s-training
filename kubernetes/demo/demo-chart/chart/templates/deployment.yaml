@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kube-terminator.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kube-terminator.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "kube-terminator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kube-terminator.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+        fsGroup: 1001
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            runAsUser: 1001
+            runAsNonRoot: true
+            runAsGroup: 1001
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          image: {{ include "image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --namespace={{ .Release.Namespace }}
+            - --dry-run={{ .Values.configuration.talkToTheHand }}
+            - --interval={{ .Values.configuration.interval }}
+            {{- if .Values.configuration.labelSelector }}
+            - --label-selector={{ .Values.configuration.labelSelector | quote }}
+            {{- end }}

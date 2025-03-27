@@ -1,0 +1,18 @@
+image:
+  repository: ""
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  tag: ""
+  sha256: ""
+
+imagePullSecrets: []
+# - name: secretName
+
+serviceAccountName: chaoskube
+rbac:
+  create: false
+
+configuration:
+  talkToTheHand: "true" # aka dryRun
+  interval: "1m"
+  labelSelector: "" # foo=bar

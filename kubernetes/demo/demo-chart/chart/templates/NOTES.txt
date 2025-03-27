@@ -1,0 +1,2 @@
+Running {{.Chart.Name }} with configuration:
+{{.Values.configuration | toYaml }}

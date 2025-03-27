@@ -2,3 +2,4 @@
 dev/
 .idea/
 container-demos/dbuild/**
+container-demos/seccomp/**

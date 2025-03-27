@@ -31,7 +31,7 @@ if [ $? -ne 0 -o -z "$_DOCKERINFO" ]; then
 	exit 1
 fi
 
-DOCKER_IMG="debian:8-demo-1"
+DOCKER_IMG="ubuntu:8-demo-1"
 
 # clean up to have a green field
 docker image rm $DOCKER_IMG
@@ -49,7 +49,7 @@ cp $dir/magic/demo-magic.sh ${dir}/dbuild
 cat << '_EOF' > ${dir}/dbuild/_demo01.sh
 #!/bin/bash
 
-source /bin/demo-magic.sh -w2
+source /bin/demo-magic.sh $@
 DEMO_PROMPT="${GREEN}➜ ${RED}container ${CYAN}\W # "
 TYPE_SPEED=50
 
@@ -82,7 +82,7 @@ _EOF
 cat << '_EOF' > ${dir}/dbuild/_demo02.sh
 #!/bin/bash
 
-source /bin/demo-magic.sh -w2
+source /bin/demo-magic.sh $@
 DEMO_PROMPT="${GREEN}➜ ${RED}container ${CYAN}\W # "
 TYPE_SPEED=50
 
@@ -109,7 +109,7 @@ _EOF
 chmod +x ${dir}/dbuild/_demo*.sh
 
 cat << '_EOF' > ${dir}/dbuild/Dockerfile
-FROM debian:jessie
+FROM ubuntu:jammy
 COPY demo-magic.sh /bin
 COPY pv /bin
 COPY _demo01.sh /bin
@@ -122,12 +122,12 @@ clear
 # let the fun begin
 
 p "# we all know: root can do everything, non-root may do nothing"
-p "# to have a look at capabilities, we spin up a container with Debian 8.1 in it"
-p "docker run debian:jessie"
-docker run --name cap-demo1 $DOCKER_IMG /bin/_demo01.sh
+p "# to have a look at capabilities, we spin up a container with ubuntu 8.1 in it"
+p "docker run ubuntu:jammy"
+docker run -it --name cap-demo1 $DOCKER_IMG /bin/_demo01.sh $@
 p "# so now we start the container again but this time adding a capability"
-p "docker run --cap-add=SYS_ADMIN debian:jessie"
-docker run --name cap-demo2 --cap-add=SYS_ADMIN $DOCKER_IMG /bin/_demo02.sh
+p "docker run --cap-add=SYS_ADMIN ubuntu:jammy"
+docker run -it --name cap-demo2 --cap-add=SYS_ADMIN $DOCKER_IMG /bin/_demo02.sh $@
 p "# if you need to know more about capabilities: man capabilities"
 
 # now clean up the mess

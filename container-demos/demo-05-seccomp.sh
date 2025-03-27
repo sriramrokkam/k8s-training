@@ -46,7 +46,7 @@ if [ $? -ne 0 -o -z "$_GOVERSION" ]; then
 fi
 
 
-DOCKER_IMG="debian:8-demo-seccomp"
+DOCKER_IMG="ubuntu:8-demo-seccomp"
 
 # clean up to have a green field
 docker image rm $DOCKER_IMG
@@ -66,7 +66,7 @@ cp $dir/magic/demo-magic.sh ${dir}/dbuild
 cat << '_EOF' > ${dir}/dbuild/_demo01.sh
 #!/bin/bash
 
-source /bin/demo-magic.sh -w2
+source /bin/demo-magic.sh $@
 DEMO_PROMPT="${GREEN}➜ ${RED}container ${CYAN}\W # "
 TYPE_SPEED=50
 
@@ -127,7 +127,7 @@ _EOF
 chmod +x ${dir}/dbuild/_demo*.sh
 
 cat << '_EOF' > ${dir}/dbuild/Dockerfile
-FROM debian:jessie
+FROM ubuntu:jammy
 COPY demo-magic.sh /bin
 COPY pv /bin
 COPY _demo01.sh /bin
@@ -189,8 +189,8 @@ p "# you can see one call to write(2) which is responsible for writing the messa
 p "# of course, a shell like this can and will fire hundreds of system calls"
 p "# we will now start a shell in a Docker container"
 p "# that container will run with a seccomp profile which will block two of those many system calls"
-p "docker run --security-opt seccomp=seccomp/deny-dir.json --security-opt=\"no-new-privileges\" debian:jessie"
-docker run --name seccomp-demo --security-opt seccomp=${dir}/seccomp/deny-dir.json --security-opt="no-new-privileges" $DOCKER_IMG /bin/_demo01.sh
+p "docker run --security-opt seccomp=seccomp/deny-dir.json --security-opt=\"no-new-privileges\" ubuntu:jammy"
+docker run -it --name seccomp-demo --security-opt seccomp=${dir}/seccomp/deny-dir.json --security-opt="no-new-privileges" $DOCKER_IMG /bin/_demo01.sh $@
 p "# if you want to know how that seccomp profile looked like, have a look at the file ${dir}/seccomp/deny-dir.json"
 
 # now clean up the mess

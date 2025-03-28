@@ -72,6 +72,8 @@ func main() {
 		podClient:     clientSet.CoreV1().Pods(*namespace),
 	}
 
+	logger.Printf("Running terminator with interval: %s, dryRun: %t, labelSelector: %s", terminator.interval.String(), terminator.dryRun, terminator.labelSelector)
+
 	ctx := context.Background()
 	ctxCancel, cancel := context.WithCancel(ctx)
 
@@ -99,6 +101,12 @@ func (t *terminatorConfig) run(ctx context.Context) {
 				pods, err := t.podClient.List(ctx, listOpt)
 				if err != nil {
 					t.logger.Printf("Failed to list Pods: %v", err)
+					next = next.Add(t.interval)
+					continue
+				}
+				if len(pods.Items) == 0 {
+					t.logger.Printf("No Pods found with label selector: %s", t.labelSelector)
+					t.logger.Printf("I'll be back in %s", t.interval.String())
 					next = next.Add(t.interval)
 					continue
 				}

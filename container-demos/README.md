@@ -39,9 +39,8 @@ While the syscalls are blocked in this demo, it is worth to mention, that you ca
 ## Required tools
 
 - [demo-01-chroot.sh](./demo-01-chroot.sh)
-  - [lddtree](https://github.com/gentoo/pax-utils/blob/master/lddtree.sh)
+  - lddtree (`apt install pax-utils`)
   - pv (`apt install pv`)
-  - build-essentials (`apt install build-essentials`)
 - [demo-02-unshare.sh](./demo-02-unshare.sh)
   - 🤷‍♂️
 - [demo-03-cgroup.sh](./demo-03-cgroup.sh)
@@ -53,7 +52,8 @@ While the syscalls are blocked in this demo, it is worth to mention, that you ca
   - docker
 - [demo-05-seccomp.sh](./demo-05-seccomp.sh)
   - golang
+  - strace (`apt install strace`)
 - [demo-06-overlayfs.sh](./demo-06-overlayfs.sh)
-  - 🤷‍♂️
+  - tree (`apt install tree`)
 - [demo-07-bind-mount.sh](./demo-07-bind-mount.sh)
   - 🤷‍♂️

@@ -5,7 +5,7 @@ GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].c
 INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
 
 HARBOR_USER=admin
-HARBOR_PWD='82rUHSy98xbZztm5MjLJ7Nf6'
+HARBOR_PWD=$(kubectl -n harbor-registry get secrets harbor-registry-core -ojson | jq -r .data.HARBOR_ADMIN_PASSWORD | base64 -d)
 
 ## create new builder and switch to it
 docker buildx create --name kube-terminator-builder --driver docker-container

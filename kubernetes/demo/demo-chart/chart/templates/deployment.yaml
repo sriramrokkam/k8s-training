@@ -37,5 +37,5 @@ spec:
             - --dry-run={{ .Values.configuration.talkToTheHand }}
             - --interval={{ .Values.configuration.interval }}
             {{- if .Values.configuration.labelSelector }}
-            - --label-selector={{ .Values.configuration.labelSelector | quote }}
+            - --label-selector={{ .Values.configuration.labelSelector }}
             {{- end }}

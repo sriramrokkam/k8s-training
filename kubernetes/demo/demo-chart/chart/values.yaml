@@ -1,5 +1,5 @@
 image:
-  repository: "h.ingress.wdf12.k8s-train.shoot.canary.k8s-hana.ondemand.com/library/kube-terminator"
+  repository: "repository/image"
   pullPolicy: IfNotPresent
   tag: "v1"
   digest: ""

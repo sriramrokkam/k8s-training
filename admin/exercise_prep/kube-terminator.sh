@@ -18,15 +18,15 @@ docker login -u $HARBOR_USER -p $HARBOR_PWD $INGRESS_HOSTNAME
 
 ## build and push kube-terminator container image
 echo -e "\n\n > Building kube-terminator Docker mage ..."
-docker buildx build --platform linux/amd64 -t ${INGRESS_HOSTNAME}/library/kube-terminator:v1 --push ../../kubernetes/demo/demo-chart/kube-terminator
+docker buildx build --platform linux/amd64 -t ${INGRESS_HOSTNAME}/library/kube-terminator:v1 --push $(dirname $0)/../../kubernetes/demo/demo-chart/kube-terminator
 
 ## patch kube-terminator default values
-sed -i -e "s/repository\/image/${INGRESS_HOSTNAME}\/library\/kube-terminator/" ../../kubernetes/demo/demo-chart/chart/values.yaml
+sed -i -e "s/repository\/image/${INGRESS_HOSTNAME}\/library\/kube-terminator/" $(dirname $0)/../../kubernetes/demo/demo-chart/chart/values.yaml
 
 ## push kube-terminator helm chart
 echo -e "\n\n > Bundling and pushing helm chart as OCI artifact ..."
 helm registry login $INGRESS_HOSTNAME -u $HARBOR_USER -p $HARBOR_PWD
-helm package ../../kubernetes/demo/demo-chart/chart/
+helm package $(dirname $0)/../../kubernetes/demo/demo-chart/chart/
 helm push kube-terminator-0.1.0.tgz oci://${INGRESS_HOSTNAME}/library
 
 ## clean up

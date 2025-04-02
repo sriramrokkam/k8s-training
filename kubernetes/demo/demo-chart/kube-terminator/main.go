@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-type terminatorConfig struct {
+type terminator struct {
 	logger        *log.Logger
 	dryRun        bool
 	podClient     corev1.PodInterface

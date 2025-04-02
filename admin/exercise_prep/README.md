@@ -17,5 +17,5 @@ To demo and explain helm charts, there is a [small chart + application in this r
 
 The script will:
 - run `docker login` to the harbor registry using the `admin` credentials
-- build an image with x86 architecture for the kube-terminator app and push it to the `library` project in Harbor.
+- build an image with x86_64 architecture for the kube-terminator app and push it to the `library` project in Harbor.
 - package and upload the helm chart as an OCI artifact to the `library` project in Harbor.

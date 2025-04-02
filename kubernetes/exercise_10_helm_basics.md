@@ -26,15 +26,15 @@ The helm client uses the information stored in .kube/config to talk to the kuber
 
 ## Step 2: looking for charts?
 
-Helm organizes applications in so-called charts, which contain templates and parameters you can set during installation. You can develop or store charts locally, but also in remote locations. By default, helm (v3) is not configured to search any remote repository for charts though.
+Helm organizes applications in so-called charts, which contain templates and parameters you can set during installation. You can develop and store charts locally, but also in remote locations. By default, helm is not configured to search any remote repository for charts though.
 
-The largest aggregation of charts is available at [helm/artifact hub](https://artifacthub.io/). Here, you can search for charts and find many common applications. But please be aware that they might be served from different repositories.
+The largest aggregation of charts is available at [helm/artifact hub](https://artifacthub.io/). Here, you can search for charts and find many common applications, but please be aware that they might be served from different repositories.
 
 So as a first step, visit the [artifact hub](https://artifacthub.io/) and take a look around. Can you find a chart for an application you are using or interested in?
 
 ## Step 3: install a helm chart
 
-While the artifact hub is a great place to search for charts, another way of distributing them is via OCI registries. In fact, you can push a helm chart to a registry just like you would do with a docker image. Both are OCI compliant and can be served from our training's harbor registry. This way you don't have to worry about the repository "magic" within helm. Quite often, OCI references to helm charts are attached to release notes of projects and can be consumed directly.
+While the artifact hub is a great place to search for charts, another way of distributing them is via OCI registries. In fact, you can push a helm chart to a registry just like you would do with a container image. Both are OCI compliant artefacts and can be served from our training's harbor registry. This way you don't have to worry about the repository "magic" within helm. Quite often, OCI references to helm charts are attached to release notes of projects and can be consumed directly.
 
 In this exercise, you will install a chart from the harbor registry. The chart is called `kube-terminator` and is used to randomly delete pods in your kubernetes cluster. This is useful to test an application for resilience.
 
@@ -42,7 +42,7 @@ Before you can install it, you need to locate the chart in the harbor registry. 
 
 Harbor renders a README file as well as the default values for the chart. 
 
-To install the chart you need its location. You can copy the location from the harbor UI by clicking the "Copy" button on next to the tag or use the command below:
+To install the chart you need its location. You can copy the location from the harbor UI by clicking the "Copy" button on next to the tag or use the commands below:
 
 ```bash
 GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)

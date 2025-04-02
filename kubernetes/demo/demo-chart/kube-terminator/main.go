@@ -64,7 +64,7 @@ func main() {
 		clientSet = kubernetes.NewForConfigOrDie(config)
 	}
 
-	terminator := terminatorConfig{
+	terminator := terminator{
 		logger:        log.New(os.Stdout, "Terminator: ", log.LstdFlags),
 		dryRun:        *dryRun,
 		labelSelector: *labelSelector,
@@ -86,7 +86,7 @@ func main() {
 	cancel()
 }
 
-func (t *terminatorConfig) run(ctx context.Context) {
+func (t *terminator) run(ctx context.Context) {
 	listOpt := metav1.ListOptions{}
 	if t.labelSelector != "" {
 		listOpt.LabelSelector = t.labelSelector

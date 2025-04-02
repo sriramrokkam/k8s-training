@@ -1,0 +1,17 @@
+image:
+  repository: "repository/image"
+  pullPolicy: IfNotPresent
+  tag: "v1"
+  digest: ""
+
+imagePullSecrets: []
+# - name: secretName
+
+serviceAccountName: chaoskube
+rbac:
+  create: false
+
+configuration:
+  talkToTheHand: true
+  interval: "1m"
+  labelSelector: "" # foo=bar

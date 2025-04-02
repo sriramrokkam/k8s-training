@@ -26,59 +26,88 @@ The helm client uses the information stored in .kube/config to talk to the kuber
 
 ## Step 2: looking for charts?
 
-Helm organizes applications in so-called charts, which contain parameters you can set during installation. By default, helm (v3) is not configured to search any remote repository for charts.
+Helm organizes applications in so-called charts, which contain templates and parameters you can set during installation. You can develop and store charts locally, but also in remote locations. By default, helm is not configured to search any remote repository for charts though.
 
-Until recently, there was repository called `stable` on [github.com](https://github.com/helm/charts/tree/master/stable) where most of the relevant community helm charts where maintained.
-However it was moved to a `deprecated` status and over time, most charts migrated to custom repositories and can be found on [helm/artifact hub](https://artifacthub.io/).
+The largest aggregation of charts is available at [helm/artifact hub](https://artifacthub.io/). Here, you can search for charts and find many common applications, but please be aware that they might be served from different repositories.
 
-So as a first step, visit the [artifact hub](https://artifacthub.io/) and take a look around. For this exercise, we are looking for a chart called `chaoskube`. Go ahead and look it up.
+So as a first step, visit the [artifact hub](https://artifacthub.io/) and take a look around. Can you find a chart for an application you are using or interested in?
 
-Found it? Check the GitHub [page](https://github.com/linki/chaoskube) for a detailed description of the tool.
+## Step 3: install a helm chart
 
-## Step 3: install a chart
+While the artifact hub is a great place to search for charts, another way of distributing them is via OCI registries. In fact, you can push a helm chart to a registry just like you would do with a container image. Both are OCI compliant artefacts and can be served from our training's harbor registry. This way you don't have to worry about the repository "magic" within helm. Quite often, OCI references to helm charts are attached to release notes of projects and can be consumed directly.
 
-The [chart's page on artifact hub](https://artifacthub.io/packages/helm/cloudnativeapp/chaoskube) gives you all the information you need, in order to install the chart.
+In this exercise, you will install a chart from the harbor registry. The chart is called `kube-terminator` and is used to randomly delete pods in your kubernetes cluster. This is useful to test an application for resilience.
 
-To fulfill the prerequisites, you have to add the chart's repository to your local helm's repository list. The commands can be found, when you click the `install` button in the right upper corner of the page. They look like this:
+Before you can install it, you need to locate the chart in the harbor registry. Logon to the web UI through `h.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com` with user `participant` and password `2r4!rX6u5-qH`. Navigate to the `library` project and locate the `kube-terminator`. There should be two artifacts - a docker image as well as a helm chart. Click on the helm chart and take a look at the details.
 
-```bash
-helm repo add cloudnativeapp https://cloudnativeapp.github.io/charts/curated/
-```
+Harbor renders a README file as well as the default values for the chart. 
 
-Next, run the following command to install the chaoskube chart. It installs everything that is associated with the chart into your namespace. Note the `--set` flags, which specify parameters of the chart.
+To install the chart you need its location. You can copy the location from the harbor UI by clicking the "Copy" button on next to the tag or use the commands below:
 
 ```bash
-helm install <release-name> cloudnativeapp/chaoskube --set namespaces=<your-namespace> --set rbac.serviceAccountName=chaoskube --debug
+GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
+GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
+INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
+
+helm install terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0
 ```
 
-The parameter `namespaces` defines in which namespaces the chaoskube will delete pods. `rbac.serviceAccountName` specifies which serviceAccount the scheduled chaoskube pod will use. Here we give it the `chaoskube` account, which has been created as part of the cluster setup already. This is mainly because chaoskube wants to query pods across all namespaces - which requires a `ClusterRoleBinding` to the `ClusterRole  training:cluster-view`.  
+## Step 4: inspect your kube-terminator
 
-To learn more about the configuration options the chaoskube chart provides, check again the chart's page mentioned above.
-
-## Step 4: inspect your chaoskube
-
-Next, check your installation by running `helm list`. It returns all installed releases including your chaoskube. You can reference it by its name.
-Get more information by running `helm status <your-releases-name>`
-
-Also check the pods running inside your kubernetes namespace. Don't forget to look into the logs of the chaoskube to see what would have happened without the dry-run flag set.
-`kubectl logs -f pod/<your chaoskube-pod-name>`
-
-## Step 5 (optional): remove the dry-run flag
-
-To make the chaoskube actually do something, you can upgrade your release and set the dry-run flag to false.
+The installation command should have created a helm release called `terminator`. Run the commands below to verify that the release was created successfully.
 
 ```bash
-helm upgrade <release-name> cloudnativeapp/chaoskube --reuse-values --set dryRun=false
+# check for releases, use -a to see failed releases as well
+helm list -a
+# check the status of the release
+helm status terminator
+# check the resources created by the release and the values used
+helm get all terminator
 ```
 
-Note, that you have to use `--reuse-values` to keep the non-default parameter you specified upon installation of the chart.
+Of course, there should also be a pod running. Check the logs of it (`kubectl logs ...`)  to see, what it is doing.
 
-## Step 6: clean up
+## Step 5: remove the dry-run flag
 
-Clean up by deleting the chaoskube release:
+The kube-terminator is running in dry-run mode by default. This means it will not delete any pods, but only log the names of the pods it would delete. To change this, you need to set the `talkToTheHand` parameter to `false`. You can do this by using the `--set` flag and upgrade the chart.
 
 ```bash
-helm delete <your-releases-name>
+GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
+GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
+INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
+
+helm upgrade terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0 --set "configuration.talkToTheHand=false"
 ```
 
-Now run `helm list` again to verify there are no leftovers.
+Again, you can use `helm list -a` and `helm status terminator` to check, if the upgrade was successful. By running `helm get values terminator` you should see the `talkToTheHand` parameter set to `false` and listed as "user supplied value".
+
+## Step 6: specify labels and re-use values
+
+To avoid the `kube-terminator` to terminate itself, you could specify labels to select pods to delete. Instead of using  the `--set` flag, you can also use a values file. This is useful, if you have many parameters to set.
+
+Firstly, check which labels are used by pods running in your namespace by running `kubeclt get pods --show-labels`. Next, create a file called `terminator-values.yaml` and add the following content while adapting the label selector to your needs:
+
+```yaml
+configuration:
+  labelSelector: "<key>=<value>"
+```
+
+You can now use this file to set the label selector for the kube-terminator. You can also use the `--reuse-values` flag to re-use the values from the previous installation. This way you don't have to set all parameters again.
+
+```bash
+GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
+GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
+INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
+
+helm upgrade terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0 -f terminator-values.yaml --reuse-values"
+```
+
+Instead of using `--reuse-values` you could also add your configuration tot the values file. This way you can keep all your configuration in one place. Both way are possible, and it is helpful to know they exist.
+
+## Step 7: clean up
+
+Finally, clenup your resources by running the command below. This will remove the helm release and all resources created by it.
+
+```bash
+helm delete terminator
+```

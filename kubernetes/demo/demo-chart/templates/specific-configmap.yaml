@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: specific-configmap
-data:
-  message: "Hello World"

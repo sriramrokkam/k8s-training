@@ -4,17 +4,13 @@
 
 Run the [script](../../../admin/exercise_prep/kube-terminator.sh) to build the container image and push both image and helm chart to harbor.
 
+Create a few pods in the target namespace with a deployment.
+
 ## Values
 
-In order to deploy the helm chart, you need to provide the following values in a `custom-values.yaml` file. Adjust the repository and the sha256 digest accordingly.
+In order to deploy the helm chart, you need to provide the following values in a `custom-values.yaml` file.
 
 ```yaml
-image:
-  repository: h.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com/library/kube-terminator
-  pullPolicy: IfNotPresent
-  tag: ""
-  digest: "<digest>"
-
 serviceAccountName: chaoskube
 rbac:
   create: false # set to true when using a namespace that was not prepared for the training

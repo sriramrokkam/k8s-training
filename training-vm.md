@@ -50,7 +50,7 @@ There might be cases, where the daily build fails to boot. Follow https://docs.g
 
 **Known Workarounds** In case the VM hangs upon rebooting after installation, try unmounting the ISO and reboot the image. The workaround is "documented" here: https://github.com/utmapp/UTM/issues/4173#issuecomment-1179718559
 
-#### Apple Intel 
+#### Apple Intel
 
 You will need to download the x86_64/AMD64 image of your operating system. For Ubuntu, that would be this ISO file: <https://releases.ubuntu.com/22.04/ubuntu-22.04.5-desktop-amd64.iso>
 

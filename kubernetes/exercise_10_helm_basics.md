@@ -85,7 +85,7 @@ Again, you can use `helm list -a` and `helm status terminator` to check, if the 
 
 To avoid the `kube-terminator` to terminate itself, you could specify labels to select pods to delete. Instead of using  the `--set` flag, you can also use a values file. This is useful, if you have many parameters to set.
 
-Firstly, check which labels are used by pods running in your namespace by running `kubeclt get pods --show-labels`. Next, create a file called `terminator-values.yaml` and add the following content while adapting the label selector to your needs:
+Firstly, check which labels are used by pods running in your namespace by running `kubectl get pods --show-labels`. Next, create a file called `terminator-values.yaml` and add the following content while adapting the label selector to your needs:
 
 ```yaml
 configuration:
@@ -99,7 +99,7 @@ GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].c
 GARDENER_CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f2)
 INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot.canary.k8s-hana.ondemand.com
 
-helm upgrade terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0 -f terminator-values.yaml --reuse-values"
+helm upgrade terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0 -f terminator-values.yaml --reuse-values
 ```
 
 Instead of using `--reuse-values` you could also add your configuration tot the values file. This way you can keep all your configuration in one place. Both way are possible, and it is helpful to know they exist.

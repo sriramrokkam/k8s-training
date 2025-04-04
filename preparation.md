@@ -6,26 +6,42 @@ This page describes the necessary **preparation steps** before the course and as
 
 During this course we will ask you to work with different tools using command line interfaces. You may refer to below opetions:
 
+### Option A - use your local machine
 
-### Option A -  Use a virtual machine
+#### Windows
+
+Since Windows 10 (ish), there is a possibility of enabling the Windows Subsystem for Linux (WSL2).
+
+- For SAP specifics about WSL, please see the related [IT support KB article](https://itsupportportal.services.sap/itsupport?id=kb_article_view&sysparm_article=IKB0013525&sysparm_published=true) (There used to be a problem with WSL and SAP's McAfee, but we are not using McAfee anymore...)
+- Follow [this guide](https://documentation.ubuntu.com/wsl/en/latest/howto/install-ubuntu-wsl2/) to enable WSL2 and install Ubuntu
+- Follow [this guide](https://docs.docker.com/desktop/features/wsl/) to install Docker Desktop on top of WSL2 (requires a paid license that will be automatically issued to you if the software is detected on your PC). 
+  - You may also install only the Docker Engine (community edition) for free directly on the Linux OS (see [Docker documentation](https://docs.docker.com/engine/install/)). 
+  - You can also try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it. Installation instructions for Podman on Windows are [here](https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md),
+- Run [this script](training-vm.md#if-you-are-running-a-wsl-on-windows-11) in WSL to install some basics binaries. You may instead install the binaries manually (and on Windows if you want)
+  - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+  - [helm](https://helm.sh/docs/intro/install/)
+- Install [Visual Studio Code](https://code.visualstudio.com/) on Windows 11
+
+#### Mac
+
+No matter the your CPU (ARM64 Mac (Apple Silicon) or Intel), you will need to install the following
+
+- A text editor: use the editor that you feel most comfortable with (please do not consider Notepad) - if you do not have favorite text editor yet, you might want to give [Visual Studio Code](https://code.visualstudio.com/) a try
+- A container runtime: 
+  - You can get Docker Desktop Business (it requires a paid license that must be purchased from Ariba) 
+  - Or you can try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Installation instructions for MacOS are [here](https://podman.io/docs/installation#macos). Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it.
+- Some binaries
+  - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+  - [helm](https://helm.sh/docs/intro/install/)
+
+### Option B -  Use a virtual machine
 
 You can use a Linux virtual machine to run kubectl and a container runtime. Use the Linux distribution of your preferred choice and set up the VM yourself. 
 
 |  Host OS|   Description |Reference  | 
 | :---         | :---     | :---     |
-|Windows 11| Run a WSL2:<br>- `docker community edition`: install on WSL<br>- `kubectl` commandline tool: install on WSL<br>- `vscode`: install on Windows 11 |1. Refer to [this document](training-vm.md#windows) for WSL installation<br>2. Run [this script](training-vm.md#if-you-are-running-a-wsl-on-windows-11) in WSL instance for `docker community edition` & `kubectl` commandline tool installation<br>3. Install [Visual Studio Code](https://code.visualstudio.com/) on Windows 11 |
+|Windows| You may installVMware Player / workspace. However, if you want to use it, you'll have to request a licence. | See [this documentation](./training-vm.md#about-vmware-workstationplayer) |
 |MacOS| Run an open-source [UTM app](https://getutm.app/):<br>- `docker community edition`: install on UTM VM<br>- `kubectl` commandline tool: install on UTM VM<br>- `vscode`: install on UTM VM |1. Refer to [this document](training-vm.md#mac) for UTM installation & Virtual Machine deployment<br>2. Run [this script](training-vm.md#if-you-are-running-an-utm-vm-on-macos) in UTM VM for `docker community edition`, `kubectl` commandline tool & `Visual Studio Code` installation on UTM VM|
-
-
-### Option B - use your local machine
-
-If you want to use your local machine directly to follow along with the training. You basically need three things to get along:
-
-1. A text editor: use the editor that you feel most comfortable with (please do not consider Notepad) - if you do not have favorite text editor yet, you might want to give [Visual Studio Code](https://code.visualstudio.com/) a try
-2. kubectl: this is the most important tool you need to talk to Kubernetes clusters and you will definitely need it for the training - download it from its website at <https://kubernetes.io/docs/tasks/tools/>
-3. A container runtime: you can get Docker Desktop (it requires a paid license that must be purchased from Ariba) or you try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Installation instructions for Podman on Windows are [here](https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md), for MacOS are [here](https://podman.io/docs/installation#macos). Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it.
-
-
 
 ## Clone
 

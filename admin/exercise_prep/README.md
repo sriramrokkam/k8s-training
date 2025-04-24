@@ -1,7 +1,7 @@
 # Scripts to prepare exercises
 
 ## fortune-cookies.sh
-For the day 4 exercises, you will need to build and push the container image for the fortune-cookies app.. This can be done automatically using this [script](./fortune-cookies.sh). 
+For the day 4 exercises, you will need to build and push the container image for the fortune-cookies app. This can be done automatically using this [script](./fortune-cookies.sh).
 
 **Important: this script requires a connection and credentials to work with github.tools.sap!**
 

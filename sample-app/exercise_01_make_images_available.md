@@ -23,7 +23,7 @@ Go ahead and create a new `Dockerfile` within the cloned repository. Fill it wit
 
 #### How to get there?
 - Use two stages - each stage starts with a `FROM` line.
-- Give your stages a name by appending `as <name>` to the end of your `FROM` line (e.g. `FROM <some image> as builder`)
+- Give your stages a name by appending `AS <name>` to the end of your `FROM` line (e.g. `FROM <some image> AS builder`)
 - For the builder stage you can use the image `maven:sapmachine`. More on SapMachine can be found [here](https://github.com/SAP/SapMachine).
 - Use `sapmachine:lts` as your starting image for the app stage.
 - For simplicity copy the complete content of the cloned git repository to the builder stage.
@@ -44,23 +44,40 @@ docker build -t <registry-url>/training/fortune-cookies-<participant-id>:<partic
 docker push <registry-url>/training/fortune-cookies-<participant-id>:<participant-id>
 ```
 
-However, if you are using an ARM based machine (e.g. MacBook with Apple Silicon), you need to build the image specifically for x86, because it has to match the architecture of the nodes in our K8s cluster:
+However, if you are using an ARM based machine (e.g. MacBook with Apple Silicon), you need to build the image specifically for x86, because it has to match the architecture of the nodes in our K8s cluster. Today, most build tools support cross-platform builds.
+
+Run the command shown below and check, if your active builder (its name is marked with an `*`) lists `linux/amd64` as one of its supported platforms:
+
+```shell
+docker buildx ls
+```
+
+If that is not the case, expand the section below and follow the instructions to add another builder:
+
+<details>
+<summary>Add a builder</summary>
 
 ```shell
 # create a dedicated builder for docker and use buildkit explicitly
-docker buildx create --name fortunecookiesbuilder
-docker buildx use fortunecookiesbuilder
-docker buildx inspect --bootstrap
+docker buildx create \
+  --name container-builder \
+  --driver docker-container \
+  --use \
+  --bootstrap
+```
 
+</details>
+
+
+```shell
 # use the builder to specify the target platform's architecture
 docker buildx build --platform linux/amd64 -t <registry-url>/training/fortune-cookies-<participant-id>:<participant-id> --load .
 docker push <registry-url>/training/fortune-cookies-<participant-id>:<participant-id>
-
-# cleanup
-docker buildx rm fortunecookiesbuilder
 ```
 
-In case you're missing the credentials to push, check the [solution to exercise 1](../docker/solutions/Solution_exercise_1.md#step-2--push-the-image-to-a-registry).
+If you're missing the credentials to push, check the [solution to exercise 1](../docker/solutions/Solution_exercise_1.md#step-2--push-the-image-to-a-registry).
+
+**Note:** In case you run this exercise within a VM, you might not be able to execute cross-platform builds. Ask your trainers, if they can publish an image for you to use for the later parts of this exercise.
 
 ## Step 4: create imagePullSecret
 

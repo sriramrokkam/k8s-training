@@ -170,5 +170,6 @@ spec:
 ```
 
 ### Test the updated ingress
+
 Usually, it takes around 1-2 minutes for the certificates to be requested, validated and added to the ingress. The best way to check the ingress' status is to `describe` it. The responsible cert-manager will post events just like all the other controllers we've seen so far.
-Once the certificate has been provisioned, check both ingress hosts. They should point to the same backend target (`fortune-cookies`) and default to a https connection. Take a look at the certificate in your browser, go to the details and check the subject alternative name, which should contain the additional DNS name.
+Once the certificate has been provisioned, check the ingress host. They should point to the same backend target (`fortune-cookies`) and default to a https connection. Take a look at the certificate in your browser, go to the details and check the subject alternative name, which should contain the additional DNS name.

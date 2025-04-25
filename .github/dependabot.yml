@@ -1,7 +1,0 @@
-version: 2
-updates:
-  - package-ecosystem: "gomod"
-    directory: "/kubernetes/demo/demo-chart/kube-terminator"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5

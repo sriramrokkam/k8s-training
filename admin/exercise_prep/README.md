@@ -19,3 +19,12 @@ The script will:
 - run `docker login` to the harbor registry using the `admin` credentials
 - build an image with x86_64 architecture for the kube-terminator app and push it to the `library` project in Harbor.
 - package and upload the helm chart as an OCI artifact to the `library` project in Harbor.
+
+## steakfulset.sh
+
+To demo and explain `CustomResourceDefinitions` and controllers reconciling them, we use the [steakfulset-controller](https://github.com/MrBatschner/steakfulset-controller). It contains a CRD for a `SteakfulSet` and a `Steak` as well as a small controller that reconciles the `SteakfulSet` and creates `Steak` resources.
+
+The script will:
+- clone the repository to `/tmp`
+- build an image with x86_64 architecture for the steakfulset-controller app and push it to the `library` project in Harbor.
+- package and upload the helm chart as an OCI artifact to the `library` project in Harbor.

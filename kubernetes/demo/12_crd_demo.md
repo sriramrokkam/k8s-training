@@ -48,4 +48,4 @@ spec:
 By now, you should find a `steakfulset` resource as well as a certain number of `steaks` in your namespace. Show the `ownerReference` field.
 Explain how the `ownerReference` field works and how the controller uses it to delete the steaks when the `steakfulset` is deleted.
 
-Of course, the steakfulset-controller is just a pun on the well-known `StatefulSet` resource. But it helps to explain that K8s is extensible and your controller defined the semantic meaning of a resource and what it represents to you.
+Of course, the steakfulset-controller is just a pun on the well-known `StatefulSet` resource. But it helps to explain that K8s is extensible, and your controller defines the semantic meaning of a resource and what it represents to you.

@@ -14,9 +14,20 @@ Use the [Gardener canary landscape](https://dashboard.garden.canary.k8s.ondemand
 
 Infrastructure: 
 - The cluster should be deployed to SCI. Use domain `hcp03` and FIP suffix `-external-hcp03-ktrain-01`.
+- Configure the `.spec.exposureClassName` with `converged-cloud-internet`, if participants should have access to the kube-apiserver without VPN.
 - For region `eu-de-1` use the credentials stored in `sci-eu-training-secret`.
 - For region `na-us-2` use the credentials stored in `sci-us-training-secret`.
 - A suitable machine type could be `g_c4_m16`.
+- Configure the default loadbalancer class to get publicly accessible IP addresses:
+```yaml
+spec:
+  provider:
+    controlPlaneConfig:
+      loadBalancerClasses:
+        - name: internet
+          floatingSubnetName: FloatingIP-internet-*
+          purpose: default
+```
 
 Fallback:
 - The cluster should be deployed into GCP using the _gardener-canary-k8s-train_ secret.

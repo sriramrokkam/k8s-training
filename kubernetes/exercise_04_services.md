@@ -13,7 +13,7 @@ Once again make sure,  everything is up and running. Use `kubectl` and check you
 ## Step 1: create a service
 
 Kubernetes provides a convenient way to expose applications. Simply run `kubectl expose deployment <deployment-name> --type=LoadBalancer --port=80 --target-port=80`.
-With `--type=LoadBalancer` you request our training infrastructure (GCP) to provision a public IP address. It will also automatically assign a cluster-IP and a NodePort in the current setup of the cluster. To create a service that gets only a cluster-IP, and does cluster internal load balancing but can only be called within the cluster from other pods but not via a public IP from the outside, use `--type=ClusterIP` or leave it away since it is the default.
+With `--type=LoadBalancer` you request our training infrastructure ([OpenStack](https://www.openstack.org/) on [SAP Cloud Infrastructure](https://documentation.global.cloud.sap/)) to provision a public IP address. It will also automatically assign a cluster-IP and a NodePort in the current setup of the cluster. To create a service that gets only a cluster-IP, and does cluster internal load balancing but can only be called within the cluster from other pods but not via a public IP from the outside, use `--type=ClusterIP` or leave it away since it is the default.
 
 ## Step 2: connect to your service
 

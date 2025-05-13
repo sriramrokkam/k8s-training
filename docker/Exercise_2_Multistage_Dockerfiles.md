@@ -9,7 +9,7 @@ The app is a minimal "echo" webserver printing the source IP of any incoming req
 Create an empty directory on your VM that will be your build context. From your cloned training repository copy the [echo-server files](./res/echo-server) into the build context directory.
 
 ```bash
-cp <path-to-cloned-repository>/docker/res/echo-sever/* <path-to-build-context-directory>
+cp <path-to-cloned-repository>/docker/res/echo-server/* <path-to-build-context-directory>
 ```
 
 ## Step 1: Creating the Dockerfile

@@ -19,7 +19,7 @@ Regarding Pluralsight licences, please check the [central sharepoint](https://sa
 ## Docker
 
 - [Getting Started with Docker](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/getting-started-docker/table-of-contents)
-- [Building and Running Your First Docker App](https://app.pluralsight.com/sso/sap?returnUrl=course-player?clipId=4e49c9e0-0f77-42e9-9a17-a23dc407545f)
+- [Building and Running Your First Docker App](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/docker-building-running-first-app)
 - [Hands-on exercise: working with containers and building custom Docker images](https://pages.github.tools.sap/cloud-curriculum/materials/all/containers/java/)
 - [Developing Docker Apps: Core Principles](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/docker-apps-developing-core-principles/table-of-contents)
 - [Building and Orchestrating Containers with Docker Compose](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/docker-compose-building-orchestrating-containers/table-of-contents)

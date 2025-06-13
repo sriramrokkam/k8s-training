@@ -31,7 +31,7 @@ Go ahead and create a new `Dockerfile` within the cloned repository. Fill it wit
 - Copy the `fortune-cookies.jar`-file from the builder to your final stage.
 - The application listens on port `8080`. Make sure, this is known to anyone running the image.
 - Check the [sapmachine image documentation](https://hub.docker.com/_/sapmachine) for hints how to run a Java application.
-- If you're using M1 Mac add `--platform=amd64` to the `FROM` line
+- If you're using M1/2/3 Mac add `--platform=linux/amd64` to the `FROM` line
 
 ## Step 3: build and push the image to our training registry
 

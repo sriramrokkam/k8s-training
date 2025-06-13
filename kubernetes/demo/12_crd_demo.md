@@ -29,6 +29,7 @@ kubectl get crd steaks.food.k8s.training
 Take the following snippet, adjust the number of guests and the variant to your preferences and deploy it.
 
 ```yaml
+cat << EOF | kubectl apply -f -
 apiVersion: food.k8s.training/v1alpha1
 kind: SteakfulSet
 metadata:
@@ -41,6 +42,7 @@ spec:
       fat: lean
       variant: angus-rump
       weight: 250
+EOF
 ```
 
 ## Show the result

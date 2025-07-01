@@ -34,7 +34,7 @@ High level topics are:
 - Configure applications with `ConfigMaps` and `Secrets` ([slides](./kubernetes/07_configmap_secrets.pptx) & [exercise 6](./kubernetes/exercise_06_configmaps_secrets.md))
 - Expose applications via `Ingress` ([slides](./kubernetes/09_ingress.pptx) & [exercise 7](./kubernetes/exercise_07_ingress.md))
 - Run stateful applications with `StatefulSets` ([slides](./kubernetes/10_statefulset.pptx) & [exercise 8](./kubernetes/exercise_08_statefulset.md))
-- Service accounts, RBAC, resource consumption, security policies, network policies ([slides part 1](./kubernetes/11_1_accessControll_and_resourceConsumption.pptx), ([slides part 2](./kubernetes/11_2_security.pptx), & [exercise 9](./kubernetes/exercise_09_network_policy.md))
+- Service accounts, RBAC, resource consumption, security policies, network policies ([slides part 1](./kubernetes/11_1_accessControll_and_resourceConsumption.pptx), [slides part 2](./kubernetes/11_2_security.pptx), & [exercise 9](./kubernetes/exercise_09_network_policy.md))
 - Introduction to jobs, scheduling, image pulling and extensibility concepts in K8s [slides](./kubernetes/11_3_morePods_Sheduling.pptx)
 - Introduction to Gardener ([slides](./kubernetes//11_4_Gardener.pptx)
 - Deploy packaged applications with Helm ([slides](./kubernetes/12_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))

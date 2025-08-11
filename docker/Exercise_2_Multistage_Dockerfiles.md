@@ -14,7 +14,7 @@ cp <path-to-cloned-repository>/docker/res/echo-server/* <path-to-build-context-d
 
 ## Step 1: Creating the Dockerfile
 
-Create a new Dockerfile that starts with `FROM golang:1.23-alpine AS builder`. Note, the `AS builder` extension - it allows you to reference files present at this stage and copy them over to another stage.
+Create a new Dockerfile that starts with `FROM golang:1.24-alpine AS builder`. Note, the `AS builder` extension - it allows you to reference files present at this stage and copy them over to another stage.
 To prepare for the build:
 - `COPY` the files `echo-server.go` and `go.mod` to `/go/src/`.
 - change the `WORKDIR` to `/go/src`

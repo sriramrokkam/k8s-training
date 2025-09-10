@@ -26,7 +26,7 @@ Regarding Pluralsight licences, please check the [central sharepoint](https://sa
 
 ## Kubernetes
 
-- [Kubernetes Basic Concepts and Configuration](https://app.pluralsight.com/library/courses/kubernetes-basic-concepts-configuration/table-of-contents)
+- [Kubernetes Basic Concepts and Configuration](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/kubernetes-basic-concepts-configuration/table-of-contents)
 - [Core Concepts](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/kubernetes-developers-core-concepts/table-of-contents)
 - [Deploying Your Code](https://app.pluralsight.com/sso/sap?returnUrl=player?course=kubernetes-developers-deploying-code&author=dan-wahlin&name=4c708f3a-83ad-4633-834d-0c31a4171fd6&clip=0)
 - [Integrating Volumes and Using Multi-container Pods](https://app.pluralsight.com/sso/sap?returnUrl=library/courses/kubernetes-developers-integrating-volumes-using-multi-container-pods/table-of-contents)

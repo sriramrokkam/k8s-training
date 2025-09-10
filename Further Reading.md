@@ -52,7 +52,7 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 ### in general
 
-- Do you want to watch Kelsey Hightower, one of the big brains behind Kubernetes play Tetris on the Jumbotron at d-Kom 2018 at SAP Arena? Check out [his keynote](https://broadcast.co.sap.com/event/dkom/2018#!video%2F18106).
+- Kubernetes offers awesome documentation. Check out the [docu pages](https://kubernetes.io/docs/home/) to find the answwers to most of your questions.
 
 - the Cloud Native Computing Foundation publishes KubeCon talks on their [youtube channel](https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA)
 
@@ -62,7 +62,7 @@ If you would like to get some more information on Docker and/or Kubernetes insid
 
 ### kubectl
 
-- Running `kubectl completion` guides you how to setup shell completion.
+- Running `kubectl completion` guides you how to set up shell completion.
 
 - [kubectl plugins](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) can be managed with [krew](https://krew.sigs.k8s.io). It is a convenient way to get essentials like [oidc support](https://github.com/int128/kubelogin) or a [command](https://github.com/corneliusweig/ketall) that actually performs a `get all`.
 
@@ -72,7 +72,11 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 
 - [kubectl efficiency](https://www.youtube.com/watch?v=vVAFctQP1Vg&list=PLj6h78yzYM2NDs-iu8WU5fMxINxHXlien&index=12&t=0s)
 
+- Since v1.34, `kubectl` supports a so-called `kuberc` file which allows you to define defaults, aliases and other helpers. It even supports auto-completion these days :rocket:. Check out the [blog post](https://kubernetes.io/blog/2025/08/28/kubernetes-v1-34-kubectl-kuberc-beta/ for details and further links.
+
 ### networking
+
+- To get started, take a look around this overview page: [Services, Load Balancing and Networking](https://kubernetes.io/docs/concepts/services-networking/)
 
 - More on details about networking? The [Life of a Packet](https://www.youtube.com/watch?v=0Omvgd7Hg1I) talk by Google's Michael Rubin at KubeCon EU '17 can be found [here on YouTube](https://www.youtube.com/watch?v=0Omvgd7Hg1I).
 
@@ -105,10 +109,6 @@ To work with multiple namespaces or even clusters, [kubectx and kubens](https://
 - secret management with [sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) or [vault](https://www.vaultproject.io/docs/what-is-vault/index.html).
 
 - [Identity federation with OIDC in Kubernetes](https://community.sap.com/t5/open-source-blogs/kubernetes-cross-cluster-communication-ditching-long-lived-credentials/ba-p/13550286)
-
-### SAP Kubernetes Summits
-
-- Slides and recordings from all the sessions at SAP's first Kubernetes Summit 2019 in Walldorf/Rot, Germany can be found in [Jam](https://jam4.sapjam.com/blogs/show/rW4XILnu81NbcUpiMQWWuu)
 
 ## Helm
 

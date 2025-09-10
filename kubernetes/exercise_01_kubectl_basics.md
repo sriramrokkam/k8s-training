@@ -63,3 +63,4 @@ There is a forum-like page hosted by K8s with lots of information around `kubect
 * shell autocompletion (should work for the VM already): <https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion>
 * kubectl cheat sheet: <https://kubernetes.io/docs/reference/kubectl/cheatsheet/>
 * jsonpath in kubectl: <https://kubernetes.io/docs/reference/kubectl/jsonpath/>
+* kuberc to build aliases: <https://kubernetes.io/blog/2025/08/28/kubernetes-v1-34-kubectl-kuberc-beta/>

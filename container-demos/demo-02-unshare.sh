@@ -42,7 +42,6 @@ p "# if you watch closely, you will realize that the number for the user namespa
 pe "cat /proc/self/uid_map"
 p "# uid 0 in our namespace has been remapped to the uid of user vagrant in kernel context"
 p "# it appears as if we are root, but in fact, we got isolated from the usual user management"
-wait
 pe "ps -ef"
 p "# we can still see all the processes from the system, so the isolation is still not perfect"
 pe "exit"
@@ -58,8 +57,8 @@ RED="\033[0;31m"
 COLOR_RESET="\033[0m"
 
 DEMO_PROMPT="${GREEN}➜ ${RED}PID namespace ${CYAN}$(basename $(pwd)) # ${COLOR_RESET}"
-WAIT_SHORT=1
-WAIT=2
+WAIT_SHORT=2
+WAIT=3
 
 echo -e "${DEMO_PROMPT}# you can see that the number of our PID namespace has changed"
 sleep $WAIT

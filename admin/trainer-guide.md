@@ -65,9 +65,9 @@ You should send a **'preparation mail'** to all participants about a week before
 
 Also it is recommended to refer to the cheat-sheets for [docker](../docker/Docker%20Cheat%20Sheet.docx) and [Kubernetes](../kubernetes/cheat%20sheet.docx). Ask participants to print and bring them along, if they deem it would be helpful.
 
-An other option would be to take one of our **mail templates**, we have prepared: [Template 1](preparation_email_sample1.txt), [Template 2](preparation_email_sample2.txt)
+An other option would be to take one of our **mail template** we have prepared: [Template](./preparation_email_sample.md),
 
-Technically it would be possible to run most of the exercises also with Docker on Windows/Mac and a local kubectl. **However, we would recommend explicitly exclude support for this setup during the training.**
+Technically it would be possible to run most of the exercises also with Docker on Windows/Mac and a local kubectl. **However, we would recommend explicitly excluding support for this setup during the training.**
 
 **Hint:** If you want get a list of the course participants, as the _main trainer_ you can
 
@@ -107,9 +107,9 @@ Gardener deploys an ingress controller to each cluster and allows you to registe
 
 Check the following files for `<cluster-name>` and `<project-name>` placeholders and replace them with the actual cluster/project names:
 
-- [sock-shop](../kubernetes/demo/00_sock-shop.yaml)
 - [simple ingress with tls](../kubernetes/demo/09a_tls_ingress.yaml)
 - [fanout & virtual host ingress](../kubernetes/demo/09b_fanout_and_virtual_host_ingress.yaml)
+- [sample-app imagess](../sample-app/solutions/app-ingress.yaml)
 
 ### Setup helm
 
@@ -122,7 +122,12 @@ In the admin folder of this repo, you find a registry folder with `install_harbo
 
 ### Build and push sample app artefacts
 
-For the day 4 exercises, you will need to build and push the images of bulletinboard-ads and bulletinboard-reviews. This can be done automatically using this [script](./exercise_prep/bulletinboard.sh). It will clone both repositories, build the images and push them to the Harbor registry using the `participant` credentials.
+For some excercice / demos, you'll need to build and push some images to the registry. To do so, simply run all the `.sh` files in the [exercice_prep](./exercise_prep/) folder. This should push the images to the harbor registry created earlier, so please make sure it's up and running beforehand.
+
+You'll also have to edit the final image URL in various files
+
+- [sample-app deployment](../sample-app/solutions/app-deployment.yaml)
+- [kube terminator helm chart](../kubernetes/demo/demo-chart/chart/values.yaml)
 
 ## During the Course
 

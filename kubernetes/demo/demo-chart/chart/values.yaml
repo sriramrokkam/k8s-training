@@ -7,7 +7,7 @@ image:
 imagePullSecrets: []
 # - name: secretName
 
-serviceAccountName: chaoskube
+serviceAccountName: kubeterminator
 rbac:
   create: true
 

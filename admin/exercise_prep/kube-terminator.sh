@@ -17,7 +17,7 @@ echo -e "\n > Trying to login to Harbor $INGRESS_HOSTNAME using docker login ...
 docker login -u $HARBOR_USER -p $HARBOR_PWD $INGRESS_HOSTNAME
 
 ## build and push kube-terminator container image
-echo -e "\n\n > Building kube-terminator Docker mage ..."
+echo -e "\n\n > Building kube-terminator Docker image ..."
 docker buildx build --platform linux/amd64 -t ${INGRESS_HOSTNAME}/library/kube-terminator:v1 --push $(dirname $0)/../../kubernetes/demo/demo-chart/kube-terminator
 
 ## patch kube-terminator default values

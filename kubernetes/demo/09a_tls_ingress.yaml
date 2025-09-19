@@ -64,7 +64,7 @@ metadata:
     cert.gardener.cloud/purpose: managed
 spec:
   rules:
-  - host: simple-nginx.ingress.yul38.k8s-train.shoot.canary.k8s-hana.ondemand.com
+  - host: simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /
@@ -76,6 +76,6 @@ spec:
               number: 80
   tls:
   - hosts:
-    - simple-nginx.ingress.yul38.k8s-train.shoot.canary.k8s-hana.ondemand.com
+    - simple-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     secretName: simple-nginx-ingress-tls
 ---

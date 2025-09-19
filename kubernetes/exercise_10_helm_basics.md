@@ -102,7 +102,7 @@ INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot
 helm upgrade terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0 -f terminator-values.yaml --reuse-values
 ```
 
-Instead of using `--reuse-values` you could also add your configuration tot the values file. This way you can keep all your configuration in one place. Both way are possible, and it is helpful to know they exist.
+Instead of using `--reuse-values` you could also add your configuration to the values file. This way you can keep all your configuration in one place. Both way are possible, and it is helpful to know they exist.
 
 ## Step 7: clean up
 

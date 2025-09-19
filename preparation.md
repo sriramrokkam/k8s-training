@@ -61,9 +61,9 @@ git clone --filter=blob:none https://github.tools.sap/kubernetes/docker-k8s-trai
 
 ## Kubernetes cluster
 
-For regular classroom trainings, a preconfigured Kubernetes cluster will be provided. However, if you wish to look into the training material on your own, you may use a Gardener [trial cluster](https://pages.github.tools.sap/kubernetes/gardener/docs/guides/sap-internal/scp-starting-with-k8s/before-start/get-account/).
+For regular classroom trainings, a preconfigured Kubernetes cluster will be provided. However, if you wish to look into the training material on your own, you may use a Gardener [trial cluster](https://pages.github.tools.sap/kubernetes/gardener/docs/guides/sap-internal/scp-starting-with-k8s/before-start/get-account/). However, the hand-on exercices might be more complex to do.
 
-If you prefer to run everything locally, there is also a way to install [microk8s](https://microk8s.io/) within the VM. Check the [README](./microk8s/README.md) for details.
+If you prefer to run everything locally, there is also a way to install [microk8s](https://microk8s.io/) within the VM. Check the [README](./microk8s/README.md) for details. However, the hand-on exercices might be more complex to do.
 
 ## Cheat Sheets
 

@@ -67,8 +67,6 @@ Also it is recommended to refer to the cheat-sheets for [docker](../docker/Docke
 
 An other option would be to take one of our **mail template** we have prepared: [Template](./preparation_email_sample.md),
 
-Technically it would be possible to run most of the exercises also with Docker on Windows/Mac and a local kubectl. **However, we would recommend explicitly excluding support for this setup during the training.**
-
 **Hint:** If you want get a list of the course participants, as the _main trainer_ you can
 
 - Go to [SuccessMap Learning](https://sap.plateau.com/learning/user/deeplink_redirect.jsp?linkId=HOME_PAGE&fromSF=Y)

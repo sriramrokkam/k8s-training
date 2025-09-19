@@ -9,7 +9,7 @@ imagePullSecrets: []
 
 serviceAccountName: chaoskube
 rbac:
-  create: true
+  create: false
 
 configuration:
   talkToTheHand: true

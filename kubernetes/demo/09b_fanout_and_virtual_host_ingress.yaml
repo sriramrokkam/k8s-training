@@ -24,8 +24,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - echo This is MY nginx! > /work-dir/index.html
-        - echo This is the /foo/bar path in MY nginx! >> /work-dir/foo/bar/index.html
+        - echo "This is MY nginx!" > /work-dir/index.html; mkdir -p /work-dir/foo/bar; echo "This is the /foo/bar/ path in MY nginx!" > /work-dir/foo/bar/index.html;
         volumeMounts:
         - name: index-html
           mountPath: "/work-dir"
@@ -65,8 +64,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - echo This is YOUR nginx! > /work-dir/index.html &&
-        - echo This is the /foo/bar path in MY nginx! >> /work-dir/foo/bar/index.html
+        - echo "This is YOUR nginx!" > /work-dir/index.html; mkdir -p /work-dir/foo/bar; echo "This is the /foo/bar/ path in YOUR nginx!" > /work-dir/foo/bar/index.html;
         volumeMounts:
         - name: index-html
           mountPath: "/work-dir"

@@ -16,29 +16,41 @@ Since Windows 10, there is a possibility of enabling the Windows Subsystem for L
 - **Install a container engine**: Follow [this guide](https://docs.docker.com/desktop/features/wsl/) to install Docker Desktop on top of WSL2 (requires a paid license that should be automatically issued to you if the software is detected on your PC). You can also buy the licence from [Ariba](https://s1-eu.ariba.com/gb/itemDetail/0090919184%2524%2524ALM_001088/catalog?realm=SAPGLOBAL) if you want to be sure.
   - You may also install only the Docker Engine (community edition) for free directly in WSL (aka Ubuntu) (see [Docker documentation](https://docs.docker.com/engine/install/)).
   - You can also try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it.
-- **Install requires binaries**: Run [this script](training-vm.md#if-you-are-running-a-wsl-on-windows-11) in WSL to install some basics binaries. You may instead install the binaries manually (and on Windows if you want)
+- **Install required binaries**: Run [this script](training-vm.md#if-you-are-running-a-wsl-on-windows-11) in WSL to install some basics binaries. You may instead install the binaries manually (and on Windows if you want)
   - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
   - [helm](https://helm.sh/docs/intro/install/)
   - [git](https://git-scm.com/downloads)
 - **Install a text editor**: We recommend installing [Visual Studio Code](https://code.visualstudio.com/) on your Windows machine. However, feel free to install / use any text editor of your choosing.
   - Make sure you can open files from your Ubuntu (using the `code .` command for VScode, see [this documentation](https://code.visualstudio.com/docs/remote/wsl) for precise steps).
-  - This class involves creating / editing a lot of files. Understanding how this works before the class starts will start will benefit you.
+  - This class involves creating / editing a lot of files. Understanding how your text editor works before the class starts will benefit you.
+- **Confirm that everything is installed**: Run the following commands to confirm that your setup is ready to go. As long as you don't get any errors, you should be good to go. If you have a problem that you can't seem to solve, contact your trainer(s).
+  - `docker run hello-world` (or `podman run hello-world` if you installed podman)
+  - `git --version`
+  - `kubectl version`
+  - `helm version`
 - (Optional) **Install the Windows Terminal**: For a better experience with CLI in Windows, you might want to install the [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/)
   - Run `wsl -d Ubuntu` to start a shell in the Ubuntu image that you previously installed.
+- **Continue to [Clone the material](#clone-the-material)**
 
 #### Mac (both CPU architectures (ARM or Intel) should work)
 
 - **A text editor**: We recommend installing [Visual Studio Code](https://code.visualstudio.com/) on your machine. However, feel free to install / use any text editor of your choosing.
   - We recommand installing the `code` binary in order to open files/folders directly from your terminal. Follow [this documentation](https://code.visualstudio.com/docs/setup/mac#_launch-vs-code-from-the-command-line) to install the binary
-  - This class involves creating / editing a lot of files. Understanding how this works before the class starts will start will benefit you.
+  - This class involves creating / editing a lot of files. Understanding how your text editor works before the class starts will benefit you.
 - **Install a container engine**: Follow [this guide](https://docs.docker.com/desktop/setup/install/mac-install/) to install Docker Desktop (requires a paid license that should be automatically issued to you if the software is detected on your PC). You can also buy the licence from [Ariba](https://s1-eu.ariba.com/gb/itemDetail/0090919184%2524%2524ALM_001088/catalog?realm=SAPGLOBAL) if you want to be sure.
   - You may also install only the Docker Engine (community edition) for free directly in WSL (aka Ubuntu) (see [Docker documentation](https://docs.docker.com/engine/install/)).
-  - You can also try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it..
-- **Install requires binaries**
+  - You can also try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it.
+- **Install required binaries**
   - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
   - [helm](https://helm.sh/docs/intro/install/)
   - [git](https://git-scm.com/downloads)
+- **Confirm that everything is installed**: Run the following commands to confirm that your setup is ready to go. As long as you don't get any errors, you should be good to go. If you have a problem that you can't seem to solve, contact your trainer(s).
+  - `docker run hello-world` (or `podman run hello-world` if you installed podman)
+  - `git --version`
+  - `kubectl version`
+  - `helm version`
 - (Optional) **Install the iterm2 terminal**: For a better experience with CLI in mac, you might want to install [iTerm2](https://iterm2.com/)
+- **Continue to [Clone the material](#clone-the-material)**
 
 ### Option B -  Use a virtual machine
 
@@ -48,6 +60,15 @@ You can use a Linux virtual machine to run kubectl and a container runtime. Use 
 | :---         | :---     | :---     |
 |Windows| You may install VMware Player / workspace. However, if you want to use it, you'll have to request a licence. | See [this documentation](./training-vm.md#about-vmware-workstationplayer) |
 |MacOS| Run an open-source [UTM app](https://getutm.app/):<br>- `docker community edition`: install on UTM VM<br>- `kubectl` command line tool: install on UTM VM<br>- `vscode`: install on UTM VM |1. Refer to [this document](training-vm.md#mac) for UTM installation & Virtual Machine deployment<br>2. Run [this script](training-vm.md#if-you-are-running-an-utm-vm-on-macos) in UTM VM for `docker community edition`, `kubectl` commandline tool, `helm`, `git` & `Visual Studio Code` installation on UTM VM|
+
+Run the following commands in your vm to confirm that your setup is ready to go. As long as you don't get any errors, you should be good to go. If you have a problem that you can't seem to solve, contact your trainer(s).
+
+- `docker run hello-world` (or `podman run hello-world` if you installed podman)
+- `git --version`
+- `kubectl version --client`
+- `helm version`
+
+You can now continue to [Clone the material](#clone-the-material)
 
 ## Clone the material
 

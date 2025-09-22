@@ -92,7 +92,7 @@ So let's assume, you want to change the timeout behavior of the nginx exposed vi
 
 Now that you know how an annotation works and how it affects your ingress, lets move on to the fanout scenario. Assume you want your ingress to serve something different at its root level `/` and you want to move your application to `/my-app`. Your URL would look like this `<your-custom-endpoint>.ingress.<GARDENER-CLUSTER-NAME>.<GARDENER-PROJECT-NAME>.shoot.canary.k8s-hana.ondemand.com/my-app`.
 
-In a first step, you need to add `path: /my-app(.*)` to your backend configuration within the ingress. Take a look at the [fanout demo](./demo/09b_fanout_and_virtual_host_ingress.yaml), if you need inspiration. Once you applied the change, go to your URL and test the different paths. But don't be surprised, if you don't see the expected pages.
+In a first step, you need to add `path: /my-app(/|$)(.*)` to your backend configuration within the ingress. Take a look at the [fanout demo](./demo/09b_fanout_and_virtual_host_ingress.yaml), if you need inspiration. Once you applied the change, go to your URL and test the different paths. But don't be surprised, if you don't see the expected pages.
 
 The ingress is forwarding traffic to `/my-app` and also to `/my-app` at the backend. So unless you configured your nginx pods to serve at `/my-app` there is no valid endpoint available. You can solve the issue by rewriting the target to `/$2` of the backend pods. Check the `rewrite-target` [annotation](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#rewrite) for details and apply it accordingly. The documentation features an [example](https://kubernetes.github.io/ingress-nginx/examples/rewrite/) as well.
 

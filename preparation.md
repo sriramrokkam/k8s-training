@@ -38,12 +38,14 @@ Since Windows 10, there is a possibility of enabling the Windows Subsystem for L
   - We recommand installing the `code` binary in order to open files/folders directly from your terminal. Follow [this documentation](https://code.visualstudio.com/docs/setup/mac#_launch-vs-code-from-the-command-line) to install the binary
   - This class involves creating / editing a lot of files. Understanding how your text editor works before the class starts will benefit you.
 - **Install a container engine**: Follow [this guide](https://docs.docker.com/desktop/setup/install/mac-install/) to install Docker Desktop (requires a paid license that should be automatically issued to you if the software is detected on your PC). You can also buy the licence from [Ariba](https://s1-eu.ariba.com/gb/itemDetail/0090919184%2524%2524ALM_001088/catalog?realm=SAPGLOBAL) if you want to be sure.
-  - You may also install only the Docker Engine (community edition) for free directly in WSL (aka Ubuntu) (see [Docker documentation](https://docs.docker.com/engine/install/)).
+  - You may also install only the Docker Engine (community edition, without GUI) for free (see [Docker documentation](https://docs.docker.com/engine/install/)). We recommend using [brew](https://brew.sh/) to install it: `brew install docker docker-buildx docker-compose`
   - You can also try [Podman Desktop](https://podman-desktop.io/) which is free and open-source. Even though Podman is a drop-in replacement for Docker, Docker is preferred as the exercises are based on it.
 - **Install required binaries**
-  - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-  - [helm](https://helm.sh/docs/intro/install/)
-  - [git](https://git-scm.com/downloads)
+  
+  We recommand using [brew](https://brew.sh/) to install and manage your packages
+  - [kubectl](https://formulae.brew.sh/formula/kubernetes-cli) ([official doc](https://kubernetes.io/docs/tasks/tools/#kubectl))
+  - [helm](https://formulae.brew.sh/formula/helm)  ([official doc](https://helm.sh/docs/intro/install/))
+  - [git](https://formulae.brew.sh/formula/git) ([official doc](https://git-scm.com/downloads))
 - **Confirm that everything is installed**: Run the following commands to confirm that your setup is ready to go. As long as you don't get any errors, you should be good to go. If you have a problem that you can't seem to solve, contact your trainer(s).
   - `docker run hello-world` (or `podman run hello-world` if you installed podman)
   - `git --version`

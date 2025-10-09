@@ -3,6 +3,7 @@
 HELM_RELEASE_NAME=harbor-registry
 REGISTRY_USER=harbor
 REGISTRY_PASS="GkPxKfTMse83TEcZhZe4qjaH"
+PARTICIPANT_PASS="2r4!rX6u5-qH"
 ADMIN_PASSWD="82rUHSy98xbZztm5MjLJ7Nf6"
 
 CURL_WAIT=5
@@ -72,7 +73,7 @@ helm install --wait -n harbor-registry -f harbor-values.yaml \
 AUTH_TOKEN=$(echo -n "admin:$ADMIN_PASSWD" | base64)
 
 ## create user
-curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/users" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"username\": \"participant\", \"password\": \"2r4!rX6u5-qH\", \"realname\": \"participant\", \"admin_role_in_auth\": false, \"sysadmin_flag\": false, \"email\": \"participant@training.sap\" }"
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/users" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"username\": \"participant\", \"password\": \"$PARTICIPANT_PASS\", \"realname\": \"participant\", \"admin_role_in_auth\": false, \"sysadmin_flag\": false, \"email\": \"participant@training.sap\" }"
 
 sleep $CURL_WAIT
 
@@ -91,3 +92,5 @@ curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${PROJECT_ID}/m
 
 echo -e "\n\nRegistry is available at https://$REGISTRY_URL"
 echo -e "Login as admin:$ADMIN_PASSWD\n"
+echo -e "Participant username: participant\n"
+echo -e "Participant password: $PARTICIPANT_PASS\n"

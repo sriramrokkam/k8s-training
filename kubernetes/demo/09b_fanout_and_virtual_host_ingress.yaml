@@ -24,7 +24,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - echo This is MY nginx! > /work-dir/index.html
+        - echo "This is MY nginx!" > /work-dir/index.html; mkdir -p /work-dir/foo/bar; echo "This is the /foo/bar/ path in MY nginx!" > /work-dir/foo/bar/index.html;
         volumeMounts:
         - name: index-html
           mountPath: "/work-dir"
@@ -64,7 +64,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - echo This is YOUR nginx! > /work-dir/index.html
+        - echo "This is YOUR nginx!" > /work-dir/index.html; mkdir -p /work-dir/foo/bar; echo "This is the /foo/bar/ path in YOUR nginx!" > /work-dir/foo/bar/index.html;
         volumeMounts:
         - name: index-html
           mountPath: "/work-dir"
@@ -115,20 +115,21 @@ kind: Ingress
 metadata:
   name: fanout-nginx
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
   - host: fanout-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
-      - path: /my(.*)
+      - path: /my(/|$)(.*)
         pathType: Prefix
         backend:
           service: 
             name: mynginx-service
             port: 
               name: http
-      - path: /your(.*)
+      - path: /your(/|$)(.*)
         pathType: Prefix
         backend:
           service:

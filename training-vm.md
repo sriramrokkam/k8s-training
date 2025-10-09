@@ -82,7 +82,7 @@ sudo apt-get update
 sudo apt-get remove --purge -y gnome-initial-setup tracker-extract
 sudo apt autoremove -y
 sudo apt-get upgrade -y
-sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent
+sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent git
 
 # ca
 pushd /usr/local/share/ca-certificates
@@ -117,6 +117,13 @@ alias k=kubectl
 complete -o default -F __start_kubectl k
 __EOF
 
+# helm
+sudo apt-get install curl gpg apt-transport-https --yes
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
 ```
 
 Go to Windows Terminal, restart WSL session:
@@ -139,7 +146,7 @@ sudo apt-get update
 sudo apt-get remove --purge -y gnome-initial-setup tracker-extract
 sudo apt autoremove -y
 sudo apt-get upgrade -y
-sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent
+sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent git
 
 # ca
 pushd /usr/local/share/ca-certificates
@@ -182,6 +189,13 @@ echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft
 rm -f packages.microsoft.gpg
 sudo apt-get update
 sudo apt-get install -y code
+
+# helm
+sudo apt-get install curl gpg apt-transport-https --yes
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
 ```
 
 Restart the terminal session afterwards.

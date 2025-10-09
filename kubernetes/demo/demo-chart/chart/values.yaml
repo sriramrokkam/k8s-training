@@ -7,9 +7,9 @@ image:
 imagePullSecrets: []
 # - name: secretName
 
-serviceAccountName: chaoskube
+serviceAccountName: kube-terminator
 rbac:
-  create: false
+  create: true
 
 configuration:
   talkToTheHand: true

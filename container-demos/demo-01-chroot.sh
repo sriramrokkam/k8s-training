@@ -60,7 +60,7 @@ mkdir dev && sudo mount -t devtmpfs udev dev
 cat << _EOF > bin/_demo-01-chroot.sh
 #!/bin/bash
 
-source /bin/demo-magic.sh -w2
+source /bin/demo-magic.sh $@
 DEMO_PROMPT="${GREEN}➜ ${RED}chroot ${CYAN}\W # "
 TYPE_SPEED=50
 

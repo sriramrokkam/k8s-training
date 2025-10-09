@@ -11,7 +11,3 @@ spec:
     - podSelector:
         matchLabels:
           caller: mario
-# allow access originating from SAP networks
-    - ipBlock:
-        # <insert local cidr block>
-        cidr: <ip block>

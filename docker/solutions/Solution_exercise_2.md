@@ -18,7 +18,7 @@ Create the following Dockerfile in your build context.
 
 ```Dockerfile
 # builder stage - based on golang image
-FROM golang:1.23-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 # copy the code into the image
 COPY . /go/src

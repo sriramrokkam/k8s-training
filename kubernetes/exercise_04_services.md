@@ -24,7 +24,8 @@ Checkout the newly created `service` object in your namespace. Try to get detail
 Before going on, delete the service you created with the `expose` command. Now write your own yaml to define the service.
 Check, that the label selector matches the labels of your deployment/pods and (re-)create the service (`kubectl apply -f <your-file>.yaml`).
 
-**Important: don't delete this service, you will need it during the following exercises.**
+> [!IMPORTANT]  
+> Don't delete this service, you will need it during the following exercises.
 
 ## Step 4: optional/advanced - learn how to label
 

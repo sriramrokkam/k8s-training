@@ -4,7 +4,9 @@ In this exercise, you will be dealing with _Pods_, _Deployments_, _Services_, _L
 
 After you exposed your webserver to the network in the previous exercise, we will now add some custom content to it which resides on persistent storage outside of pods and containers.
 
-**Note**: This exercise loosely builds upon the previous exercise. If you did not manage to finish the previous exercise successfully, you can use the YAML file [04_service.yaml](solutions/04_service.yaml) in the _solutions_ folder to create a service. Please use this file only if you did not manage to complete the previous exercise.
+> [!NOTE]  
+> This exercise loosely builds upon the previous exercise. If you did not manage to finish the previous exercise successfully, you can use the YAML file [04_service.yaml](solutions/04_service.yaml) in the _solutions_ folder to create a service. Please use this file only if you did not manage to complete the previous exercise.
+> In a similar fashion, in case you need the deployment as well, you can use the YAML file [03_deployment.yaml](solutions/03_deployment.yaml).
 
 ## Step 0: Prepare and check your environment
 
@@ -72,7 +74,7 @@ If you would try to access the nginx running in your pod, you would probably get
 Locate the nginx pod and open a shell session into it: `kubectl exec -it <pod-name> -- bash`.
 Navigate to the directory mentioned in the `volumeMounts` section and create a custom `index.html`. You can re-use the code you used in the docker exercises the other day. Once you are done, disconnect from the pod and close the shell session.
 
-<details><summary>__Hint__</summary>
+<details><summary>Hint</summary>
 
 You can you use heredocs to create a custom index page without installing vi.
 

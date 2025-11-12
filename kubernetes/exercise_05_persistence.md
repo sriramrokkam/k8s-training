@@ -106,8 +106,6 @@ If a pod stays in status `Pending` or `ContainerCreating` you could use `kubectl
 
 Finally, scale the deployment back to a replica count of 1.
 
-**Important:** Do not delete the deployment,service or PVC!
-
 ## Troubleshooting
 
 In case the pods of the deployment stay in status `Pending` or `ContainerCreation` for quite some time, check the events of one of the pods by running `kubectl describe pod <pod-name>`.

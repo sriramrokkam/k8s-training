@@ -69,7 +69,7 @@ function cleanupNamespace () {
 
 if [ "$1" == "all" ]; then 
 	echo "Retrieving all namespaces and running cleanup on each"
-	NAMESPACELIST=$(kubectl get ns -o json | jq -r ".items[].metadata.name")
+	NAMESPACELIST=$(kubectl get ns -l heritage=kubecfggenv2 -o json | jq -r ".items[].metadata.name")
 
 	for namespace in $NAMESPACELIST; do
 		case $namespace in 
@@ -82,3 +82,4 @@ if [ "$1" == "all" ]; then
 fi
 
 cleanupNamespace $1
+

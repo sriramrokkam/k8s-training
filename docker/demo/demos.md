@@ -27,7 +27,7 @@ Show the different docker networks and create a new bridge network (docker netwo
 If you want to wire 2 containers, you have to put them into the same docker network. But be careful, DNS resolution doesn't work in the default network!
 create test network: `docker network create test`
 Spin up a nginx: `docker run -d --name nginx --network test nginx:mainline`
-Spin up a helper: `docker run -it --name helper --network test alpine:3.18`
+Spin up a helper: `docker run -it --name helper --network test alpine:3.22`
 From within the helper container, show the DNS resolution : `nslookup nginx`
 And connect to the webserver: `wget nginx`
 Show the downloaded index.html page: `cat index.html`
@@ -42,13 +42,13 @@ It executes all necessary docker command for this demo and awaits a "enter" befo
 
 Let's start simple and (bind) mount a directory into a container. Therefore assume you have a toolbox container and you need some environment in there (like a config file or ssh keys).
 
-`docker run -it --mount type=bind,source=/home/vagrant,target=/mnt/home alpine:3.18`
+`docker run -it --mount type=bind,source=/home/vagrant,target=/mnt/home alpine:3.22`
 Show the content of /mnt/home, which would be you're home directory
 
 ### Second part
 
 Let's see what else you could do with a bind mount:
-`docker run -it --mount type=bind,source=/home/vagrant,target=/etc alpine:3.18`
+`docker run -it --mount type=bind,source=/home/vagrant,target=/etc alpine:3.22`
 What happens? Well, our home directory is mounted to /etc. The original content of /etc is still there but hidden.
 
 Of course you can also inject a nginx index page or any configuration this way, but that's part of the exercise ;)
@@ -56,7 +56,7 @@ Of course you can also inject a nginx index page or any configuration this way, 
 ### Hacker part
 
 Let's see what else you could do with a bind mount:
-`docker run -it --mount type=bind,source=/etc,target=/hostetc alpine:3.18`
+`docker run -it --mount type=bind,source=/etc,target=/hostetc alpine:3.22`
 In Container we are root and can e.g. see shadow file: `cat /hostetc/shadow`.
 
 Even more fun, mount host / into the container and chroot inside container into it....

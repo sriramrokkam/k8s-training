@@ -10,7 +10,7 @@ Network policies in your namespace help you to restrict access to your nginx dep
 
 Before you deploy a network policy, check the connection from a random pod to the nginx pods via the service.
 
-Start an alpine pod and connect to it: `kubectl run tester -i --tty --restart=Never --rm --image=alpine:3.18 -- ash`
+Start an alpine pod and connect to it: `kubectl run tester -i --tty --restart=Never --rm --image=alpine:3.22 -- ash`
 
 Do you remember, that your service name is also a valid DNS name? Instead of using an IP address to connect to your service, you can use its actual name (like `nginx-https`).
 

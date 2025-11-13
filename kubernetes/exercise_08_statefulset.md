@@ -47,7 +47,7 @@ spec:
 spec:
   initContainers:
   - name: setup
-    image: alpine:3.18
+    image: alpine:3.22
     command:
     - /bin/sh
     - -c

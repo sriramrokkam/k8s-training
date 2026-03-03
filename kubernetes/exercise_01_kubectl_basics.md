@@ -2,9 +2,11 @@
 
 In this exercise you will learn how the command line interface (CLI) `kubectl` can be used to communicate with the Kubernetes cluster ([kubectl documentation](https://kubernetes.io/docs/reference/kubectl/overview/)).
 
-## Step 0: check your environment
+## Step 0: setup the environment with your trainers
 
+Your trainers will hand out the information where/how to get your kubeconfigs.
 
+Store the file locally as instructed and make sure it is used by kubectl. The best way is to export an environment variable named `KUBECONFIG` that points to the file.
 
 **This will work only with a local bash environment like on MacOS or WSL**
 

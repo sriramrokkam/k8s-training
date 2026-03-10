@@ -21,7 +21,7 @@ Insert the following properties:
 ```json
 {
 	"auths": {
-		"https://index.docker.io/vi": {}
+		"https://index.docker.io/v1": {}
 		// or
 		"build-releases-sap-external.int.repositories.cloud.sap": {}
 	}
@@ -29,4 +29,6 @@ Insert the following properties:
 ```
 
 And try again.
+
+User can also try to add the docker.io prefix to the image, example: `docker pull docker.io/nginx:latest`.
 

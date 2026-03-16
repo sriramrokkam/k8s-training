@@ -105,9 +105,12 @@ Gardener deploys an ingress controller to each cluster and allows you to registe
 
 Check the following files for `<cluster-name>` and `<project-name>` placeholders and replace them with the actual cluster/project names:
 
-- [simple ingress with tls](../kubernetes/demo/09a_tls_ingress.yaml?plain=1#L67) (2 places)
+- [simple ingress with tls demo](../kubernetes/demo/08a_tls_ingress.yaml?plain=1#L67) (2 places)
 - [ingress solution](../kubernetes/solutions/07_ingress.yaml?plain=1#L78)
-- [fanout & virtual host ingress](../kubernetes/demo/09b_fanout_and_virtual_host_ingress.yaml?plain=1#L146) (3 places)
+- [fanout & virtual host ingress demo](../kubernetes/demo/08b_fanout_and_virtual_host_ingress.yaml?plain=1#L146) (3 places)
+- Image pull secret demo
+  - [deployment with image secret](../kubernetes/demo/12c_deployment_with_image_secret.yaml?plain=1#L25)
+  - [image pull secret](../kubernetes/demo/12d_image_pull_secret.yaml?plain=1#L6)
 - [sample-app ingress](../sample-app/solutions/app-ingress.yaml?plain=1#L13) (2 places)
 - [image pull secret](../sample-app/solutions/image-pull-secret.yaml?plain=1#L6)
 

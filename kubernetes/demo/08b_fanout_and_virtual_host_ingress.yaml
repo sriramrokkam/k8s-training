@@ -119,7 +119,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
-  - host: fanout-nginx.ingress.<cluster_name>.<project_name>.shoot.canary.k8s-hana.ondemand.com
+  - host: fanout-nginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /my(/|$)(.*)
@@ -143,7 +143,7 @@ metadata:
   name: vh-nginx
 spec:
   rules:
-  - host: mynginx.ingress.<cluster_name>.<project_name>.shoot.canary.k8s-hana.ondemand.com
+  - host: mynginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /
@@ -153,7 +153,7 @@ spec:
             name: mynginx-service
             port:
               number: 80
-  - host: yournginx.ingress.ingress.<cluster_name>.<project_name>.shoot.canary.k8s-hana.ondemand.com
+  - host: yournginx.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com
     http:
       paths:
       - path: /

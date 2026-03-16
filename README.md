@@ -1,4 +1,4 @@
-# Docker and Kubernetes Fundamentals  
+# Docker and Kubernetes Fundamentals
 
 This is the repo for the "Docker & Kubernetes Fundamentals" course. Gain basic Docker knowledge and learn to orchestrate your containers with Kubernetes. Get started with Docker and run your first container as well as build custom Docker images. When working with Kubernetes you will get to know the common entities in Kubernetes and apply your knowledge during exercises.
 For an overview of topics see the agenda pages on top level.
@@ -32,12 +32,13 @@ High level topics are:
 - Storage API in Kubernetes ([slides](./kubernetes/05_persistence.pptx) & [exercise 5](./kubernetes/exercise_05_persistence.md))
 - Basic troubleshooting ([slides](./kubernetes/06_troubleshooting.pptx))
 - Configure applications with `ConfigMaps` and `Secrets` ([slides](./kubernetes/07_configmap_secrets.pptx) & [exercise 6](./kubernetes/exercise_06_configmaps_secrets.md))
-- Expose applications via `Ingress` ([slides](./kubernetes/09_ingress.pptx) & [exercise 7](./kubernetes/exercise_07_ingress.md))
-- Run stateful applications with `StatefulSets` ([slides](./kubernetes/10_statefulset.pptx) & [exercise 8](./kubernetes/exercise_08_statefulset.md))
-- Service accounts, RBAC, resource consumption, security policies, network policies ([slides part 1](./kubernetes/11_1_accessControll_and_resourceConsumption.pptx), [slides part 2](./kubernetes/11_2_security.pptx), & [exercise 9](./kubernetes/exercise_09_network_policy.md))
-- Introduction to jobs, scheduling, image pulling and extensibility concepts in K8s [slides](./kubernetes/11_3_morePods_Sheduling.pptx)
-- Introduction to Gardener ([slides](./kubernetes//11_4_Gardener.pptx)
-- Deploy packaged applications with Helm ([slides](./kubernetes/12_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))
+- Expose applications via `Ingress` ([slides](./kubernetes/08_ingress.pptx) & [exercise 7](./kubernetes/exercise_07_ingress.md))
+- Run stateful applications with `StatefulSets` ([slides](./kubernetes/09_statefulset.pptx) & [exercise 8](./kubernetes/exercise_08_statefulset.md))
+- Service accounts, RBAC and resource consumption ([slides](./kubernetes/10_accessControl_and_resourceConsumption.pptx))
+- Security policies and network policies ([slides](./kubernetes/11_security.pptx) & [exercise 9](./kubernetes/exercise_09_network_policy.md))
+- Introduction to jobs, scheduling, image pulling, extensibility concepts in K8s and useful tools ([slides](./kubernetes/12_morePods_Scheduling.pptx))
+- Introduction to Gardener ([slides](./kubernetes/13_Gardener.pptx))
+- Deploy packaged applications with Helm ([slides](./kubernetes/14_helm.pptx) & [exercise 10](./kubernetes/exercise_10_helm_basics.md))
 - [fortune cookies](./sample-app/README.md) - apply the learned concepts and build + deploy a sample application
 
 ## Preparation and Setup
@@ -54,6 +55,6 @@ Classroom training is not your cup of tea? Check out the [list of alternative le
 * Check out our [trainer badges](./admin/badges.md)
 * The VM to be used by participants is built here: https://github.wdf.sap.corp/cloud-native-dev/Cloud-Curriculum-VM
 
-**Interested in becoming a trainer as well?** 
+**Interested in becoming a trainer as well?**
 
 Check out this [page](./admin/becoming_a_trainer.md) to find out more :bulb:

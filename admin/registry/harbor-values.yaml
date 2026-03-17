@@ -14,7 +14,7 @@ database:
     image:
       repository: goharbor/harbor-db
       tag: dev
-    password: tDDHyYNSRufLfzKrfFLqG92n 
+    password: tDDHyYNSRufLfzKrfFLqG92n
   maxIdleConns: 50
   maxOpenConns: 1000
   type: internal
@@ -22,6 +22,8 @@ expose:
   ingress:
     annotations:
       cert.gardener.cloud/purpose: managed
+      dns.gardener.cloud/ttl: "600"
+      dns.gardener.cloud/class: garden
       ingress.kubernetes.io/proxy-body-size: "0"
       ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/proxy-body-size: "0"

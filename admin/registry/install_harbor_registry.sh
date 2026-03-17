@@ -5,6 +5,7 @@ REGISTRY_USER=harbor
 REGISTRY_PASS="GkPxKfTMse83TEcZhZe4qjaH"
 PARTICIPANT_PASS="2r4!rX6u5-qH"
 ADMIN_PASSWD="82rUHSy98xbZztm5MjLJ7Nf6"
+OWN_DIR="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")"
 
 CURL_WAIT=5
 
@@ -40,7 +41,7 @@ if [ $RC -ne 0 ]; then
         exit 4
 fi
 
-# check if we have htpasswd installed 
+# check if we have htpasswd installed
 if [ -z "$(which htpasswd)" ]; then
         echo "htpasswd could not be found. Please install it with 'apt install apache2-utils'.".
         exit 5
@@ -61,8 +62,9 @@ REGISTRY_URL=$(echo $INGRESS_HOSTNAME | tr [:upper:] [:lower:])
 kubectl create ns harbor-registry
 
 helm repo add harbor https://helm.goharbor.io
-helm install --wait -n harbor-registry -f harbor-values.yaml \
+helm upgrade -i --wait -n harbor-registry -f $OWN_DIR/harbor-values.yaml \
 	--set expose.ingress.hosts.core=$REGISTRY_URL \
+        --set expose.ingress.annotations."dns.gardener.cloud/dnsnames"=$REGISTRY_URL \
 	--set externalURL="https://${REGISTRY_URL}" \
 	--set registry.credentials.username=$REGISTRY_USER \
 	--set registry.credentials.password=$REGISTRY_PASS \

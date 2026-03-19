@@ -82,7 +82,7 @@ sudo apt-get update
 sudo apt-get remove --purge -y gnome-initial-setup tracker-extract
 sudo apt autoremove -y
 sudo apt-get upgrade -y
-sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent git
+sudo apt-get install -y curl wget ca-certificates apt-transport-https vim spice-vdagent git jq
 
 # ca
 pushd /usr/local/share/ca-certificates

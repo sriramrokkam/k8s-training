@@ -71,3 +71,14 @@ The script will:
 - clone the repository to `/tmp`
 - build an image with x86_64 architecture for the steakfulset-controller app and push it to the `library` project in Harbor.
 - package and upload the helm chart as an OCI artifact to the `library` project in Harbor.
+
+## Adapt the URLs to use the correct cluster name and project name in the harbor registry
+
+Since the registry is exposed via an ingress resource, the URL contains the cluster name and project name. You need to adapt the URLs in the exercises to be able to push and pull images from the registry.
+
+We created a simple script to do this for you. It will replace the placeholder `<cluster-name>` and `<project-name>` in the exercises with the actual values from your cluster and harbor registry.
+To run the script, execute the following command in the terminal:
+
+```bash
+./replace_ingress_urls.sh
+```

@@ -13,6 +13,7 @@ TEMPLATES=(
   "kubernetes/demo/12d_image_pull_secret.yaml"
   "sample-app/solutions/app-ingress.yaml"
   "sample-app/solutions/image-pull-secret.yaml"
+  "sample-app/solutions/app-deployment.yaml"
 )
 
 if [[ "$COMMAND" == "clean" ]]; then

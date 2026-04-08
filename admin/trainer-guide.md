@@ -118,7 +118,8 @@ Alernatively, you can also replace the URLs manually by searching for the follow
   - [deployment with image secret](../kubernetes/demo/12c_deployment_with_image_secret.yaml.template?plain=1#L25)
   - [image pull secret](../kubernetes/demo/12d_image_pull_secret.yaml.template?plain=1#L6)
 - [sample-app ingress](../sample-app/solutions/app-ingress.yaml.template?plain=1#L13) (2 places)
-- [image pull secret](../sample-app/solutions/image-pull-secret.yaml.template?plain=1#L6)
+- [sample-app image pull secret](../sample-app/solutions/image-pull-secret.yaml.template?plain=1#L6)
+- [sample-app deployment](../sample-app/solutions/app-deployment.yaml.template?plain=1#L23)
 
 ### Setup helm
 

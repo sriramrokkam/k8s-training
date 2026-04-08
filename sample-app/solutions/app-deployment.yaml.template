@@ -22,7 +22,7 @@ spec:
       - name: training-registry
       containers:
       - name: app
-        image: <image pull reference>
+        image: h.ingress.<cluster-name>.<project-name>.shoot.canary.k8s-hana.ondemand.com/training/fortune-cookies:v1
         ports:
         - containerPort: 8080
           name: app-port

@@ -7,17 +7,18 @@
 Use the [Gardener canary landscape](https://dashboard.garden.canary.k8s.ondemand.com/login) to create a new cluster for a training.
 
 - The **name** of the cluster should **not exceed seven characters** as this might cause issues with ingress resources and their certificates. The general pattern is `<location>cw<calendar week>`, e.g. `wdfcw42`.
-- Use a machine type with 4 CPU and 16Gi memory and allow the node pool to scale sufficiently (e.g. max 20 nodes for 40 participants) 
+- The cluster should be deployed to SCI (Openstack). Use domain `hcp03` and FIP suffix `-external-hcp03-ktrain-01`.
+- A suitable machine type could be `g_c4_m16` (4 CPU, 16 GB of memory).
+- For region
+  - `eu-de-1` use the credentials stored in `sci-eu-training-secret`.
+  - `na-us-2` use the credentials stored in `sci-us-training-secret`.
 - Set the Maintenance Schedule to a time that does not interfere with the training (remember the different timezones).
 - Delete the Hibernation Schedule.
-- Configure `.spec.kubernetes.kubeScheduler.profile` with `bin-packing`.
 
-Infrastructure: 
-- The cluster should be deployed to SCI. Use domain `hcp03` and FIP suffix `-external-hcp03-ktrain-01`.
-- Configure the `.spec.exposureClassName` with `converged-cloud-internet`, if participants should have access to the kube-apiserver without VPN.
-- For region `eu-de-1` use the credentials stored in `sci-eu-training-secret`.
-- For region `na-us-2` use the credentials stored in `sci-us-training-secret`.
-- A suitable machine type could be `g_c4_m16`.
+In `YAML` mode
+- Configure `.spec.kubernetes.kubeScheduler.profile` with `bin-packing`. 
+- Configure `.spec.exposureClassName` with `converged-cloud-internet`, if participants should have access to the kube-apiserver without VPN.
+- Configure `.spec.provider.infrastructureConfig.floatingPoolSubnetName` with `FloatingIP-internet-*`.
 - Configure the default loadbalancer class to get publicly accessible IP addresses:
 ```yaml
 spec:

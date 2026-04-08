@@ -1,5 +1,6 @@
 #!/bin/bash
 echo -e " > IMPORTANT: This script requires access to github.tools.sap!"
+OWN_DIR="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")"
 
 # construct ingress hostname string
 GARDENER_PROJECTNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -d. -f3)
@@ -24,7 +25,7 @@ git clone --branch cloud-platforms https://github.tools.sap/cloud-curriculum/exe
 
 ## build and push fortune cookies
 echo -e "\n\n > Building Fortune Cookies Docker Image ..."
-docker buildx build --platform linux/amd64 -t $INGRESS_HOSTNAME/training/fortune-cookies:v1 -f ../../sample-app/solutions/Dockerfile --push /tmp/cloud-platforms-java-k8s
+docker buildx build --platform linux/amd64 -t $INGRESS_HOSTNAME/training/fortune-cookies:v1 -f $OWN_DIR/../../sample-app/solutions/Dockerfile --push /tmp/cloud-platforms-java-k8s
 
 ## clean up
 rm -rf /tmp/cloud-platforms-java-k8s

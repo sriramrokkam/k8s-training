@@ -64,13 +64,32 @@ kubectl create ns harbor-registry
 helm repo add harbor https://helm.goharbor.io
 helm upgrade -i --wait -n harbor-registry -f $OWN_DIR/harbor-values.yaml \
 	--set expose.ingress.hosts.core=$REGISTRY_URL \
-        --set expose.ingress.annotations."dns.gardener.cloud/dnsnames"=$REGISTRY_URL \
+        --set-string 'expose.ingress.annotations.dns\.gardener\.cloud/dnsnames'="$REGISTRY_URL" \
 	--set externalURL="https://${REGISTRY_URL}" \
 	--set registry.credentials.username=$REGISTRY_USER \
 	--set registry.credentials.password=$REGISTRY_PASS \
 	--set registry.credentials.htpasswd=$_passwd \
 	--set harborAdminPassword=$ADMIN_PASSWD \
 	$HELM_RELEASE_NAME harbor/harbor
+
+echo -e "\n >> Waiting for Harbor API to become ready...\n"
+HARBOR_READY_MAX_RETRIES=30
+HARBOR_READY_RETRY_INTERVAL=10
+
+for ((i=1; i<=HARBOR_READY_MAX_RETRIES; i++)); do
+        if curl --insecure --silent --show-error --fail "https://$REGISTRY_URL/api/v2.0/ping" > /dev/null; then
+                echo "Harbor API is reachable and ready for configuration."
+                break
+        fi
+
+        if [ $i -eq $HARBOR_READY_MAX_RETRIES ]; then
+                echo "ERROR: Harbor API at https://$REGISTRY_URL did not become ready after $((HARBOR_READY_MAX_RETRIES * HARBOR_READY_RETRY_INTERVAL)) seconds."
+                exit 1
+        fi
+
+        echo "Harbor API not ready yet (attempt $i/$HARBOR_READY_MAX_RETRIES). Retrying in ${HARBOR_READY_RETRY_INTERVAL}s..."
+        sleep $HARBOR_READY_RETRY_INTERVAL
+done
 
 AUTH_TOKEN=$(echo -n "admin:$ADMIN_PASSWD" | base64)
 

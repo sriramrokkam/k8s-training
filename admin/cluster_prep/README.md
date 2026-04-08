@@ -1,13 +1,10 @@
 # Scripts to prepare The training cluster
 
-## install_ingress.sh
+## Ingress controller
 
-Both for the demos and the exercices, the cluster need an ingress controller. You have 2 choises for this:
+Both for the demos and the exercices, the cluster need an ingress controller. You should use the default ingress controller provided by Gardener (nginx). However, since ingress-nginx is deprecated since March 2026, the class will eventially be adapted to use Traefik instead.
 
-- Install Traefik ingress controller via helm chart
-- Install nginx ingress controller via Gardener addons
-  - This is the simpler option, however ingress-nginx has been deprecated in March 2026. So, in order to be future proof, we recommend installing Traefik via helm chart. If you choose this option, make sure to select the nginx ingress class in the respective exercises.
-
+Sinnce you're likely using a Gardener cluster for the training, should you have access to automation in order to manage Let's encrypt certificates and a DNS domain like `[endpoint].ingress.[cluster-name].[project-name].shoot.canary.k8s-hana.ondemand.com`. Those can be easily defined and managed via `annotations` to the ingress/service resource. See https://pages.github.tools.sap/kubernetes/gardener/docs/guides/networking/certificate-extension-default-domain/ for more details.
 
 ## install_harbor_registry.sh
 

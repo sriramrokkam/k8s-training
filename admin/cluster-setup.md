@@ -16,7 +16,7 @@ Use the [Gardener canary landscape](https://dashboard.garden.canary.k8s.ondemand
 - Delete the Hibernation Schedule.
 
 In `YAML` mode
-- Configure `.spec.kubernetes.kubeScheduler.profile` with `bin-packing`. 
+- Configure `.spec.kubernetes.kubeScheduler.profile` with `bin-packing`.
 - Configure `.spec.exposureClassName` with `converged-cloud-internet`, if participants should have access to the kube-apiserver without VPN.
 - Configure `.spec.provider.infrastructureConfig.floatingPoolSubnetName` with `FloatingIP-internet-*`.
 - Configure the default loadbalancer class to get publicly accessible IP addresses:
@@ -40,3 +40,7 @@ Fallback:
 ## Deploy the kube.config
 
 Generate a short-lived kubeconfig and send it to the requestor. Use https://github.wdf.sap.corp/D044431/training-admin/tree/master/cmd/trainer-setup for it.
+
+## Install the necessary components
+
+See the [README](cluster_prep/README.md) in the `cluster_prep` folder for instructions on how to install the necessary components for the training cluster using the provided scripts.

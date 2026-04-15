@@ -159,13 +159,21 @@ cat << '_EOF' > ${dir}/seccomp/deny-dir.json
 	],
 	"syscalls": [
 		{
-			"name": "mkdir",
+			"names": [
+				"mkdir",
+				"mkdirat"
+			],
 			"action": "SCMP_ACT_ERRNO",
+			"comment": "Block directory creation",
 			"args": []
 		},
 		{
-			"name": "chdir",
+			"names": [
+				"chdir",
+				"fchdir"
+			],
 			"action": "SCMP_ACT_ERRNO",
+			"comment": "Block directory navigation",
 			"args": []
 		}
 	]

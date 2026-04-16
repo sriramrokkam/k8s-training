@@ -108,8 +108,17 @@ PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" 
 
 sleep $CURL_WAIT
 
-## assign user to project
+## assign user to project with developer role
 curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
+# assign user to default project (library) with limited guest role (read-only)
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/1/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 5, \"member_user\": {\"username\": \"participant\" }}"
+
+# Adding nginx image to the registry for the image pull secret demo
+docker pull --platform linux/amd64 nginx:latest
+docker tag nginx:latest $REGISTRY_URL/library/nginx:latest
+docker login $REGISTRY_URL -u admin -p $ADMIN_PASSWD
+docker push $REGISTRY_URL/library/nginx:latest --platform linux/amd64
+docker logout $REGISTRY_URL
 
 echo -e "\n\nRegistry is available at https://$REGISTRY_URL"
 echo -e "Login as admin:$ADMIN_PASSWD\n"

@@ -34,6 +34,8 @@ The script will
 - Create a new harbor project `training`
 - Create a new harbor user `participant` with password `2r4!rX6u5-qH` (also mentioned in the respective exercise)
 - Assign the user to the `training` project with role `developer`
+- Assign the user to the `library` (default) project with role `limited guest`
+- Pushes a nginx image to the `library` project for the image pull secret demo on day 4
 
 Finally, test your registry by opening the ingress URL (e.g. `https://h.ingress.<cluster-name>.k8s-train.shoot.canary.k8s-hana.ondemand.com/`).
 
@@ -74,7 +76,7 @@ The script will:
 
 ## Adapt the URLs to use the correct cluster name and project name in the harbor registry
 
-Since the registry is exposed via an ingress resource, the URL contains the cluster name and project name. You need to adapt the URLs in the exercises to be able to push and pull images from the registry.
+Since the registry is exposed via an ingress resource, the URL contains the cluster name and project name. You need to adapt the URLs in the exercises /solutions / demos to be able to push and pull images from the registry.
 
 We created a simple script to do this for you. It will replace the placeholder `<cluster-name>` and `<project-name>` in the exercises with the actual values from your cluster and harbor registry.
 To run the script, execute the following command in the terminal:

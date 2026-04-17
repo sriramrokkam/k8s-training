@@ -1,9 +1,12 @@
 .DS_Store
 dev/
 .idea/
+
+# Demo artifacts
 container-demos/dbuild/**
 container-demos/seccomp/**
 
+# Generated files with ingress URLs
 **.replaced.yaml
 
 # Temporary Powerpoint files

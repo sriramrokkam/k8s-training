@@ -110,8 +110,6 @@ sleep $CURL_WAIT
 
 ## assign user to project with developer role
 curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
-# assign user to default project (library) with limited guest role (read-only)
-curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/1/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 5, \"member_user\": {\"username\": \"participant\" }}"
 
 # Adding nginx image to the registry for the image pull secret demo
 docker pull --platform linux/amd64 nginx:latest

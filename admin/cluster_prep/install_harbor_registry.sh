@@ -93,29 +93,45 @@ done
 
 AUTH_TOKEN=$(echo -n "admin:$ADMIN_PASSWD" | base64)
 
-## create user
+# create user participant
 curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/users" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"username\": \"participant\", \"password\": \"$PARTICIPANT_PASS\", \"realname\": \"participant\", \"admin_role_in_auth\": false, \"sysadmin_flag\": false, \"email\": \"participant@training.sap\" }"
 
 sleep $CURL_WAIT
 
-## create project
+# create project training
 curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"project_name\": \"training\", \"storage_limit\": 0, \"public\": false }"
 
 sleep $CURL_WAIT
 
-## get project ID
-PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "training") | .project_id'`
+# get project ID
+TRAINING_PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "training") | .project_id'`
 
 sleep $CURL_WAIT
 
-## assign user to project with developer role
-curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
+# assign user 'participant' to project 'training' with developer role
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${TRAINING_PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
+
+sleep $CURL_WAIT
+
+# create project demo
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"project_name\": \"demo\", \"storage_limit\": 0, \"public\": false }"
+
+sleep $CURL_WAIT
+
+# get project ID
+DEMO_PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "demo") | .project_id'`
+
+sleep $CURL_WAIT
+
+# assign user 'participant' to project 'demo' with limited guest role
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${DEMO_PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 5, \"member_user\": {\"username\": \"participant\" }}"
+
 
 # Adding nginx image to the registry for the image pull secret demo
 docker pull --platform linux/amd64 nginx:latest
-docker tag nginx:latest $REGISTRY_URL/library/nginx:latest
+docker tag nginx:latest $REGISTRY_URL/demo/nginx:latest
 docker login $REGISTRY_URL -u admin -p $ADMIN_PASSWD
-docker push $REGISTRY_URL/library/nginx:latest --platform linux/amd64
+docker push $REGISTRY_URL/demo/nginx:latest --platform linux/amd64
 docker logout $REGISTRY_URL
 
 echo -e "\n\nRegistry is available at https://$REGISTRY_URL"

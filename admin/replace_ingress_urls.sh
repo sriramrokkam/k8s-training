@@ -6,16 +6,17 @@ REPO_ROOT="$OWN_DIR/../"
 
 COMMAND="${1:-generate}"
 
-TEMPLATES=(
-  "kubernetes/demo/08a_tls_ingress.yaml"
-  "kubernetes/demo/08b_fanout_and_virtual_host_ingress.yaml"
-  "kubernetes/demo/12c_deployment_with_image_secret.yaml"
-  "kubernetes/demo/12d_image_pull_secret.yaml"
-  "sample-app/solutions/app-ingress.yaml"
-  "sample-app/solutions/image-pull-secret.yaml"
-  "sample-app/solutions/app-deployment.yaml"
-  "kubernetes/solutions/07_ingress.yaml"
+TEMPLATES=()
+while IFS= read -r file; do
+  TEMPLATES+=("$file")
+done < <(
+  grep -rl --include="*.yaml" -e '<cluster-name>.<project-name>' \
+    "$REPO_ROOT/kubernetes" "$REPO_ROOT/sample-app" \
+    | sed "s|$REPO_ROOT/||"
 )
+
+echo "Found ${#TEMPLATES[@]} template(s) with matching <cluster-name>.<project-name>"
+echo ""
 
 if [[ "$COMMAND" == "clean" ]]; then
   for DEST in "${TEMPLATES[@]}"; do

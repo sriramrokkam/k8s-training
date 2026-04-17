@@ -103,11 +103,15 @@ The URL pattern on Gardener looks like this:
 
 An ingress controller needs to be installed to each cluster and allows you to register custom URLs to a specific subdomain (this is usually done via a Gardener addon/extension). Since the subdomain contains the name of the Gardener project as well as the cluster, you have to adapt the ingress resources locally (on your VM) to match with your setup.
 
-Check the following files for `<cluster-name>` and `<project-name>` placeholders and replace them with the actual cluster/project name. You can use the following command to do so:
+To do so, we check for files with the `<cluster-name>.<project-name>` placeholders and replace them with the actual cluster/project name. You can use the following script to replace everything automatically:
 
 ```bash
 # Make sure you can access the cluster with kubectl before running the script, otherwise the script will fail
-./replace_ingress_urls.sh
+./replace_ingress_urls.sh generate
+# This should create a seperate file with extension .replaced.yaml for each file containing the placeholder. These files contain the real cluster/project names and are gitignored.
+
+# To clean up the generated files, simply run:
+./replace_ingress_urls.sh clean
 ```
 
 Alernatively, you can also replace the URLs manually by searching for the following patterns in the respective files and replacing them with the correct values:

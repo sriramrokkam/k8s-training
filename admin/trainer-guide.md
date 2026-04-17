@@ -101,7 +101,7 @@ The URL pattern on Gardener looks like this:
 
 ### Adapt the ingress URLs
 
-An ingress controller needs to be installed to each cluster and allows you to register custom URLs to a specific subdomain. Since the subdomain contains the name of the Gardener project as well as the cluster, you have to adapt the ingress resources locally (on your VM) to match with your setup.
+An ingress controller needs to be installed to each cluster and allows you to register custom URLs to a specific subdomain (this is usually done via a Gardener addon/extension). Since the subdomain contains the name of the Gardener project as well as the cluster, you have to adapt the ingress resources locally (on your VM) to match with your setup.
 
 Check the following files for `<cluster-name>` and `<project-name>` placeholders and replace them with the actual cluster/project name. You can use the following command to do so:
 
@@ -120,6 +120,7 @@ Alernatively, you can also replace the URLs manually by searching for the follow
 - [sample-app ingress](../sample-app/solutions/app-ingress.yaml.template?plain=1#L13) (2 places)
 - [sample-app image pull secret](../sample-app/solutions/image-pull-secret.yaml.template?plain=1#L6)
 - [sample-app deployment](../sample-app/solutions/app-deployment.yaml.template?plain=1#L23)
+- [ingress solution](../../kubernetes/solutions/07_ingress.yaml)
 
 ### Setup helm
 

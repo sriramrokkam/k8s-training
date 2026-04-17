@@ -14,14 +14,15 @@ TEMPLATES=(
   "sample-app/solutions/app-ingress.yaml"
   "sample-app/solutions/image-pull-secret.yaml"
   "sample-app/solutions/app-deployment.yaml"
+  "kubernetes/solutions/07_ingress.yaml"
 )
 
 if [[ "$COMMAND" == "clean" ]]; then
   for DEST in "${TEMPLATES[@]}"; do
-    FILE="$REPO_ROOT/$DEST"
+    FILE="$REPO_ROOT/${DEST%.yaml}.replaced.yaml"
     if [[ -f "$FILE" ]]; then
       rm "$FILE"
-      echo "Deleted: $DEST"
+      echo "Deleted: ${DEST%.yaml}.replaced.yaml"
     fi
   done
   exit 0
@@ -62,8 +63,8 @@ echo "Project name : $GARDENER_PROJECTNAME"
 echo ""
 
 for DEST in "${TEMPLATES[@]}"; do
-  SRC="$REPO_ROOT/$DEST.template"
-  OUT="$REPO_ROOT/$DEST"
+  SRC="$REPO_ROOT/$DEST"
+  OUT="$REPO_ROOT/${DEST%.yaml}.replaced.yaml"
 
   if [[ ! -f "$SRC" ]]; then
     echo "Warning: template not found, skipping: $SRC" >&2
@@ -75,8 +76,8 @@ for DEST in "${TEMPLATES[@]}"; do
     -e "s/<project-name>/$GARDENER_PROJECTNAME/g" \
     "$SRC" > "$OUT"
 
-  echo "Generated: $DEST"
+  echo "Generated: ${DEST%.yaml}.replaced.yaml"
 done
 
 echo ""
-echo "Done. The generated files contain real cluster/project names and are gitignored."
+echo "Done. The .replaced.yaml files contain real cluster/project names and are gitignored."

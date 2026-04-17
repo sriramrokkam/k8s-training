@@ -25,7 +25,7 @@ git clone --branch cloud-platforms https://github.tools.sap/cloud-curriculum/exe
 
 ## build and push fortune cookies
 echo -e "\n\n > Building Fortune Cookies Docker Image ..."
-docker buildx build --platform linux/amd64 -t $INGRESS_HOSTNAME/demo/fortune-cookies:v1 -f $OWN_DIR/../../sample-app/solutions/Dockerfile --push /tmp/cloud-platforms-java-k8s
+docker buildx build --platform linux/amd64 -t $INGRESS_HOSTNAME/training/fortune-cookies:v1 -f $OWN_DIR/../../sample-app/solutions/Dockerfile --push /tmp/cloud-platforms-java-k8s
 
 ## clean up
 rm -rf /tmp/cloud-platforms-java-k8s

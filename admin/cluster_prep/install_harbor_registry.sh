@@ -64,7 +64,7 @@ kubectl create ns harbor-registry
 helm repo add harbor https://helm.goharbor.io
 helm upgrade -i --wait -n harbor-registry -f $OWN_DIR/harbor-values.yaml \
 	--set expose.ingress.hosts.core=$REGISTRY_URL \
-        --set expose.ingress.annotations."dns.gardener.cloud/dnsnames"=$REGISTRY_URL \
+        --set-string 'expose.ingress.annotations.dns\.gardener\.cloud/dnsnames'="$REGISTRY_URL" \
 	--set externalURL="https://${REGISTRY_URL}" \
 	--set registry.credentials.username=$REGISTRY_USER \
 	--set registry.credentials.password=$REGISTRY_PASS \
@@ -72,25 +72,67 @@ helm upgrade -i --wait -n harbor-registry -f $OWN_DIR/harbor-values.yaml \
 	--set harborAdminPassword=$ADMIN_PASSWD \
 	$HELM_RELEASE_NAME harbor/harbor
 
+echo -e "\n >> Waiting for Harbor API to become ready...\n"
+HARBOR_READY_MAX_RETRIES=30
+HARBOR_READY_RETRY_INTERVAL=10
+
+for ((i=1; i<=HARBOR_READY_MAX_RETRIES; i++)); do
+        if curl --insecure --silent --show-error --fail "https://$REGISTRY_URL/api/v2.0/ping" > /dev/null; then
+                echo "Harbor API is reachable and ready for configuration."
+                break
+        fi
+
+        if [ $i -eq $HARBOR_READY_MAX_RETRIES ]; then
+                echo "ERROR: Harbor API at https://$REGISTRY_URL did not become ready after $((HARBOR_READY_MAX_RETRIES * HARBOR_READY_RETRY_INTERVAL)) seconds."
+                exit 1
+        fi
+
+        echo "Harbor API not ready yet (attempt $i/$HARBOR_READY_MAX_RETRIES). Retrying in ${HARBOR_READY_RETRY_INTERVAL}s..."
+        sleep $HARBOR_READY_RETRY_INTERVAL
+done
+
 AUTH_TOKEN=$(echo -n "admin:$ADMIN_PASSWD" | base64)
 
-## create user
+# create user participant
 curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/users" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"username\": \"participant\", \"password\": \"$PARTICIPANT_PASS\", \"realname\": \"participant\", \"admin_role_in_auth\": false, \"sysadmin_flag\": false, \"email\": \"participant@training.sap\" }"
 
 sleep $CURL_WAIT
 
-## create project
+# create project training
 curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"project_name\": \"training\", \"storage_limit\": 0, \"public\": false }"
 
 sleep $CURL_WAIT
 
-## get project ID
-PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "training") | .project_id'`
+# get project ID
+TRAINING_PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "training") | .project_id'`
 
 sleep $CURL_WAIT
 
-## assign user to project
-curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
+# assign user 'participant' to project 'training' with developer role
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${TRAINING_PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 2, \"member_user\": {\"username\": \"participant\" }}"
+
+sleep $CURL_WAIT
+
+# create project demo
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"project_name\": \"demo\", \"storage_limit\": 0, \"public\": false }"
+
+sleep $CURL_WAIT
+
+# get project ID
+DEMO_PROJECT_ID=`curl --insecure -s -X GET "https://$REGISTRY_URL/api/v2.0/projects" -H "Authorization: Basic $AUTH_TOKEN"  -H "accept: application/json"  | jq '.[] | select(.name == "demo") | .project_id'`
+
+sleep $CURL_WAIT
+
+# assign user 'participant' to project 'demo' with limited guest role
+curl --insecure -X POST "https://$REGISTRY_URL/api/v2.0/projects/${DEMO_PROJECT_ID}/members" -H "Authorization: Basic $AUTH_TOKEN" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"role_id\": 5, \"member_user\": {\"username\": \"participant\" }}"
+
+
+# Adding nginx image to the registry for the image pull secret demo
+docker pull --platform linux/amd64 nginx:latest
+docker tag nginx:latest $REGISTRY_URL/demo/nginx:latest
+docker login $REGISTRY_URL -u admin -p $ADMIN_PASSWD
+docker push $REGISTRY_URL/demo/nginx:latest --platform linux/amd64
+docker logout $REGISTRY_URL
 
 echo -e "\n\nRegistry is available at https://$REGISTRY_URL"
 echo -e "Login as admin:$ADMIN_PASSWD\n"

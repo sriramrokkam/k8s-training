@@ -101,18 +101,30 @@ The URL pattern on Gardener looks like this:
 
 ### Adapt the ingress URLs
 
-Gardener deploys an ingress controller to each cluster and allows you to register custom URLs to a specific subdomain. Since the subdomain contains the name of the Gardener project as well as the cluster, you have to adapt the ingress resources locally (on your VM) to match with your setup.
+An ingress controller needs to be installed to each cluster and allows you to register custom URLs to a specific subdomain (this is usually done via a Gardener addon/extension). Since the subdomain contains the name of the Gardener project as well as the cluster, you have to adapt the ingress resources locally (on your VM) to match with your setup.
 
-Check the following files for `<cluster-name>` and `<project-name>` placeholders and replace them with the actual cluster/project names:
+To do so, we check for files with the `<cluster-name>.<project-name>` placeholders and replace them with the actual cluster/project name. You can use the following script to replace everything automatically:
 
-- [simple ingress with tls demo](../kubernetes/demo/08a_tls_ingress.yaml?plain=1#L67) (2 places)
-- [ingress solution](../kubernetes/solutions/07_ingress.yaml?plain=1#L78)
-- [fanout & virtual host ingress demo](../kubernetes/demo/08b_fanout_and_virtual_host_ingress.yaml?plain=1#L146) (3 places)
+```bash
+# Make sure you can access the cluster with kubectl before running the script, otherwise the script will fail
+./replace_ingress_urls.sh generate
+# This should create a seperate file with extension .replaced.yaml for each file containing the placeholder. These files contain the real cluster/project names and are gitignored.
+
+# To clean up the generated files, simply run:
+./replace_ingress_urls.sh clean
+```
+
+Alernatively, you can also replace the URLs manually by searching for the following patterns in the respective files and replacing them with the correct values:
+
+- [simple ingress with tls demo](../kubernetes/demo/08a_tls_ingress.yaml.template?plain=1#L67) (2 places)
+- [fanout & virtual host ingress demo](../kubernetes/demo/08b_fanout_and_virtual_host_ingress.yaml.template?plain=1#L146) (3 places)
 - Image pull secret demo
-  - [deployment with image secret](../kubernetes/demo/12c_deployment_with_image_secret.yaml?plain=1#L25)
-  - [image pull secret](../kubernetes/demo/12d_image_pull_secret.yaml?plain=1#L6)
-- [sample-app ingress](../sample-app/solutions/app-ingress.yaml?plain=1#L13) (2 places)
-- [image pull secret](../sample-app/solutions/image-pull-secret.yaml?plain=1#L6)
+  - [deployment with image secret](../kubernetes/demo/12c_deployment_with_image_secret.yaml.template?plain=1#L25)
+  - [image pull secret](../kubernetes/demo/12d_image_pull_secret.yaml.template?plain=1#L6)
+- [sample-app ingress](../sample-app/solutions/app-ingress.yaml.template?plain=1#L13) (2 places)
+- [sample-app image pull secret](../sample-app/solutions/image-pull-secret.yaml.template?plain=1#L6)
+- [sample-app deployment](../sample-app/solutions/app-deployment.yaml.template?plain=1#L23)
+- [ingress solution](../../kubernetes/solutions/07_ingress.yaml)
 
 ### Setup helm
 

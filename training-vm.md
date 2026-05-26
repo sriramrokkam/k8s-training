@@ -25,7 +25,7 @@ Checkout the official guide to setup your environment: https://learn.microsoft.c
 
 WSL2 gets a virtual NIC and a different IP address, just like a regular Virtual Machine. In SAP this situation causes the blockage of communication from the client-side. Therefore, McAfee/Trellix Endpoint Protect recognizes the WSL2 machine as a separate device.
 
-Checkout [This IT Knowledge Base document](https://itsupportportal.services.sap/itsupport?id=kb_article_view&sys_kb_id=2f71b3feeb714e94d707fe56cad0cdf5) for detailed information and make your environment workable. 
+Checkout [This IT Knowledge Base document](https://itsupportportal.services.sap/itsupport?id=kb_article_view&sys_kb_id=b0f56aeb3b2236d06da0159e53e45ace) for detailed information and make your environment workable. 
 
 Next, continue with the preparation steps below.
 
@@ -104,7 +104,7 @@ sudo usermod -aG docker $username
 sudo systemctl daemon-reload && sudo systemctl restart docker
 
 # kubectl
-kubectlver=$(curl https://cdn.dl.k8s.io/release/stable.txt | cut -c-5)
+kubectlver=$(curl https://dl.k8s.io/release/stable.txt | cut -c-5)
 curl -fsSL https://pkgs.k8s.io/core:/stable:/$kubectlver/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$kubectlver/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
@@ -168,7 +168,7 @@ sudo usermod -aG docker $username
 sudo systemctl daemon-reload && sudo systemctl restart docker
 
 # kubectl
-kubectlver=$(curl https://cdn.dl.k8s.io/release/stable.txt | cut -c-5)
+kubectlver=$(curl https://dl.k8s.io/release/stable.txt | cut -c-5)
 curl -fsSL https://pkgs.k8s.io/core:/stable:/$kubectlver/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$kubectlver/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 

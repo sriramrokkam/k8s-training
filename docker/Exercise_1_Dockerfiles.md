@@ -1,6 +1,6 @@
 # Exercise 1 - Images and Dockerfiles
 
-In this exercise, you will build an image with a Dockerfile, tag it and upload it to a registry. You will use the Dockerfile to extend the NGINX image to deliver a custom website that is embedded into the image. The webserver should also listen on port 8080.
+In this exercise, you will build an image with a Dockerfile and run a container based on it. You will use the Dockerfile to extend the NGINX image to deliver a custom website that is embedded into the image. The webserver should also listen on port `8080`.
 
 ## Step 0: Set up a build context
 
@@ -19,7 +19,7 @@ mv evil.html index.html
 
 As we want to extend an existing _nginx_ image, we need to come `FROM` it. It is a good idea to also specify the release number of the image you want to extend, but `nginx:mainline` is a good idea too.
 
-Have a look at [DockerHub](https://hub.docker.com/_/nginx) for possible image tags that you can come from.
+Have a look at [Docker Hub](https://hub.docker.com/_/nginx) for possible image tags that you can come from.
 
 ## Step 2: copy a new default website into the image
 
@@ -27,7 +27,7 @@ Use the `COPY` directive to the place the custom website files you created or do
 
 ## Step 3: create configuration for _nginx_
 
-For nginx to listen on port 8080, you will have to place an additional configuration file into the image.
+For nginx to listen on port `8080`, you will have to place an additional configuration file into the image.
 
 Create a new file `docker-nginx.conf` inside your build context and paste this into it:
 
@@ -43,13 +43,13 @@ server {
 }
 ```
 
-**Shortcut:** You can also copy this configuration file from training repository (./docker/res/docker-nginx.conf).
+**Shortcut:** You can also copy this configuration file from training repository ([`./docker/res/docker-nginx.conf`](./res/docker-nginx.conf)).
 
 Again, with the help of the `COPY` directive, make sure that this file ends up in your image at `/etc/nginx/conf.d/nginx.conf`.
 
 ## Step 4: expose the new HTTP port
 
-The default _nginx_ image only exposes port 80 for unencrypted HTTP. Since we want it to tell the world, we are listening on a different port, we will have to expose port 8080 with the `EXPOSE` directive as well.
+The default _nginx_ image only exposes port `80` for unencrypted HTTP. Since we want it to tell the world, we are listening on a different port, we will have to expose port `8080` with the `EXPOSE` directive as well.
 
 ## Step 5: build the image
 

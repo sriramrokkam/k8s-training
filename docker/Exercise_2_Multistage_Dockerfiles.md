@@ -1,6 +1,6 @@
 # Exercise 2 - Dockerfiles Extended: Multi-stage build
 
-In this exercise, you will create a Dockerfile consisting of two stages. Within a build stage you will compile a go-based web app. Next, copy the binary to run stage, which consists of a minimal set of libs only. (and yes, you could also link everything statically and have an image with the binary only).
+In this exercise, you will create a Dockerfile consisting of two stages. Within a build stage you will compile a Go-based web app. Next, copy the binary to run stage, which consists of a minimal set of libs only. (and yes, you could also link everything statically and have an image with the binary only).
 
 The app is a minimal "echo" webserver printing the source IP of any incoming request to both, its HTTP response and its stdout.
 
@@ -33,7 +33,7 @@ Multi-stage in the context of Docker means, you are allowed to have more than on
 
 `FROM alpine:latest`
 
-This will set up a completely new image which is independent from the previous. Since you want to get some credit for what you are doing, put a `LABEL maintainer="<some name>"` in there.
+This will set up a completely new image which is independent of the previous. Since you want to get some credit for what you are doing, put a `LABEL maintainer="<some name>"` in there.
 
 ## Step 4: Prepare runtime
 
@@ -49,14 +49,14 @@ Data from earlier stages can be consumed with `COPY --from=<previous stage name>
 
 So far all directories / files are owned by the `root` user. Time to change that and grant the `appuser` access to the required parts of the filesystem. Since everything relevant is stored within `/app` you can `RUN` this command to do the changes: `chown -R appuser /app`
 
-Now you can use the `USER` directive to change to `appuser`. Also, the wiki expects to find files relative to its location. So you have to set the `WORKDIR` accordingly.
+Now you can use the `USER` directive to change to `appuser`. Also, set the `WORKDIR` to `/app` where the binary is located.
 
 What's still missing? Of course your image should `EXPOSE` a port and should have `CMD` that is invoked upon container start.
 The `echo-server` is listening on port 8080.
 
 ## Step 7: Build the images
 
-Use the `docker build` command to build your image. Tag it along the way so you can find it easily.
+Use the `docker build` command to build your image. Tag it along the way so you can find it easily (`-t <image name>:<image tag>`).
 
 ## Step 8: Run your image
 

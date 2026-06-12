@@ -79,7 +79,23 @@ INGRESS_HOSTNAME=h.ingress.${GARDENER_CLUSTERNAME}.${GARDENER_PROJECTNAME}.shoot
 helm upgrade terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --version 0.1.0 --set "configuration.talkToTheHand=false"
 ```
 
-Again, you can use `helm list -a` and `helm status terminator` to check, if the upgrade was successful. By running `helm get values terminator` you should see the `talkToTheHand` parameter set to `false` and listed as "user supplied value".
+Again, you can use `helm list --failed` and `helm status terminator` to check, if the upgrade was successful. By running `helm get values terminator` you should see the `talkToTheHand` parameter set to `false` and listed as "user supplied value".
+
+## Step 5.5 (optional): give the terminator something to chew on
+
+If your namespace doesn't contain any pods besides the kube-terminator itself, deploy a few by creating a `Deployment`:
+
+```bash
+kubectl create deployment nginx --image=nginx --replicas=3
+```
+
+You can see the labels the pods have been created with by running `kubectl get pods --show-labels`.
+Because they are managed by a `Deployment`, they will be re-created whenever the terminator kills them.
+You can keep an eye on your pods in a second terminal:
+
+```bash
+watch kubectl get pods
+```
 
 ## Step 6: specify labels and re-use values
 

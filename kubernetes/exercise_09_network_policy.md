@@ -4,7 +4,12 @@ In this exercise, you will be dealing with _Pods_, _Deployments_, _Labels & Sele
 
 Network policies in your namespace help you to restrict access to your nginx deployment. From within any pod that is not labeled correctly you will not be able to access your nginx instances.
 
-**Note:** This exercise does not build upon previous exercises, but you will need a service and a matching deployment. In case you need to spin up new resources, you can use the following `Deployment` and `Service`.
+> [!NOTE]
+> This exercise does not build upon previous exercises, but you will need a service and a matching deployment.
+> In case you need to spin up new resources, you can use the following `Deployment` and `Service`.
+
+<details>
+  <summary>Example resources</summary>
 
 ```yaml
 apiVersion: apps/v1
@@ -44,6 +49,8 @@ spec:
     run: nginx
   type: ClusterIP
 ```
+
+</details>
 
 ## Step 0: verify the setup
 

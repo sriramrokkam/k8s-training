@@ -57,8 +57,8 @@ helm install terminator oci://${INGRESS_HOSTNAME}/library/kube-terminator --vers
 The installation command should have created a helm release called `terminator`. Run the commands below to verify that the release was created successfully.
 
 ```bash
-# check for releases, use -a to see failed releases as well
-helm list -a
+# check for releases, use --failed to see failed releases as well
+helm list --failed
 # check the status of the release
 helm status terminator
 # check the resources created by the release and the values used

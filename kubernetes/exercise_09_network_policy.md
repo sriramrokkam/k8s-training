@@ -4,7 +4,46 @@ In this exercise, you will be dealing with _Pods_, _Deployments_, _Labels & Sele
 
 Network policies in your namespace help you to restrict access to your nginx deployment. From within any pod that is not labeled correctly you will not be able to access your nginx instances.
 
-**Note:** This exercise does not build upon previous exercises, but you will need a service and a matching deployment. In case you need to spin new resources, you can use the solutions from [exercise 3](solutions/03_deployment.yaml) and [exercise 4](solutions/04_service.yaml).
+**Note:** This exercise does not build upon previous exercises, but you will need a service and a matching deployment. In case you need to spin up new resources, you can use the following `Deployment` and `Service`.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    tier: application
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:mainline
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    tier: networking
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP 
+  selector:
+    run: nginx
+  type: ClusterIP
+```
 
 ## Step 0: verify the setup
 

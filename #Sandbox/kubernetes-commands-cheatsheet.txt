@@ -1,0 +1,614 @@
+KUBERNETES COMMANDS CHEATSHEET
+=====================================
+
+TABLE OF CONTENTS
+-----------------
+1. CLUSTER INFORMATION
+2. NODES
+3. NAMESPACES
+4. PODS
+5. DEPLOYMENTS
+6. SERVICES
+7. CONFIGMAPS & SECRETS
+8. PERSISTENT VOLUMES
+9. INGRESS
+10. JOBS & CRONJOBS
+11. RBAC (ROLES & PERMISSIONS)
+12. TROUBLESHOOTING & DEBUGGING
+13. RESOURCE MANAGEMENT
+14. CONTEXT & CONFIGURATION
+
+=====================================
+
+1. CLUSTER INFORMATION
+======================
+# Set current context
+kubectl config use-context <context-name>
+Purpose: Switch to a different cluster context
+
+#verify current context
+kubectl config current-context
+Purpose: Display the currently active context
+
+# Get cluster information
+kubectl cluster-info
+Purpose: Display cluster endpoint information and services
+
+# Get cluster version
+kubectl version
+Purpose: Show client and server Kubernetes versions
+
+# Get cluster nodes
+kubectl get nodes
+Purpose: List all nodes in the cluster
+
+# Get detailed node information
+kubectl describe node <node-name>
+Purpose: Show detailed information about a specific node
+
+# Get cluster events
+kubectl get events --all-namespaces
+Purpose: View cluster-wide events for troubleshooting
+
+=====================================
+
+2. NODES
+========
+
+# List all nodes
+kubectl get nodes
+Purpose: Display all cluster nodes with status
+
+# Get detailed node information
+kubectl describe node <node-name>
+Purpose: Show detailed node specifications and conditions
+
+# Get node resource usage
+kubectl top nodes
+Purpose: Display CPU and memory usage for nodes (requires metrics-server)
+
+# Label a node
+kubectl label nodes <node-name> <label-key>=<label-value>
+Purpose: Add labels to nodes for scheduling purposes
+
+# Remove label from node
+kubectl label nodes <node-name> <label-key>-
+Purpose: Remove specific labels from nodes
+
+# Cordon a node (make unschedulable)
+kubectl cordon <node-name>
+Purpose: Mark node as unschedulable for maintenance
+
+# Uncordon a node
+kubectl uncordon <node-name>
+Purpose: Mark node as schedulable again
+
+# Drain a node
+kubectl drain <node-name> --ignore-daemonsets
+Purpose: Safely evict pods from node for maintenance
+
+=====================================
+
+3. NAMESPACES
+=============
+
+# List all namespaces
+kubectl get namespaces
+kubectl get ns
+Purpose: Display all namespaces in the cluster
+
+# Create a namespace
+kubectl create namespace <namespace-name>
+Purpose: Create a new namespace
+
+# Delete a namespace
+kubectl delete namespace <namespace-name>
+Purpose: Delete a namespace and all its resources
+
+# Set default namespace for current context
+kubectl config set-context --current --namespace=<namespace-name>
+Purpose: Change default namespace for kubectl commands
+
+# Get resources in specific namespace
+kubectl get <resource> -n <namespace-name>
+Purpose: List resources in a specific namespace
+
+# Get resources in all namespaces
+kubectl get <resource> --all-namespaces
+kubectl get <resource> -A
+Purpose: List resources across all namespaces
+
+=====================================
+
+4. PODS
+=======
+
+# List all pods
+kubectl get pods
+Purpose: Display pods in current namespace
+
+# List pods in all namespaces
+kubectl get pods --all-namespaces
+kubectl get pods -A
+Purpose: Display pods across all namespaces
+
+# Get detailed pod information
+kubectl describe pod <pod-name>
+Purpose: Show detailed pod specifications and events
+
+# Create a pod from YAML file
+kubectl apply -f <pod-file.yaml>
+Purpose: Create pod from configuration file
+
+# Delete a pod
+kubectl delete pod <pod-name>
+Purpose: Remove a specific pod
+
+# Get pod logs
+kubectl logs <pod-name>
+Purpose: View logs from a pod
+
+# Get logs from specific container in pod
+kubectl logs <pod-name> -c <container-name>
+Purpose: View logs from specific container in multi-container pod
+
+# Follow pod logs in real-time
+kubectl logs -f <pod-name>
+Purpose: Stream pod logs continuously
+
+# Execute command in pod
+kubectl exec -it <pod-name> -- <command>
+Purpose: Run interactive commands inside a pod
+
+# Execute command in specific container
+kubectl exec -it <pod-name> -c <container-name> -- <command>
+Purpose: Run commands in specific container of multi-container pod
+
+# Port forward to pod
+kubectl port-forward <pod-name> <local-port>:<pod-port>
+Purpose: Forward local port to pod port for testing
+
+# Get pod resource usage
+kubectl top pods
+Purpose: Display CPU and memory usage for pods
+
+# Copy files to/from pod
+kubectl cp <local-file> <pod-name>:<pod-file>
+kubectl cp <pod-name>:<pod-file> <local-file>
+Purpose: Transfer files between local machine and pod
+
+=====================================
+
+5. DEPLOYMENTS
+==============
+
+# List all deployments
+kubectl get deployments
+kubectl get deploy
+Purpose: Display all deployments in current namespace
+
+# Create deployment
+kubectl create deployment <name> --image=<image>
+Purpose: Create a new deployment with specified image
+
+# Apply deployment from file
+kubectl apply -f <deployment-file.yaml>
+Purpose: Create or update deployment from YAML file
+
+# Get detailed deployment information
+kubectl describe deployment <deployment-name>
+Purpose: Show detailed deployment specifications and status
+
+# Scale deployment
+kubectl scale deployment <deployment-name> --replicas=<number>
+Purpose: Change number of replicas for a deployment
+
+# Update deployment image
+kubectl set image deployment/<deployment-name> <container-name>=<new-image>
+Purpose: Update container image in deployment
+
+# Rollout status
+kubectl rollout status deployment/<deployment-name>
+Purpose: Check status of deployment rollout
+
+# Rollout history
+kubectl rollout history deployment/<deployment-name>
+Purpose: View deployment rollout history
+
+# Rollback deployment
+kubectl rollout undo deployment/<deployment-name>
+Purpose: Rollback to previous deployment version
+
+# Rollback to specific revision
+kubectl rollout undo deployment/<deployment-name> --to-revision=<revision-number>
+Purpose: Rollback to specific deployment revision
+
+# Pause deployment rollout
+kubectl rollout pause deployment/<deployment-name>
+Purpose: Pause ongoing deployment rollout
+
+# Resume deployment rollout
+kubectl rollout resume deployment/<deployment-name>
+Purpose: Resume paused deployment rollout
+
+# Delete deployment
+kubectl delete deployment <deployment-name>
+Purpose: Remove deployment and its pods
+
+=====================================
+
+6. SERVICES
+===========
+
+# List all services
+kubectl get services
+kubectl get svc
+Purpose: Display all services in current namespace
+
+# Create service
+kubectl expose deployment <deployment-name> --port=<port> --type=<service-type>
+Purpose: Create service to expose deployment
+
+# Apply service from file
+kubectl apply -f <service-file.yaml>
+Purpose: Create or update service from YAML file
+
+# Get detailed service information
+kubectl describe service <service-name>
+Purpose: Show detailed service specifications and endpoints
+
+# Get service endpoints
+kubectl get endpoints <service-name>
+Purpose: Display service endpoints (pod IPs)
+
+# Delete service
+kubectl delete service <service-name>
+Purpose: Remove a service
+
+# Port forward to service
+kubectl port-forward service/<service-name> <local-port>:<service-port>
+Purpose: Forward local port to service port
+
+=====================================
+
+7. CONFIGMAPS & SECRETS
+=======================
+
+# List ConfigMaps
+kubectl get configmaps
+kubectl get cm
+Purpose: Display all ConfigMaps in current namespace
+
+# Create ConfigMap from literal values
+kubectl create configmap <name> --from-literal=<key>=<value>
+Purpose: Create ConfigMap with key-value pairs
+
+# Create ConfigMap from file
+kubectl create configmap <name> --from-file=<file-path>
+Purpose: Create ConfigMap from file contents
+
+# Get ConfigMap details
+kubectl describe configmap <configmap-name>
+Purpose: Show ConfigMap data and metadata
+
+# Edit ConfigMap
+kubectl edit configmap <configmap-name>
+Purpose: Edit ConfigMap in default editor
+
+# List Secrets
+kubectl get secrets
+Purpose: Display all secrets in current namespace
+
+# Create Secret from literal values
+kubectl create secret generic <name> --from-literal=<key>=<value>
+Purpose: Create generic secret with key-value pairs
+
+# Create Secret from file
+kubectl create secret generic <name> --from-file=<file-path>
+Purpose: Create secret from file contents
+
+# Create TLS Secret
+kubectl create secret tls <name> --cert=<cert-file> --key=<key-file>
+Purpose: Create TLS secret for HTTPS
+
+# Get Secret details (without showing values)
+kubectl describe secret <secret-name>
+Purpose: Show secret metadata without exposing values
+
+# Decode Secret values
+kubectl get secret <secret-name> -o jsonpath='{.data.<key>}' | base64 --decode
+Purpose: Decode and display secret values
+
+=====================================
+
+8. PERSISTENT VOLUMES
+=====================
+
+# List Persistent Volumes
+kubectl get persistentvolumes
+kubectl get pv
+Purpose: Display all persistent volumes in cluster
+
+# List Persistent Volume Claims
+kubectl get persistentvolumeclaims
+kubectl get pvc
+Purpose: Display PVCs in current namespace
+
+# Get detailed PV information
+kubectl describe pv <pv-name>
+Purpose: Show detailed persistent volume information
+
+# Get detailed PVC information
+kubectl describe pvc <pvc-name>
+Purpose: Show detailed persistent volume claim information
+
+# Create PVC from file
+kubectl apply -f <pvc-file.yaml>
+Purpose: Create persistent volume claim from YAML
+
+# Delete PVC
+kubectl delete pvc <pvc-name>
+Purpose: Remove persistent volume claim
+
+=====================================
+
+9. INGRESS
+==========
+
+# List Ingress resources
+kubectl get ingress
+kubectl get ing
+Purpose: Display all ingress resources in current namespace
+
+# Get detailed Ingress information
+kubectl describe ingress <ingress-name>
+Purpose: Show detailed ingress configuration and rules
+
+# Create Ingress from file
+kubectl apply -f <ingress-file.yaml>
+Purpose: Create ingress resource from YAML file
+
+# Delete Ingress
+kubectl delete ingress <ingress-name>
+Purpose: Remove ingress resource
+
+=====================================
+
+10. JOBS & CRONJOBS
+==================
+
+# List Jobs
+kubectl get jobs
+Purpose: Display all jobs in current namespace
+
+# List CronJobs
+kubectl get cronjobs
+kubectl get cj
+Purpose: Display all cronjobs in current namespace
+
+# Create Job from file
+kubectl apply -f <job-file.yaml>
+Purpose: Create job from YAML file
+
+# Get Job details
+kubectl describe job <job-name>
+Purpose: Show detailed job information and status
+
+# Get CronJob details
+kubectl describe cronjob <cronjob-name>
+Purpose: Show detailed cronjob information and schedule
+
+# Delete Job
+kubectl delete job <job-name>
+Purpose: Remove job and its pods
+
+# Delete CronJob
+kubectl delete cronjob <cronjob-name>
+Purpose: Remove cronjob
+
+=====================================
+
+11. RBAC (ROLES & PERMISSIONS)
+==============================
+
+# List Roles
+kubectl get roles
+Purpose: Display roles in current namespace
+
+# List ClusterRoles
+kubectl get clusterroles
+Purpose: Display cluster-wide roles
+
+# List RoleBindings
+kubectl get rolebindings
+Purpose: Display role bindings in current namespace
+
+# List ClusterRoleBindings
+kubectl get clusterrolebindings
+Purpose: Display cluster-wide role bindings
+
+# Check permissions for current user
+kubectl auth can-i <verb> <resource>
+Purpose: Check if current user can perform action on resource
+
+# Check permissions for specific user
+kubectl auth can-i <verb> <resource> --as=<username>
+Purpose: Check permissions for another user
+
+# Create Role
+kubectl create role <role-name> --verb=<verbs> --resource=<resources>
+Purpose: Create role with specific permissions
+
+# Create RoleBinding
+kubectl create rolebinding <binding-name> --role=<role-name> --user=<username>
+Purpose: Bind role to user in current namespace
+
+=====================================
+
+12. TROUBLESHOOTING & DEBUGGING
+===============================
+
+# Get cluster events
+kubectl get events --sort-by=.metadata.creationTimestamp
+Purpose: View recent cluster events sorted by time
+
+# Get events for specific namespace
+kubectl get events -n <namespace>
+Purpose: View events in specific namespace
+
+# Describe resource for troubleshooting
+kubectl describe <resource-type> <resource-name>
+Purpose: Get detailed information about any resource
+
+# Get resource in YAML format
+kubectl get <resource-type> <resource-name> -o yaml
+Purpose: View complete resource configuration
+
+# Get resource in JSON format
+kubectl get <resource-type> <resource-name> -o json
+Purpose: View resource configuration in JSON format
+
+# Check pod logs
+kubectl logs <pod-name> --previous
+Purpose: View logs from previous container instance
+
+# Debug pod with temporary container
+kubectl debug <pod-name> -it --image=busybox
+Purpose: Create debug container attached to pod
+
+# Run temporary pod for debugging
+kubectl run debug-pod --image=busybox -it --rm -- sh
+Purpose: Create temporary pod for cluster debugging
+
+# Get resource usage
+kubectl top nodes
+kubectl top pods
+Purpose: Display resource consumption (requires metrics-server)
+
+=====================================
+
+13. RESOURCE MANAGEMENT
+=======================
+
+# Apply configuration from file
+kubectl apply -f <file.yaml>
+Purpose: Create or update resources from YAML file
+
+# Apply all YAML files in directory
+kubectl apply -f <directory>/
+Purpose: Apply all YAML files in specified directory
+
+# Delete resources from file
+kubectl delete -f <file.yaml>
+Purpose: Delete resources defined in YAML file
+
+# Replace resource (delete and recreate)
+kubectl replace -f <file.yaml>
+Purpose: Replace existing resource with new configuration
+
+# Patch resource
+kubectl patch <resource-type> <resource-name> -p '<patch-data>'
+Purpose: Update specific fields of a resource
+
+# Edit resource in place
+kubectl edit <resource-type> <resource-name>
+Purpose: Edit resource configuration in default editor
+
+# Label resources
+kubectl label <resource-type> <resource-name> <key>=<value>
+Purpose: Add or update labels on resources
+
+# Annotate resources
+kubectl annotate <resource-type> <resource-name> <key>=<value>
+Purpose: Add or update annotations on resources
+
+# Get resources with labels
+kubectl get <resource-type> --show-labels
+Purpose: Display resources with their labels
+
+# Filter resources by labels
+kubectl get <resource-type> -l <label-selector>
+Purpose: Get resources matching label selector
+
+=====================================
+
+14. CONTEXT & CONFIGURATION
+===========================
+
+# View current context
+kubectl config current-context
+Purpose: Display currently active context
+
+# List all contexts
+kubectl config get-contexts
+Purpose: Show all available contexts
+
+# Switch context
+kubectl config use-context <context-name>
+Purpose: Change to different cluster context
+
+# View kubeconfig
+kubectl config view
+Purpose: Display current kubeconfig configuration
+
+# Set namespace for context
+kubectl config set-context --current --namespace=<namespace>
+Purpose: Set default namespace for current context
+
+# Create new context
+kubectl config set-context <context-name> --cluster=<cluster> --user=<user>
+Purpose: Create new context configuration
+
+# Delete context
+kubectl config delete-context <context-name>
+Purpose: Remove context from kubeconfig
+
+# Set cluster in config
+kubectl config set-cluster <cluster-name> --server=<server-url>
+Purpose: Add or update cluster configuration
+
+# Set user credentials
+kubectl config set-credentials <user-name> --token=<token>
+Purpose: Add or update user credentials
+
+=====================================
+
+COMMON RESOURCE ABBREVIATIONS
+=============================
+pods (po)
+services (svc)
+deployments (deploy)
+replicasets (rs)
+namespaces (ns)
+nodes (no)
+persistentvolumes (pv)
+persistentvolumeclaims (pvc)
+configmaps (cm)
+secrets
+ingress (ing)
+jobs
+cronjobs (cj)
+daemonsets (ds)
+statefulsets (sts)
+
+=====================================
+
+USEFUL FLAGS
+============
+-o wide          # Show additional columns
+-o yaml          # Output in YAML format
+-o json          # Output in JSON format
+--dry-run=client # Preview without executing
+--all-namespaces # Apply to all namespaces
+-A               # Short for --all-namespaces
+-n <namespace>   # Specify namespace
+-l <selector>    # Label selector
+--show-labels    # Display labels
+-w               # Watch for changes
+-f               # Follow logs
+--force          # Force operation
+--grace-period=0 # Immediate deletion
+
+=====================================
+
+This cheatsheet covers the most commonly used Kubernetes commands organized by resource type and functionality. Use these commands to manage and troubleshoot your Kubernetes clusters effectively.

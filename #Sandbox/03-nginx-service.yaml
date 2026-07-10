@@ -1,0 +1,14 @@
+# File: 03-nginx-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: i310202
+spec:
+  selector:
+    app: nginx          # matches pods with this label
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  type: ClusterIP

@@ -1,0 +1,62 @@
+
+---
+apiVersion: v1
+kind: Config
+current-context: scbtest-xhlxpm6g-k16rn4tu
+clusters:
+- name: scbtest-xhlxpm6g-k16rn4tu
+  cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQ1akNDQWs2Z0F3SUJBZ0lRYytlL0dpZ1MwcUxhSkhxQ3VzSVhIREFOQmdrcWhraUc5dzBCQVFzRkFEQU4KTVFzd0NRWURWUVFERXdKallUQWVGdzB5TmpBeE16QXdOelV5TWpaYUZ3MHpOakF4TXpBd056VXpNalphTUEweApDekFKQmdOVkJBTVRBbU5oTUlJQm9qQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FZOEFNSUlCaWdLQ0FZRUF3cmlsCkZnUXJKZ0NTQWZLSnhRQks2Q1dkZDU3MUJpUlJnMVExVWp5RmxiU0Y5RFplOXFnd01PZEFUSk14YVN4Qm81OFQKVE01NWFyQzVjWmpaWHRCMUF3djBwTTY1aTZ3blcxNjFYMStoQjkyQkFLQ2hwd2FQQkFCbnk4dGxYSXowZmEyQwpadzlKVUhnVXVmcmlVMjVmQ2FJS3FZRkYyYUdmbW1OK0xSVkQzVW42NE1ONWs4bmxuN2UyTHFVakxVUkxCTXFQCk9ZdGxaNGpmTFE5cVJUWXQyQ0JEMjdsK3Jqd21JczFIcHBsaWRkalZTQ2FJK1QrSlNJcjVveHdGcEg3N2JROWcKRmdzUnRjNGJNRW1TZ3cwbmVOVUZ2Y01URTcwT0tJTmpYT3pvM3BtN25zaGlIdVBGbnkybnVRZGF0OGNBbFBFZgpocFB3bGNxZldOdUUydE9BVGE0Z3p3M3RSU1V2UmhVb0hwcytwYkkyNU1hTC9TNDBUOVNSM0NPRmcwVE1uY09WCnlQcFA3TDIrc3k3SG1rYWlwNFZraFNRdHlFTTBBVDNHb2JpcnVsV2ZWMlZ6aXE3Z0xiR0Q1Tm45UEYzQmdVOXMKdlUwcVdGMDdvY2tPSGxOVW5qN3d4TjBWZE4wNkIvTEFEbE1UODMyNjRpY1NEVGtGUmhoR2sxWm9SR1p6QWdNQgpBQUdqUWpCQU1BNEdBMVVkRHdFQi93UUVBd0lCcGpBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXCkJCUWZsbG1SMUNKSXNScUpkNVB2V3cvWDF0d0NRakFOQmdrcWhraUc5dzBCQVFzRkFBT0NBWUVBYTVtaVV4SkoKYXhZUUllaGJIUmF1bXdHc2Mrb05RWnQySVRuTzhqVklOb1hOMUViTDIrU3lJQ2QrSFYrS0FxdTBhODQ4b2JIeApJY0VLY2VDRlhVNk02MG5DOEYzdHRYdnhab1FoNlRreEk5d2oxZUVsZUpDZWZ3NFFtTmRSV1JqQktIS3NlQ1h4CkJtNTkzdGJ2b2pnR2l5MHVLNmI3OW9uejJOcmZqSUR1cUM3bDk3dzVzd0tFQUFYTDhJY1ZzTVpEek5idStrSnEKNDB2d1JSWC9HRVlLdVFRNEVZb3lyc3pjVVRtOUVTb2J5cHFqUkxwT2hjRzBCeTBUOFdpcWFoZzlyaWUxZ0lEcQpJeWZXQzZiN1pjejVXMnZocGFPellxdnhJRHVNOWdYWW5mTnJ6YWNPMjVDaTk0ZEZjTWdxK29KQ1M1a1RHVjZ2CkhuenB3NzJEb0YyRGlIbFpsSTZTVXBSSGpDMFMzTEhJY3NxcXBMV3RwVm55d2FzNkp2K2IwR3VPLzdFYkt5em4Kb1l5WUl0UTJwS0JPTXlRUVJ0N2N4cXpyc2JEYnRlVE1QN1BGcVJwWjhMNUYxblFITVBOQitsVFo2T2k0R05Uego5NlhqMy9CRmpTM1J5bzk5QjdTbThGdnFVZXQrd3piaFRFZlBXdHBWcGQ4MjlSZWI0T0dQTkRCTgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    server: https://api.c-9323c0b.kyma.ondemand.com
+contexts:
+- name: scbtest-xhlxpm6g-k16rn4tu
+  context:
+    cluster: scbtest-xhlxpm6g-k16rn4tu
+    user: scbtest-xhlxpm6g-k16rn4tu
+- name: scbtest-xhlxpm6g-k16rn4tu-2
+  context:
+    cluster: scbtest-xhlxpm6g-k16rn4tu
+    user: scbtest-xhlxpm6g-k16rn4tu-2
+users:
+- name: scbtest-xhlxpm6g-k16rn4tu
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - get-token
+      - "--oidc-issuer-url=https://kyma.accounts.ondemand.com"
+      - "--oidc-client-id=12b13a26-d993-4d0c-aa08-5f5852bbdff6"
+      - "--oidc-extra-scope=email"
+      - "--oidc-extra-scope=openid"
+      command: kubectl-oidc_login
+      installHint: |
+        kubelogin plugin is required to proceed with authentication
+        # Homebrew (macOS and Linux)
+        brew install int128/kubelogin/kubelogin
+
+        # Krew (macOS, Linux, Windows and ARM)
+        kubectl krew install oidc-login
+
+        # Chocolatey (Windows)
+        choco install kubelogin
+- name: scbtest-xhlxpm6g-k16rn4tu-2
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - get-token
+      - "--oidc-issuer-url=https://adlpdnoz8.accounts.ondemand.com"
+      - "--oidc-client-id=4fa6942b-4e2e-4733-9812-7f7f19569a23"
+      - "--oidc-extra-scope=email"
+      - "--oidc-extra-scope=openid"
+      command: kubectl-oidc_login
+      installHint: |
+        kubelogin plugin is required to proceed with authentication
+        # Homebrew (macOS and Linux)
+        brew install int128/kubelogin/kubelogin
+
+        # Krew (macOS, Linux, Windows and ARM)
+        kubectl krew install oidc-login
+
+        # Chocolatey (Windows)
+        choco install kubelogin

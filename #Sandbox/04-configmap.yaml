@@ -1,0 +1,12 @@
+# File: 04-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fortune-config
+  namespace: i310202
+data:
+  APP_COLOR: "blue"
+  GREETING: "Hello from the training cluster!"
+  app.properties: |
+    max.cookies=10
+    refresh.interval=30s

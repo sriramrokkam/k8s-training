@@ -1,0 +1,30 @@
+# File: 11-pvc-demo.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: demo-pvc
+  namespace: i310202
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-demo-pod
+  namespace: i310202
+spec:
+  containers:
+  - name: writer
+    image: busybox
+    command: ["sh", "-c", "echo 'Hello persistent world!' > /data/hello.txt && sleep 3600"]
+    volumeMounts:
+    - name: my-storage
+      mountPath: /data
+  volumes:
+  - name: my-storage
+    persistentVolumeClaim:
+      claimName: demo-pvc

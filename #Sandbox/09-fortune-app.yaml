@@ -1,0 +1,71 @@
+# File: 09-fortune-app.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fortune-app-config
+  namespace: i310202
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-headless:5432/fortunedb"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fortune-cookies
+  namespace: i310202
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fortune-cookies
+  template:
+    metadata:
+      labels:
+        app: fortune-cookies
+    spec:
+      containers:
+      - name: fortune-cookies
+        image: ghcr.io/sap-samples/cloud-native-dev-journey/fortune-cookies:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fortune-app-config
+              key: SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_PASSWORD
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fortune-cookies-svc
+  namespace: i310202
+spec:
+  selector:
+    app: fortune-cookies
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP

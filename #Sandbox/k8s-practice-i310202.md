@@ -242,6 +242,8 @@ kubectl port-forward service/nginx-service 8080:80
 > **Concept:** Never bake config or credentials into your container image.  
 > - **ConfigMap**: non-sensitive config (URLs, feature flags, config files)  
 > - **Secret**: sensitive data (passwords, tokens) — stored base64-encoded in etcd
+> - **env**: injects config/secret as environment variables
+> - **volume**: mounts config/secret as files inside the container, typically under `/etc/config` for ConfigMaps and `/etc/secret` for Secrets
 
 ```yaml
 # File: 04-configmap.yaml
@@ -283,6 +285,8 @@ spec:
   - name: app
     image: busybox
     command: ["sh", "-c", "echo Color=$APP_COLOR, Greeting=$GREETING, User=$DB_USER && sleep 3600"]
+    # METHOD 1: env — pulls values from ConfigMap/Secret and injects as environment variables ($APP_COLOR, $DB_USER etc.)
+    # App reads via: System.getenv("APP_COLOR") / os.environ["APP_COLOR"] / process.env.APP_COLOR
     env:
     - name: APP_COLOR
       valueFrom:
@@ -304,6 +308,8 @@ spec:
         secretKeyRef:
           name: db-credentials
           key: DB_PASSWORD
+    # METHOD 2: volumeMounts — mounts ConfigMap keys as files inside the container at /etc/config/
+    # App reads via: readFile("/etc/config/APP_COLOR") — auto-updates when ConfigMap changes, no restart needed
     volumeMounts:
     - name: config-volume
       mountPath: /etc/config
@@ -331,6 +337,73 @@ kubectl get secret db-credentials -o jsonpath='{.data.DB_PASSWORD}' | base64 --d
 # Clean up
 kubectl delete pod fortune-config-demo
 ```
+
+### How to Verify ConfigMaps & Secrets Inside the Pod
+
+> **Note:** `busybox` does not have `bash` — always use `sh` to exec in.
+
+```bash
+# Exec into the pod
+kubectl exec -it fortune-config-demo -n i310202 -- sh
+```
+
+**Inside the pod — verify ConfigMap volume files:**
+```sh
+# List files mounted from ConfigMap (each key = a file)
+ls /etc/config
+
+# Read individual files
+cat /etc/config/APP_COLOR
+cat /etc/config/GREETING
+cat /etc/config/app.properties
+```
+
+**Inside the pod — verify env variables (ConfigMap + Secret):**
+```sh
+# Check individual variables
+echo $APP_COLOR
+echo $GREETING
+echo $DB_USER
+echo $DB_PASSWORD
+
+# Or see all at once
+env | grep -E "APP_COLOR|GREETING|DB_"
+```
+
+**Outside the pod — decode secret values from cluster:**
+```bash
+kubectl get secret db-credentials -n i310202 \
+  -o jsonpath='{.data.DB_USER}' | base64 --decode
+
+kubectl get secret db-credentials -n i310202 \
+  -o jsonpath='{.data.DB_PASSWORD}' | base64 --decode
+```
+
+> **Key insight:** Secrets are base64-encoded in etcd (cluster storage),  
+> but Kubernetes automatically **decodes** them when injecting into pods —  
+> so `echo $DB_PASSWORD` inside the pod shows the plain value.
+
+### ConfigMap & Secret injection works the same in Deployments
+
+> When using `kind: Deployment` instead of `kind: Pod`, the `env` and `volumeMounts`  
+> are defined inside the **pod template** (`spec.template.spec`) — so every replica  
+> gets the same config injected automatically.
+
+```
+Deployment (replicas: 3)
+    ├── Pod-1  → APP_COLOR=blue, /etc/config/APP_COLOR exists
+    ├── Pod-2  → APP_COLOR=blue, /etc/config/APP_COLOR exists
+    └── Pod-3  → APP_COLOR=blue, /etc/config/APP_COLOR exists
+```
+
+> **Important — ConfigMap update behaviour:**
+>
+> | Injection method | Updates automatically when ConfigMap changes? |
+> |-----------------|----------------------------------------------|
+> | `env` (valueFrom/envFrom) | No — pod must restart to pick up new value |
+> | `volume` mount | Yes — files update automatically within ~1 min |
+>
+> This is why volume mounting is preferred for config that changes — no restart needed.
 
 ---
 
@@ -400,6 +473,68 @@ kubectl delete pvc demo-pvc
 > **Concept:** This is the sample app used throughout the training.  
 > It has a Java frontend + PostgreSQL backend — just like a real microservice app.  
 > We use a public image: `ghcr.io/cloud-native-dev-journey/fortune-cookies:latest`
+
+---
+
+### Key Design Decisions Before We Start
+
+**Why two separate pods — not one?**
+```
+Frontend Pod (Java)  →  talks to  →  Database Pod (PostgreSQL)
+```
+- Scale them independently — 3 app pods, 1 DB pod
+- Restart app without touching DB
+- DB needs StatefulSet, app needs Deployment — can't mix in one pod
+
+---
+
+**Deployment vs StatefulSet — when to use which:**
+
+| | Deployment | StatefulSet |
+|--|--|--|
+| Use for | Stateless apps (Java, Node, Python) | Stateful apps (PostgreSQL, MySQL, MongoDB, Kafka) |
+| Pod names | Random (`fortune-cookies-abc123`) | Stable, ordered (`postgres-0`, `postgres-1`) |
+| Pod IP | Changes on restart | Changes on restart — but DNS name stays stable |
+| Storage | Shared or none | Each pod gets its **own PVC** (own disk) |
+| Startup order | Random | Ordered — `postgres-0` starts first |
+| Scale freely? | Yes | No — DB should always be `replicas: 1` |
+
+> **Important:** StatefulSet gives stable **DNS names** (not IPs).  
+> Pod IP still changes on restart, but `postgres-0.postgres-headless` DNS always resolves to `postgres-0`.  
+> This is why apps connect via service DNS name, never by IP.
+
+---
+
+**Why database should always be `replicas: 1`:**
+
+```
+replicas: 2  →  postgres-0 (disk-0) + postgres-1 (disk-1)
+                 ↑ two separate databases, data NOT in sync!
+                 ↑ app hits postgres-0 sometimes, postgres-1 other times
+                 ↑ data corruption / missing data!
+
+replicas: 1  →  postgres-0 (disk-0) — single source of truth ✅
+```
+
+Multiple frontend pods all write to the **same single DB pod** — that is correct and safe:
+```
+Frontend Pod-1 ──┐
+Frontend Pod-2 ──┼──→ postgres-0 (single DB pod) ──→ disk
+Frontend Pod-3 ──┘
+```
+
+> For real HA PostgreSQL (primary + replica in sync), you need a PostgreSQL operator  
+> like **Patroni** or **CloudNativePG** — not just setting `replicas: 2`.
+
+---
+
+**Why `ghcr.io` image for the Java app?**
+
+`ghcr.io` = GitHub Container Registry (like Docker Hub but on GitHub).  
+The Fortune Cookies app is pre-built and published there — ready to pull and run without building locally.  
+Because it is stateless, you can set `replicas: 2, 5, 10` and scale instantly.
+
+---
 
 ### 6a. Database (PostgreSQL as StatefulSet)
 

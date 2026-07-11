@@ -9,6 +9,8 @@ spec:
   - name: app
     image: busybox
     command: ["sh", "-c", "echo Color=$APP_COLOR, Greeting=$GREETING, User=$DB_USER && sleep 3600"]
+    # METHOD 1: env — pulls values from ConfigMap/Secret and injects as environment variables ($APP_COLOR, $DB_USER etc.)
+    # App reads via: System.getenv("APP_COLOR") / os.environ["APP_COLOR"] / process.env.APP_COLOR
     env:
     - name: APP_COLOR
       valueFrom:
@@ -30,6 +32,8 @@ spec:
         secretKeyRef:
           name: db-credentials
           key: DB_PASSWORD
+    # METHOD 2: volumeMounts — mounts ConfigMap keys as files inside the container at /etc/config/
+    # App reads via: readFile("/etc/config/APP_COLOR") — auto-updates when ConfigMap changes, no restart needed
     volumeMounts:
     - name: config-volume
       mountPath: /etc/config

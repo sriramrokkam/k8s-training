@@ -1,0 +1,115 @@
+Category,Command,Purpose
+IMAGES,docker images,List all locally available images
+IMAGES,docker pull <image>:<tag>,Download image from registry
+IMAGES,docker push <image>:<tag>,Upload image to registry
+IMAGES,docker rmi <image>,Remove a local image
+IMAGES,docker tag <source> <target>,Tag an image with a new name
+IMAGES,docker inspect <image>,Show detailed image metadata in JSON
+IMAGES,docker history <image>,Show layers and build history of an image
+IMAGES,docker save -o <file.tar> <image>,Export image to a tar archive
+IMAGES,docker load -i <file.tar>,Import image from a tar archive
+IMAGES,docker system df,Show disk usage by images containers and volumes
+IMAGES,docker image prune,Remove all dangling (unused) images
+IMAGES,docker image prune -a,Remove all images not used by any container
+BUILD,docker build -t <name>:<tag> .,Build image from Dockerfile in current directory
+BUILD,docker build -t <name>:<tag> <path>,Build image from Dockerfile in specified path
+BUILD,docker build --no-cache -t <name>:<tag> .,Build image without using layer cache
+BUILD,"docker buildx build --platform linux/amd64,linux/arm64 -t <name>:<tag> --push .",Build multi-platform image and push to registry
+BUILD,docker buildx create --name multibuilder --use,Create a multi-platform builder instance
+BUILD,docker buildx inspect --bootstrap,Inspect and start the buildx builder
+BUILD,docker build --build-arg <key>=<value> -t <name> .,Build with build-time argument
+BUILD,docker build -f <Dockerfile-path> -t <name> .,Build using a specific Dockerfile
+CONTAINERS - RUN,docker run <image>,Run container in foreground
+CONTAINERS - RUN,docker run -d <image>,Run container in background (detached)
+CONTAINERS - RUN,docker run -it <image> bash,Run container with interactive terminal
+CONTAINERS - RUN,docker run --name <name> <image>,Run container with a custom name
+CONTAINERS - RUN,docker run -p <host-port>:<container-port> <image>,Map host port to container port
+CONTAINERS - RUN,docker run -P <image>,Auto-map all EXPOSE'd ports to random host ports
+CONTAINERS - RUN,docker run --rm <image>,Remove container automatically when it exits
+CONTAINERS - RUN,"docker run -e KEY=VALUE <image>",Set environment variable in container
+CONTAINERS - RUN,docker run --env-file <file> <image>,Load environment variables from file
+CONTAINERS - RUN,"docker run --mount type=bind,source=<host>,target=<ctr> <image>",Bind mount host directory into container
+CONTAINERS - RUN,"docker run --mount source=<vol>,target=<path> <image>",Mount named volume into container
+CONTAINERS - RUN,docker run --memory=<size> <image>,Set memory limit for container
+CONTAINERS - RUN,docker run --cpus=<number> <image>,Set CPU limit for container
+CONTAINERS - RUN,docker run --network <network> <image>,Connect container to specific network
+CONTAINERS - RUN,docker run --privileged <image>,Run container with full host capabilities
+CONTAINERS - MANAGE,docker ps,List running containers
+CONTAINERS - MANAGE,docker ps -a,List all containers including stopped
+CONTAINERS - MANAGE,docker stop <name>,Gracefully stop a running container
+CONTAINERS - MANAGE,docker start <name>,Start a stopped container
+CONTAINERS - MANAGE,docker restart <name>,Restart a container
+CONTAINERS - MANAGE,docker rm <name>,Remove a stopped container
+CONTAINERS - MANAGE,docker rm -f <name>,Force remove a running container
+CONTAINERS - MANAGE,docker rename <old> <new>,Rename a container
+CONTAINERS - MANAGE,docker pause <name>,Pause all processes in a container
+CONTAINERS - MANAGE,docker unpause <name>,Resume paused container
+CONTAINERS - MANAGE,docker kill <name>,Send SIGKILL to a container immediately
+CONTAINERS - INSPECT,docker logs <name>,Show stdout/stderr logs from container
+CONTAINERS - INSPECT,docker logs -f <name>,Follow (tail) container logs in real-time
+CONTAINERS - INSPECT,docker logs --tail=<n> <name>,Show last N lines of container logs
+CONTAINERS - INSPECT,docker inspect <name>,Show full container metadata in JSON
+CONTAINERS - INSPECT,docker stats,Show live CPU and memory usage for all containers
+CONTAINERS - INSPECT,docker stats <name>,Show live resource usage for specific container
+CONTAINERS - INSPECT,docker top <name>,Show running processes inside a container
+CONTAINERS - INSPECT,docker port <name>,Show port mappings for a container
+CONTAINERS - INSPECT,docker diff <name>,Show filesystem changes made by container
+CONTAINERS - EXEC,docker exec -it <name> bash,Open interactive bash shell in running container
+CONTAINERS - EXEC,docker exec -it <name> sh,Open interactive sh shell (use for alpine images)
+CONTAINERS - EXEC,docker exec <name> <command>,Run a single command inside a running container
+CONTAINERS - EXEC,docker exec -it <name> env,Show all environment variables in container
+CONTAINERS - EXEC,docker cp <local-file> <name>:<path>,Copy file from host into container
+CONTAINERS - EXEC,docker cp <name>:<path> <local-file>,Copy file from container to host
+REGISTRY & LOGIN,docker login,Login to Docker Hub (browser-based)
+REGISTRY & LOGIN,docker login -u <username>,Login to Docker Hub with username prompt
+REGISTRY & LOGIN,docker login -u <username> -p <password/token>,Login with username and password or access token
+REGISTRY & LOGIN,docker login <registry-url> -u <user> -p <pass>,Login to a private registry (e.g. Harbor)
+REGISTRY & LOGIN,docker logout,Logout from Docker Hub
+REGISTRY & LOGIN,docker logout <registry-url>,Logout from a specific registry
+REGISTRY & LOGIN,cat ~/.docker/config.json,Check current login state and stored credentials
+VOLUMES,docker volume ls,List all named volumes
+VOLUMES,docker volume create <name>,Create a named volume
+VOLUMES,docker volume inspect <name>,Show details about a named volume
+VOLUMES,docker volume rm <name>,Remove a named volume
+VOLUMES,docker volume prune,Remove all unused named volumes
+NETWORKING,docker network ls,List all networks
+NETWORKING,docker network create <name>,Create a custom bridge network
+NETWORKING,docker network inspect <name>,Show network details and connected containers
+NETWORKING,docker network connect <network> <container>,Connect a running container to a network
+NETWORKING,docker network disconnect <network> <container>,Disconnect a container from a network
+NETWORKING,docker network rm <name>,Remove a network
+NETWORKING,docker network prune,Remove all unused networks
+COMPOSE,docker compose up,Start all services defined in docker-compose.yml
+COMPOSE,docker compose up -d,Start services in background (detached)
+COMPOSE,docker compose down,Stop and remove containers and networks
+COMPOSE,docker compose down -v,Stop and remove containers networks and volumes
+COMPOSE,docker compose ps,List running compose services
+COMPOSE,docker compose logs,Show logs for all compose services
+COMPOSE,docker compose logs -f <service>,Follow logs for a specific service
+COMPOSE,docker compose build,Build or rebuild service images
+COMPOSE,docker compose pull,Pull latest images for all services
+COMPOSE,docker compose exec <service> bash,Open shell in a running compose service
+CLEANUP,docker system prune,Remove stopped containers dangling images unused networks
+CLEANUP,docker system prune -a,Remove all unused images containers networks
+CLEANUP,docker system prune -a --volumes,Remove everything including unused volumes
+CLEANUP,docker container prune,Remove all stopped containers
+CLEANUP,docker image prune,Remove dangling images only
+CLEANUP,docker image prune -a,Remove all images not in use
+CLEANUP,docker volume prune,Remove all unused volumes
+CLEANUP,docker network prune,Remove all unused networks
+USEFUL FLAGS,--rm,Automatically remove container when it exits
+USEFUL FLAGS,-d,Detached mode (run in background)
+USEFUL FLAGS,-it,Interactive + TTY (for shell access)
+USEFUL FLAGS,-p <host>:<container>,Publish port mapping
+USEFUL FLAGS,-P,Publish all exposed ports to random host ports
+USEFUL FLAGS,-e KEY=VALUE,Set environment variable
+USEFUL FLAGS,--name <name>,Assign a name to the container
+USEFUL FLAGS,--network <net>,Connect to a specific network
+USEFUL FLAGS,--memory=<size>,Memory limit (e.g. 128m or 1g)
+USEFUL FLAGS,--cpus=<n>,CPU limit (e.g. 0.5 for half a core)
+USEFUL FLAGS,--privileged,Give container full host capabilities
+USEFUL FLAGS,--no-cache,Build image without using cache
+USEFUL FLAGS,--platform <arch>,Target platform for build (e.g. linux/amd64)
+USEFUL FLAGS,--push,Push image to registry after buildx build
+USEFUL FLAGS,-f <Dockerfile>,Use a specific Dockerfile path
+USEFUL FLAGS,-o yaml / -o json,Output format (for inspect commands)

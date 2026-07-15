@@ -1,0 +1,133 @@
+Category,Command,Purpose
+CLUSTER INFORMATION,kubectl config use-context <context-name>,Switch to a different cluster context
+CLUSTER INFORMATION,kubectl config current-context,Display the currently active context
+CLUSTER INFORMATION,kubectl cluster-info,Display cluster endpoint information and services
+CLUSTER INFORMATION,kubectl version,Show client and server Kubernetes versions
+CLUSTER INFORMATION,kubectl get nodes,List all nodes in the cluster
+CLUSTER INFORMATION,kubectl describe node <node-name>,Show detailed information about a specific node
+CLUSTER INFORMATION,kubectl get events --all-namespaces,View cluster-wide events for troubleshooting
+NODES,kubectl get nodes,Display all cluster nodes with status
+NODES,kubectl describe node <node-name>,Show detailed node specifications and conditions
+NODES,kubectl top nodes,Display CPU and memory usage for nodes (requires metrics-server)
+NODES,kubectl label nodes <node-name> <key>=<value>,Add labels to nodes for scheduling purposes
+NODES,kubectl label nodes <node-name> <key>-,Remove specific labels from nodes
+NODES,kubectl cordon <node-name>,Mark node as unschedulable for maintenance
+NODES,kubectl uncordon <node-name>,Mark node as schedulable again
+NODES,kubectl drain <node-name> --ignore-daemonsets,Safely evict pods from node for maintenance
+NAMESPACES,kubectl get namespaces,Display all namespaces in the cluster
+NAMESPACES,kubectl create namespace <namespace-name>,Create a new namespace
+NAMESPACES,kubectl delete namespace <namespace-name>,Delete a namespace and all its resources
+NAMESPACES,kubectl config set-context --current --namespace=<name>,Change default namespace for kubectl commands
+NAMESPACES,kubectl get <resource> -n <namespace-name>,List resources in a specific namespace
+NAMESPACES,kubectl get <resource> --all-namespaces,List resources across all namespaces
+PODS,kubectl get pods,Display pods in current namespace
+PODS,kubectl get pods --all-namespaces,Display pods across all namespaces
+PODS,kubectl describe pod <pod-name>,Show detailed pod specifications and events
+PODS,kubectl apply -f <pod-file.yaml>,Create pod from configuration file
+PODS,kubectl delete pod <pod-name>,Remove a specific pod
+PODS,kubectl logs <pod-name>,View logs from a pod
+PODS,kubectl logs <pod-name> -c <container-name>,View logs from specific container in multi-container pod
+PODS,kubectl logs -f <pod-name>,Stream pod logs continuously
+PODS,kubectl exec -it <pod-name> -- <command>,Run interactive commands inside a pod
+PODS,kubectl exec -it <pod-name> -c <container-name> -- <command>,Run commands in specific container of multi-container pod
+PODS,kubectl port-forward <pod-name> <local-port>:<pod-port>,Forward local port to pod port for testing
+PODS,kubectl top pods,Display CPU and memory usage for pods
+PODS,kubectl cp <local-file> <pod-name>:<pod-file>,Copy file from local machine to pod
+PODS,kubectl cp <pod-name>:<pod-file> <local-file>,Copy file from pod to local machine
+DEPLOYMENTS,kubectl get deployments,Display all deployments in current namespace
+DEPLOYMENTS,kubectl create deployment <name> --image=<image>,Create a new deployment with specified image
+DEPLOYMENTS,kubectl apply -f <deployment-file.yaml>,Create or update deployment from YAML file
+DEPLOYMENTS,kubectl describe deployment <deployment-name>,Show detailed deployment specifications and status
+DEPLOYMENTS,kubectl scale deployment <name> --replicas=<number>,Change number of replicas for a deployment
+DEPLOYMENTS,kubectl set image deployment/<name> <container>=<image>,Update container image in deployment
+DEPLOYMENTS,kubectl rollout status deployment/<name>,Check status of deployment rollout
+DEPLOYMENTS,kubectl rollout history deployment/<name>,View deployment rollout history
+DEPLOYMENTS,kubectl rollout undo deployment/<name>,Rollback to previous deployment version
+DEPLOYMENTS,kubectl rollout undo deployment/<name> --to-revision=<n>,Rollback to specific deployment revision
+DEPLOYMENTS,kubectl rollout pause deployment/<name>,Pause ongoing deployment rollout
+DEPLOYMENTS,kubectl rollout resume deployment/<name>,Resume paused deployment rollout
+DEPLOYMENTS,kubectl delete deployment <deployment-name>,Remove deployment and its pods
+SERVICES,kubectl get services,Display all services in current namespace
+SERVICES,kubectl expose deployment <name> --port=<port> --type=<type>,Create service to expose deployment
+SERVICES,kubectl apply -f <service-file.yaml>,Create or update service from YAML file
+SERVICES,kubectl describe service <service-name>,Show detailed service specifications and endpoints
+SERVICES,kubectl get endpoints <service-name>,Display service endpoints (pod IPs)
+SERVICES,kubectl delete service <service-name>,Remove a service
+SERVICES,kubectl port-forward service/<service-name> <local>:<svc>,Forward local port to service port
+CONFIGMAPS,kubectl get configmaps,Display all ConfigMaps in current namespace
+CONFIGMAPS,kubectl create configmap <name> --from-literal=<key>=<val>,Create ConfigMap with key-value pairs
+CONFIGMAPS,kubectl create configmap <name> --from-file=<file-path>,Create ConfigMap from file contents
+CONFIGMAPS,kubectl describe configmap <configmap-name>,Show ConfigMap data and metadata
+CONFIGMAPS,kubectl edit configmap <configmap-name>,Edit ConfigMap in default editor
+SECRETS,kubectl get secrets,Display all secrets in current namespace
+SECRETS,kubectl create secret generic <name> --from-literal=<k>=<v>,Create generic secret with key-value pairs
+SECRETS,kubectl create secret generic <name> --from-file=<file>,Create secret from file contents
+SECRETS,kubectl create secret tls <name> --cert=<cert> --key=<key>,Create TLS secret for HTTPS
+SECRETS,kubectl describe secret <secret-name>,Show secret metadata without exposing values
+SECRETS,"kubectl get secret <name> -o jsonpath='{.data.<key>}' | base64 --decode",Decode and display secret values
+PERSISTENT VOLUMES,kubectl get persistentvolumes,Display all persistent volumes in cluster
+PERSISTENT VOLUMES,kubectl get persistentvolumeclaims,Display PVCs in current namespace
+PERSISTENT VOLUMES,kubectl describe pv <pv-name>,Show detailed persistent volume information
+PERSISTENT VOLUMES,kubectl describe pvc <pvc-name>,Show detailed persistent volume claim information
+PERSISTENT VOLUMES,kubectl apply -f <pvc-file.yaml>,Create persistent volume claim from YAML
+PERSISTENT VOLUMES,kubectl delete pvc <pvc-name>,Remove persistent volume claim
+INGRESS,kubectl get ingress,Display all ingress resources in current namespace
+INGRESS,kubectl describe ingress <ingress-name>,Show detailed ingress configuration and rules
+INGRESS,kubectl apply -f <ingress-file.yaml>,Create ingress resource from YAML file
+INGRESS,kubectl delete ingress <ingress-name>,Remove ingress resource
+JOBS & CRONJOBS,kubectl get jobs,Display all jobs in current namespace
+JOBS & CRONJOBS,kubectl get cronjobs,Display all cronjobs in current namespace
+JOBS & CRONJOBS,kubectl apply -f <job-file.yaml>,Create job from YAML file
+JOBS & CRONJOBS,kubectl describe job <job-name>,Show detailed job information and status
+JOBS & CRONJOBS,kubectl describe cronjob <cronjob-name>,Show detailed cronjob information and schedule
+JOBS & CRONJOBS,kubectl delete job <job-name>,Remove job and its pods
+JOBS & CRONJOBS,kubectl delete cronjob <cronjob-name>,Remove cronjob
+RBAC,kubectl get roles,Display roles in current namespace
+RBAC,kubectl get clusterroles,Display cluster-wide roles
+RBAC,kubectl get rolebindings,Display role bindings in current namespace
+RBAC,kubectl get clusterrolebindings,Display cluster-wide role bindings
+RBAC,kubectl auth can-i <verb> <resource>,Check if current user can perform action on resource
+RBAC,kubectl auth can-i <verb> <resource> --as=<username>,Check permissions for another user
+RBAC,kubectl create role <name> --verb=<verbs> --resource=<res>,Create role with specific permissions
+RBAC,kubectl create rolebinding <name> --role=<role> --user=<user>,Bind role to user in current namespace
+TROUBLESHOOTING,kubectl get events --sort-by=.metadata.creationTimestamp,View recent cluster events sorted by time
+TROUBLESHOOTING,kubectl get events -n <namespace>,View events in specific namespace
+TROUBLESHOOTING,kubectl describe <resource-type> <resource-name>,Get detailed information about any resource
+TROUBLESHOOTING,kubectl get <resource-type> <resource-name> -o yaml,View complete resource configuration in YAML
+TROUBLESHOOTING,kubectl get <resource-type> <resource-name> -o json,View resource configuration in JSON format
+TROUBLESHOOTING,kubectl logs <pod-name> --previous,View logs from previous container instance
+TROUBLESHOOTING,kubectl debug <pod-name> -it --image=busybox,Create debug container attached to pod
+TROUBLESHOOTING,kubectl run debug-pod --image=busybox -it --rm -- sh,Create temporary pod for cluster debugging
+TROUBLESHOOTING,kubectl top nodes,Display CPU usage for nodes (requires metrics-server)
+TROUBLESHOOTING,kubectl top pods,Display CPU usage for pods (requires metrics-server)
+RESOURCE MANAGEMENT,kubectl apply -f <file.yaml>,Create or update resources from YAML file
+RESOURCE MANAGEMENT,kubectl apply -f <directory>/,Apply all YAML files in specified directory
+RESOURCE MANAGEMENT,kubectl delete -f <file.yaml>,Delete resources defined in YAML file
+RESOURCE MANAGEMENT,kubectl replace -f <file.yaml>,Replace existing resource with new configuration
+RESOURCE MANAGEMENT,"kubectl patch <resource-type> <name> -p '<patch>'",Update specific fields of a resource
+RESOURCE MANAGEMENT,kubectl edit <resource-type> <resource-name>,Edit resource configuration in default editor
+RESOURCE MANAGEMENT,kubectl label <resource-type> <name> <key>=<val>,Add or update labels on resources
+RESOURCE MANAGEMENT,kubectl annotate <resource-type> <name> <key>=<val>,Add or update annotations on resources
+RESOURCE MANAGEMENT,kubectl get <resource-type> --show-labels,Display resources with their labels
+RESOURCE MANAGEMENT,kubectl get <resource-type> -l <label-selector>,Get resources matching label selector
+CONTEXT & CONFIG,kubectl config current-context,Display currently active context
+CONTEXT & CONFIG,kubectl config get-contexts,Show all available contexts
+CONTEXT & CONFIG,kubectl config use-context <context-name>,Change to different cluster context
+CONTEXT & CONFIG,kubectl config view,Display current kubeconfig configuration
+CONTEXT & CONFIG,kubectl config set-context --current --namespace=<ns>,Set default namespace for current context
+CONTEXT & CONFIG,kubectl config set-context <name> --cluster=<c> --user=<u>,Create new context configuration
+CONTEXT & CONFIG,kubectl config delete-context <context-name>,Remove context from kubeconfig
+CONTEXT & CONFIG,kubectl config set-cluster <name> --server=<url>,Add or update cluster configuration
+CONTEXT & CONFIG,kubectl config set-credentials <user> --token=<token>,Add or update user credentials
+USEFUL FLAGS,-o wide,Show additional columns in output
+USEFUL FLAGS,-o yaml,Output resource in YAML format
+USEFUL FLAGS,-o json,Output resource in JSON format
+USEFUL FLAGS,--dry-run=client,Preview command without executing
+USEFUL FLAGS,--all-namespaces / -A,Apply to all namespaces
+USEFUL FLAGS,-n <namespace>,Specify namespace for command
+USEFUL FLAGS,-l <selector>,Filter by label selector
+USEFUL FLAGS,--show-labels,Display labels in output
+USEFUL FLAGS,-w,Watch for changes in real-time
+USEFUL FLAGS,-f,Follow (tail) logs continuously
+USEFUL FLAGS,--force,Force operation
+USEFUL FLAGS,--grace-period=0,Immediate deletion with no grace period

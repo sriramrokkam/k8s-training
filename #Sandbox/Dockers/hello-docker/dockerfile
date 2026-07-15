@@ -1,0 +1,6 @@
+from ubuntu:latest
+run apt-get update && apt-get install -y python3
+copy main.py /app/main.py
+workdir /app
+cmd ["python3", "main.py"]
+

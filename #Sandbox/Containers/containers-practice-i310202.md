@@ -1,606 +1,651 @@
 # Containers Practice Guide — i310202
 > Linux primitives that make containers work  
-> **Run everything inside a Ubuntu Docker container** — works on macOS, Windows, Linux  
-> Reference scripts in the repo: `container-demos/demo-0*.sh`
+> **Run everything on Ubuntu Linux directly**  
+> Scripts are in: `container-demos/demo-0*.sh`
+
+## Virtual Machines vs Containers
+![Virtual Machines vs Containers](image.png)
+![Virtual Machines vs Containers](image-1.png)
 
 ## Setup — Your Linux Environment
 
-All Linux primitive demos run inside a Ubuntu container. Docker is your Linux machine.
+All demos run directly on your Ubuntu Linux system as a **non-root user with sudo**.
 
 ```bash
-# Pull Ubuntu and get a shell — this IS your Linux environment
-docker pull ubuntu:24.04
-docker run -it --privileged ubuntu:24.04 /bin/bash
-
-# Install tools needed for the demos (inside the container)
-apt-get update && apt-get install -y \
+# Install all tools needed for the demos
+sudo apt-get update && sudo apt-get install -y \
   procps \
   iproute2 \
   util-linux \
   libcap2-bin \
   pax-utils \
-  tree
+  tree \
+  pv
+
+# Clone the training repo
+git clone https://github.com/sriramrokkam/k8s-training.git
+cd k8s-training/container-demos
 ```
 
-> **Why `--privileged`?** The chroot, mount, unshare, and cgroup demos need kernel-level  
-> access. `--privileged` gives the container full host capabilities — fine for local  
-> learning, never use in production.
+> **Two terminals tip:** open a second terminal side-by-side — useful for running  
+> `top` or comparing before/after output while a demo runs.
 
-> **Two terminals tip:** open a second terminal and run  
-> `docker exec -it $(docker ps -lq) /bin/bash` to get a second shell into the same  
-> container — useful for side-by-side before/after comparisons.
+> **All scripts refuse to run as root.** Always run as your normal user account.  
+> The scripts use `sudo` internally for operations that need it (mount, chroot, etc.).
 
 ---
 
-## 0. Why Containers? — The Mental Model
+## The Big Picture — What Are We Building Up To?
 
-> **Concept:** A container is NOT a VM. It is a normal Linux process that has been  
-> isolated using three kernel features: **namespaces** (what it can see),  
-> **cgroups** (how much it can use), and **overlayfs** (its layered filesystem).  
-> Docker/containerd are just convenient wrappers around these primitives.
+Each demo adds one more layer of isolation. Run them in order.
 
 ```
-VM                            Container
-┌─────────────────────┐       ┌──────────────────────┐
-│  Guest OS kernel    │       │  Host OS kernel       │
-│  ┌───────────────┐  │       │  ┌────────┐ ┌──────┐  │
-│  │  App process  │  │       │  │ proc A │ │proc B│  │
-│  └───────────────┘  │       │  │(ns-1)  │ │(ns-2)│  │
-└─────────────────────┘       └──────────────────────┘
-Separate kernel = heavy        Shared kernel = fast, lightweight
+demo-01  chroot        →  isolates the FILESYSTEM
+demo-02  namespaces    →  isolates PROCESSES, USERS, HOSTNAME
+demo-03  cgroups       →  limits RESOURCES (CPU, memory)
+demo-04  capabilities  →  restricts ROOT PRIVILEGES
+demo-05  seccomp       →  filters SYSTEM CALLS
+demo-06  overlayfs     →  layered READ-ONLY image + thin WRITE layer
+demo-07  bind-mount    →  maps HOST directories into a container path
+
+A real container = all of these working together.
 ```
 
 ---
 
-## 1. chroot — Isolating the Filesystem Root
+## Demo 01 — chroot: Isolating the Filesystem Root
 
-> **Concept:** `chroot` changes what a process sees as `/` (the root of the filesystem).  
-> This is the foundation of container images — the image is just a directory tree  
-> that becomes the root for the container process.
+### Concept
+`chroot` changes what a process sees as `/` (the root).  
+The process cannot see or access anything above its new root — it is trapped.  
+This is the foundation of container images: **the image is just a directory tree** that becomes the root for the container process.
 
-> All commands below run **inside the Ubuntu container** you started in Setup.
-
-### BEFORE chroot — record the baseline
-
+### BEFORE — record the baseline
 ```bash
-# Inside ubuntu:24.04 container — this is the full Ubuntu filesystem
-pwd          # → /
-
+# How much of the filesystem can we see?
 ls /
-# → bin  boot  dev  etc  home  lib  lib64  media  mnt  opt
-#   proc  root  run  sbin  srv  sys  tmp  usr  var
+# expected: bin  boot  dev  etc  home  lib  lib64  media  mnt  opt proc  root  run  sbin  srv  sys  tmp  usr  var
+# 20+ directories = the full system
 
-# All processes
-ps -ef | wc -l   # → several processes
+# What PID are we?
+echo $$
+# expected: some high number like 4523
 
-# Our PID
-echo $$          # → e.g. 7
+# Can we see all processes?
+ps -ef | wc -l
+# expected: many processes
 ```
 
-### BUILD the minimal "container" directory
-
+### Run the script
 ```bash
-# Use /tmp as working space — it always exists
-mkdir -p /tmp/container-101 && cd /tmp/container-101
-mkdir -p bin lib/aarch64-linux-gnu
-
-# ── Step 1: copy bash ────────────────────────────────────────────
-cp /bin/bash ./bin/
-
-# Step 2: find out which shared libraries bash needs
-ldd /bin/bash
-# output looks like (Apple Silicon / ARM64):
-#   linux-vdso.so.1 (0x...)                  ← virtual, skip
-#   libtinfo.so.6 => /lib/aarch64-linux-gnu/libtinfo.so.6
-#   libc.so.6 => /lib/aarch64-linux-gnu/libc.so.6
-#   /lib/ld-linux-aarch64.so.1               ← the dynamic linker
-# Note: libdl.so.2 no longer exists separately on glibc 2.34+ — merged into libc
-
-# Step 3: copy each library preserving the directory path
-cp /lib/aarch64-linux-gnu/libtinfo.so.6  lib/aarch64-linux-gnu/
-cp /lib/aarch64-linux-gnu/libc.so.6      lib/aarch64-linux-gnu/
-cp /lib/ld-linux-aarch64.so.1            lib/
-
-# ── Step 4: same for ls ──────────────────────────────────────────
-cp /bin/ls ./bin/
-ldd /bin/ls
-# notably needs libselinux.so.1 and libpcre2-8.so.0 on Ubuntu 24.04
-cp /lib/aarch64-linux-gnu/libselinux.so.1  lib/aarch64-linux-gnu/
-cp /lib/aarch64-linux-gnu/libpcre2-8.so.0  lib/aarch64-linux-gnu/
-
-# ── Step 5: same for ps ──────────────────────────────────────────
-cp /bin/ps ./bin/
-ldd /bin/ps
-# copy any NEW libs it shows
-
-# ── Step 6: mount /proc so ps can read process info ─────────────
-mkdir proc && mount -t proc proc proc
-
-# Verify the container directory — this is the entire "image"
-find /tmp/container-101 | wc -l  # → ~30-40 files
-ls /tmp/container-101/
-# → bin  lib  proc
+cd ~/k8s-training/container-demos
+bash demo-01-chroot.sh
 ```
 
-> **Why copy the libs?** A binary is just instructions. At runtime the kernel loads  
-> the binary then hands off to `ld-linux` (the dynamic linker) to find and load each  
-> `.so` file. If any `.so` is missing, the binary won't start — you get  
-> `error while loading shared libraries`. The image is the binary + its libs, nothing more.
->
-> **Troubleshooting:** if `ls` fails with a missing lib error, run `ldd /bin/ls` again  
-> and copy the missing `.so` into `lib/aarch64-linux-gnu/`.
+### WHAT THE SCRIPT DOES (step by step)
+1. Creates `~/container101/` — this becomes the fake root
+2. Copies `/bin/bash`, `/bin/ls`, `/bin/ps` and their shared libraries into it
+3. Mounts `/proc` inside it so `ps` can work
+4. Runs `chroot . /bin/bash` — you are now inside the isolated filesystem
 
-### AFTER chroot — verify isolation with the same commands
-
+### AFTER — what to observe inside the chroot
 ```bash
-# No sudo needed — already root inside the Ubuntu container
-chroot /tmp/container-101 /bin/bash
-```
-
-```bash
-# Verify 1 — filesystem is isolated
-pwd          # → /
-
+# How much of the filesystem can we see now?
 ls /
-# → bin  lib  lib64  proc     ← ONLY what we copied, /etc /home /usr /var GONE ✅
+# expected: bin  lib  proc  only (no /etc /home /usr /var)
 
-cd /etc      # → bash: cd: /etc: No such file or directory  ✅
-cd /home     # → No such file or directory  ✅
-cd ../../..  # → still at /  — cannot escape  ✅
+# Can we escape?
+cd ../../..
+ls /
+# expected: still just bin  lib  proc — cannot break out
 
-# Verify 2 — "I have no name!" in the prompt is expected
-# No /etc/passwd inside the chroot, so the shell can't resolve the username.
-# This is exactly what a container image without passwd would look like.
+# Can we go to /etc?
+cd /etc
+# expected: bash: cd: /etc: No such file or directory
 
-# Verify 3 — the gotcha: processes are NOT isolated
-ps -ef       # → shows ALL processes from the Ubuntu container  ← no PID isolation
-echo $$      # → same PID as before entering chroot — NOT 1  ← no PID namespace
-
-exit         # back to the Ubuntu container shell
+# Are processes isolated?
+ps -ef
+# expected: shows ALL processes from the full system — NOT isolated
+echo $$
+# expected: same high PID as before chroot, NOT 1
 ```
 
-### Before vs After — side by side
-
-| Command | BEFORE chroot | AFTER chroot |
-|---------|--------------|--------------|
-| `ls /` | 20+ directories | 4 dirs only |
-| `cd /etc` | works | **No such file** |
-| `cd ../../..` | goes to real `/` | **stays at fake `/`** |
-| `ps -ef` | host processes | **still host processes** ← not isolated |
-| `echo $$` | high PID | **same high PID** ← not isolated |
-
-### What chroot isolates vs what it does not
-
+### What to explain
 ```
-chroot DOES isolate:   ✅ filesystem  (can't see /etc, /home, /var)
-chroot does NOT:       ❌ processes   (ps shows everything)
-                       ❌ network     (same interfaces)
-                       ❌ users       (still root on the host)
+chroot DOES:   ✅ isolate the filesystem root  (container sees only its own files)
+chroot DOES NOT: ❌ isolate processes  (ps shows everything)
+               ❌ isolate network
+               ❌ isolate users
 
-→ This is why namespaces (demo-02) exist.
-  A real container = chroot + namespaces + cgroups together.
-```
+→ The "I have no name!" prompt you see inside is expected —
+  there is no /etc/passwd in the chroot, so the shell can't resolve the username.
+  This is exactly what a container image without passwd looks like.
 
-### Run the full training demo script
-
-```bash
-# Ctrl+S to pause, Ctrl+Q to continue
-bash container-demos/demo-01-chroot.sh
-```
-
-**Key insight:**
-```
-What you see as "ubuntu" or "alpine" in a container image is NOT a full OS.
-It is a directory tree (bins + libs) that your process gets chrooted into.
-The kernel is always the HOST kernel — the image just provides userland.
+→ A container image is NOT a full OS.
+  It is a directory tree (bins + libs) your process is chrooted into.
+  The kernel is always the HOST kernel — the image just provides userland.
 ```
 
 ---
 
-## 2. Namespaces — Isolating What a Process Can See
+## Demo 02 — Namespaces: Isolating What a Process Can See
 
-> **Concept:** Linux namespaces make a process think it is alone.  
-> Each namespace type isolates a different aspect of the system.  
-> chroot only isolated the filesystem — namespaces complete the picture.
->
-> | Namespace | Isolates |
-> |-----------|---------|
-> | **PID**   | Process tree — container thinks its process is PID 1 |
-> | **NET**   | Network interfaces, routing, ports |
-> | **MNT**   | Filesystem mounts |
-> | **UTS**   | Hostname and domain name |
-> | **IPC**   | Inter-process communication |
-> | **USER**  | User and group IDs |
+### Concept
+Linux namespaces make a process think it is alone.  
+chroot only isolated the filesystem — namespaces complete the picture by isolating processes, users, hostname, network and more.
 
-### BEFORE namespace — the chroot gotcha revisited
+| Namespace | Isolates |
+|-----------|---------|
+| **USER**  | User and group IDs — fake root that isn't really root |
+| **PID**   | Process tree — container thinks it is PID 1 |
+| **UTS**   | Hostname and domain name |
+| **NET**   | Network interfaces, routing, ports |
+| **MNT**   | Filesystem mounts |
+| **IPC**   | Inter-process communication |
 
+### BEFORE — record the baseline
 ```bash
-# Inside chroot, ps still showed ALL processes from the Ubuntu container
-# and echo $$ showed the same PID — because chroot has no PID namespace.
+# What user are we?
+whoami
+id -u
+# expected: your username, UID like 1000  (non-zero = not root)
 
-# Inside the Ubuntu container — record the baseline
-ps -ef | wc -l   # → a few processes
-echo $$          # → e.g. 7
-hostname         # → some container ID like 3f2a1b...
+# What namespaces does our process belong to?
+ls -al /proc/self/ns
+# note the numbers next to each namespace file
+# e.g.  user:[4026531837]   pid:[4026531836]
+# Write down the user namespace number — you will see it change
+
+# What is the UID mapping in our namespace?
+cat /proc/self/uid_map
+# expected: 0  0  4294967295
+# meaning: UID 0 maps to UID 0, linearly, for all UIDs
+
+# What is our hostname?
+hostname
+# expected: your machine's real hostname
+
+# How many processes can we see?
+ps -ef | wc -l
 ```
 
-### AFTER — add a PID namespace with unshare
-
+### Run the script
 ```bash
-# unshare creates a new namespace and runs bash inside it
-# No sudo needed — already root inside Ubuntu container
-unshare --pid --fork --mount-proc bash
-
-# Verify — same commands, completely different results:
-ps -ef           # → only 2 processes: bash + ps  ✅ isolated
-echo $$          # → 1  ✅ we ARE PID 1 now
-ps -ef | wc -l   # → 2  vs several on the outer container
-
-exit             # back to the Ubuntu container
-ps -ef | wc -l   # → original count again
+bash demo-02-unshare.sh
 ```
 
-### UTS namespace — isolate hostname
+### WHAT THE SCRIPT DOES
+**Part 1 — USER namespace:**  
+Creates a new user namespace with `unshare --map-root-user --user`, mapping your UID to root (UID 0) inside the namespace.
 
+**Part 2 — PID namespace:**  
+Creates a new PID namespace with `sudo unshare --pid --fork --mount-proc`, where the new bash process becomes PID 1.
+
+### AFTER — what to observe
+
+**Inside the USER namespace:**
 ```bash
-# BEFORE: hostname is the container's ID
-hostname         # → 3f2a1b... (Docker-assigned)
+whoami
+id -u
+# expected: root / 0  (we appear to be root!)
 
-# AFTER: isolated hostname inside a UTS namespace
-unshare --uts bash
-hostname my-container    # set a new hostname inside this namespace
-hostname                 # → my-container  ✅
-exit
-hostname                 # → 3f2a1b...  ✅ outer container unchanged
+# But can we actually do root things?
+rm -f /boot/vmlinuz-*
+# expected: Operation not permitted  (fake root, cannot touch real system files)
+
+cat /etc/shadow
+# expected: Permission denied  (still no real privileges)
+
+# Check the namespace number — it changed!
+ls -al /proc/self/ns
+cat /proc/self/uid_map
+# expected: 0  <your-real-uid>  1
+# UID 0 inside = your real UID outside — it is a remapping, not real root
 ```
 
-### See all namespaces a Docker container uses
-
+**Inside the PID namespace:**
 ```bash
-# Run a container
-docker run -d --name ns-test nginx:mainline
-
-# Find its PID on the host
-docker inspect ns-test --format '{{.State.Pid}}'   # → e.g. 4821
-
-# List all its namespaces — Docker sets up ALL of them automatically
-ls -la /proc/4821/ns/
-# → cgroup  ipc  mnt  net  pid  user  uts  (one file per namespace)
-
-# Compare: host bash vs container process — different namespace inodes
-ls -la /proc/$$/ns/pid          # host PID namespace
-ls -la /proc/4821/ns/pid        # container PID namespace  ← different!
-
-docker stop ns-test && docker rm ns-test
+ps -ef
+# expected: only 2 processes (bash + ps) — fully isolated
+echo $$
+# expected: 1  (this process IS PID 1)
+ls -al /proc/self/ns/pid
+# expected: inode number is DIFFERENT from what you recorded before
 ```
 
-### Before vs After — side by side
-
-| Command | Host (no namespace) | Inside PID namespace |
-|---------|--------------------|--------------------|
-| `ps -ef \| wc -l` | 25 processes | **2 processes** |
-| `echo $$` | 1234 (high) | **1 (thinks it's PID 1)** |
-| `hostname` | host name | **isolated name** (UTS ns) |
-
-### Run the full training demo script
-
-```bash
-bash container-demos/demo-02-unshare.sh
+### What to explain
 ```
+USER namespace:  You LOOK like root inside, but it's a remapped UID.
+                 Real kernel operations are still blocked.
+                 → This is how rootless containers work.
 
----
+PID namespace:   Your process thinks it is PID 1 (the init process).
+                 It cannot see any other processes.
+                 → This is why "ps" inside a container shows only 1-2 processes.
 
-## 3. cgroups — Limiting What a Process Can Use
-
-> **Concept:** Control Groups (cgroups) set resource limits on processes.  
-> Without cgroups, one container could consume all CPU/RAM and starve others.  
-> This is how `docker run --memory 128m --cpus 0.5` works under the hood.
-
-### BEFORE cgroups — no limits, process can use everything
-
-```bash
-# Spawn a CPU-burning process
-yes > /dev/null &
-YES_PID=$!
-
-# Watch it consume 100% of one CPU core
-top -p $YES_PID    # → ~100% CPU, no limit
-# Press q to exit top
-
-kill $YES_PID
-```
-
-### AFTER cgroups — throttle the same process
-
-```bash
-# Spawn the CPU burner again
-yes > /dev/null &
-YES_PID=$!
-
-# Create a cgroup and set a CPU limit (cgroups v2)
-# Already root inside the Ubuntu container — no sudo needed
-mkdir /sys/fs/cgroup/demo-limit
-echo "10000 100000" > /sys/fs/cgroup/demo-limit/cpu.max
-# 10000/100000 = 10% CPU max
-
-# Put the process into the cgroup
-echo $YES_PID > /sys/fs/cgroup/demo-limit/cgroup.procs
-
-# Watch it now — CPU usage drops to ~10%
-top -p $YES_PID    # → ~10% CPU  ← throttled by cgroup
-# Press q
-
-kill $YES_PID
-rmdir /sys/fs/cgroup/demo-limit
-```
-
-### See cgroups in action via Docker
-
-```bash
-# Start a container with a memory limit
-docker run -d --name cg-test --memory=64m nginx:mainline
-
-# See the actual cgroup limit on the host filesystem
-cat /sys/fs/cgroup/system.slice/docker-$(docker inspect --format '{{.Id}}' cg-test).scope/memory.max
-# → 67108864  (= 64 MB in bytes)
-
-# Try to exceed the limit — container gets OOMKilled
-docker run --rm --memory=32m alpine sh -c \
-  "cat /dev/zero | head -c 100m | tail"
-# → container exits with error
-
-docker events --since 1m | grep -i oom   # → OOM kill event logged
-
-docker stop cg-test && docker rm cg-test
-```
-
-### Before vs After — side by side
-
-| | No cgroup | With cgroup (10% limit) |
-|--|-----------|------------------------|
-| `yes > /dev/null` CPU | ~100% | **~10%** |
-| `--memory=32m` exceeding | process keeps running | **OOMKilled** |
-| Docker `--cpus 0.5` | no effect without cgroup | **enforced by kernel** |
-
-### Run the full training demo script
-
-```bash
-bash container-demos/demo-03-cgroup_v2.sh   # modern systems (cgroups v2)
-# or
-bash container-demos/demo-03-cgroup.sh      # older systems (cgroups v1)
+Combined with chroot from demo-01:
+  chroot     = can't see other files
+  namespaces = can't see other processes / users / hostname
+  Together they create the isolation illusion a container needs.
 ```
 
 ---
 
-## 4. Capabilities — Fine-grained Privilege Control
+## Demo 03 — cgroups: Limiting What a Process Can Use
 
-> **Concept:** Linux breaks root's privileges into ~40 individual capabilities.  
-> Containers run with a reduced set — they can't do things like load kernel modules  
-> or change system time, even if they run as root inside the container.
+### Concept
+Control Groups (cgroups) set hard resource limits on processes.  
+Without cgroups, one process could consume 100% CPU or all RAM and starve everything else.  
+This is how `docker run --memory 128m --cpus 0.5` is enforced — not by Docker, but by the Linux kernel.
 
-### BEFORE — root on the host can do anything
+### BEFORE — open a second terminal and run `top`
+```bash
+# Terminal 2:
+top
+# Keep this running — you will watch CPU% change live during the demo
+```
 
 ```bash
-# On the host, root has all capabilities
-# Already root inside the Ubuntu container
+# Terminal 1 — note the current state
+# cgroups are managed through the /sys filesystem
+ls -la /sys/fs/cgroup
+# → lots of entries: cpu, memory, io, pids etc. — each is a controllable resource
+
+# Start a CPU-burning process manually to see unthrottled behaviour
+dd if=/dev/zero of=/dev/null bs=1M &
+# → in top (Terminal 2): this dd takes ~100% of one CPU core
+kill %1
+```
+
+### Run the script
+```bash
+bash demo-03-cgroup_v2.sh
+# When prompted, confirm you have 'top' running in a second terminal
+```
+
+### WHAT THE SCRIPT DOES
+1. Starts **3 `dd` processes** burning CPU — watch all three in `top` sharing ~33% each
+2. Creates a new cgroup: `mkdir /sys/fs/cgroup/mydemocpugroup`
+3. Moves **2 of the 3** `dd` processes into the cgroup
+4. Sets `cpu.max = "50000 100000"` → 50% CPU max for the whole group
+5. Kills all dd processes at the end
+
+### AFTER — what to observe in `top`
+```
+BEFORE cgroup:
+  dd #1  ~33% CPU
+  dd #2  ~33% CPU   ← these two will be put in the cgroup
+  dd #3  ~33% CPU
+
+AFTER cpu.max = 50000/100000 (50% limit):
+  dd #1  ~25% CPU  ←─┐ both share 50% total
+  dd #2  ~25% CPU  ←─┘ throttled by kernel
+  dd #3  ~50% CPU     ← free, no cgroup limit
+```
+
+```bash
+# Also observe how the cgroup directory self-populates
+ls -al /sys/fs/cgroup/mydemocpugroup
+# → cpu.max  cgroup.procs  memory.max  io.max  ...
+# → created automatically by kernel — no config files needed
+
+cat /sys/fs/cgroup/mydemocpugroup/cpu.max
+# → 50000 100000   ← 50ms out of every 100ms period = 50% CPU
+```
+
+### What to explain
+```
+The cgroup is just a directory in /sys/fs/cgroup.
+The kernel populates it with control files automatically.
+Writing a PID to cgroup.procs puts that process under the cgroup's rules.
+Writing to cpu.max changes the limit instantly — no restart needed.
+
+→ This is how "docker run --cpus 0.5" works:
+  Docker creates a cgroup directory and writes 50000 100000 into cpu.max.
+  The kernel does the actual throttling — Docker is just the orchestrator.
+
+→ OOMKilled in Kubernetes?
+  That is the kernel's memory cgroup killing a process
+  that exceeded its memory.max limit.
+```
+
+---
+
+## Demo 04 — Capabilities: Fine-grained Root Privileges
+
+> **Note:** This demo requires Docker to be installed and running.  
+> It shows capabilities by running containers with and without specific capabilities.
+
+### Concept
+Linux breaks the traditional "root can do everything" model into ~40 individual capabilities.  
+Even if a process runs as root (UID 0) inside a container, it only has the capabilities  
+explicitly granted to it. Everything else is blocked.
+
+### BEFORE — see all capabilities on your system
+```bash
+# Your current process as a normal user
 cat /proc/self/status | grep CapEff
-# → CapEff: 000001ffffffffff   (all bits set = all capabilities when --privileged)
+# expected: CapEff: 0000000000000000  (no effective capabilities)
 
-# Root can add a network interface
-ip link add dummy0 type dummy
-ip link show dummy0     # → works ✅
-ip link del dummy0
+# Decode what capabilities a value means
+capsh --decode=0000003fffffffff
+# expected: shows the full list including cap_chown, cap_net_admin, cap_sys_admin
+
+# Try to change hostname
+hostname newname
+# expected: you must be root to change the host name
 ```
 
-### AFTER — root inside a container is limited
-
+### Run the script
 ```bash
-# Container runs as root but with reduced capabilities
-docker run --rm alpine cat /proc/self/status | grep CapEff
-# → CapEff: 00000000a80425fb   (much fewer bits set)
-
-# Decode what capabilities it DOES have
-capsh --decode=00000000a80425fb
-
-# Try NET_ADMIN operation — blocked even though we're root inside
-docker run --rm alpine ip link add dummy0 type dummy
-# → ip: RTNETLINK answers: Operation not permitted  ← blocked!
-
-# Explicitly ADD the capability — now it works
-docker run --rm --cap-add NET_ADMIN alpine ip link add dummy0 type dummy
-# → success
-
-# Drop ALL capabilities — most locked down
-docker run --rm --cap-drop ALL alpine id
-# → uid=0(root) — still "root" by name, but zero actual privileges
+bash demo-04-capabilities.sh
 ```
 
-### Before vs After — side by side
+### WHAT THE SCRIPT DOES
+1. Builds a small Docker image with the demo scripts inside it
+2. **Container 1** — runs with Docker's default (reduced) capability set:  
+   tries `hostname kuala-lumpur` → **fails** even though `whoami` shows root
+3. **Container 2** — runs with `--cap-add SYS_ADMIN` explicitly added:  
+   tries `hostname kuala-lumpur` → **succeeds**
 
-| Action | Host root | Container root (default) | `--cap-drop ALL` |
-|--------|-----------|--------------------------|-----------------|
-| `ip link add` | works | **blocked** | blocked |
-| `mount` | works | **blocked** | blocked |
-| `CapEff bits` | all set | ~12 bits | **0** |
-
-### Run the full training demo script
-
+### AFTER — what to observe
 ```bash
-bash container-demos/demo-04-capabilities.sh
+# Inside Container 1 (default capabilities):
+whoami           # → root
+id -u            # → 0
+hostname kuala-lumpur
+# → hostname: you must be root to change the host name ← blocked! ❌
+# Why? Docker removes CAP_SYS_ADMIN from the default set.
+
+# Inside Container 2 (--cap-add SYS_ADMIN):
+hostname kuala-lumpur
+# → (no error — it worked) ✅
+hostname
+# → kuala-lumpur
+```
+
+### What to explain
+```
+Traditional Linux:  root = god. Can do everything.
+Linux capabilities: root is split into ~40 fine-grained permissions.
+
+Docker default container drops:
+  ❌ CAP_SYS_ADMIN    (no hostname, mount, etc.)
+  ❌ CAP_NET_ADMIN    (no adding network interfaces)
+  ❌ CAP_SYS_MODULE   (no loading kernel modules)
+  ❌ CAP_SYS_TIME     (no changing system clock)
+  ... and more
+
+Docker keeps:
+  ✅ CAP_CHOWN        (can change file ownership)
+  ✅ CAP_NET_BIND_SERVICE  (can bind to ports < 1024)
+  ✅ CAP_KILL         (can kill own processes)
+
+→ Running as root inside a container is NOT the same as root on the host.
+→ "I am root" inside a container is a limited, caged root.
+→ --privileged removes ALL restrictions — never use in production.
 ```
 
 ---
 
-## 5. OverlayFS — Layered Container Filesystems
+## Demo 05 — seccomp: Filtering System Calls
 
-> **Concept:** Container images are built in layers (each Dockerfile instruction = one layer).  
-> OverlayFS stacks these read-only layers, then adds a thin read-write layer on top.  
-> When you write a file, it goes into the RW layer — the image layers are never touched.
->
-> ```
-> RW layer  ← your container's writes go here (lost on container delete)
-> ─────────
-> Layer 3   ← COPY app.jar (from Dockerfile)
-> Layer 2   ← RUN apt-get install java
-> Layer 1   ← FROM ubuntu:22.04
-> ```
+> **Note:** This demo requires Docker and the Go programming language installed.
 
-### BEFORE — pull an image and inspect its layers
+### Concept
+Every operation a program does (read a file, open a socket, fork a process) goes through  
+a **system call** to the kernel. seccomp (Secure Computing) is a kernel filter that can  
+block specific syscalls entirely — before they even reach the kernel.  
+Docker applies a default seccomp profile blocking ~44 dangerous syscalls.
 
+### BEFORE — see that syscalls are unrestricted normally
 ```bash
-docker pull nginx:mainline
+# strace shows every syscall a process makes
+strace -c ls /tmp
+# expected: shows read, write, openat, getdents64 etc. all succeed
 
-# See every layer and what instruction created it
-docker history nginx:mainline
-# → each line = one image layer with its size
-
-# How many layers total?
-docker inspect nginx:mainline | grep -A5 '"Layers"'
-# → list of sha256 hashes, one per layer
-
-# Disk usage — layers are SHARED between images that share a base
-docker images
-docker system df -v    # "Shared size" shows how much is reused
+# Check if seccomp is active on your process
+cat /proc/self/status | grep Seccomp
+# expected: Seccomp: 0   (0 = no filter, 2 = filter active)
 ```
 
-### AFTER — run a container and observe copy-on-write
-
+### Run the script
 ```bash
-docker run -d --name ofs-test nginx:mainline
-
-# Find the UpperDir (RW layer) and LowerDir (read-only image layers)
-docker inspect ofs-test | grep -A10 GraphDriver
-# → UpperDir: /var/lib/docker/overlay2/<hash>/diff   ← your writes go here
-# → LowerDir: /var/lib/docker/overlay2/<hash>/diff:... ← image layers (read-only)
-
-UPPER=$(docker inspect ofs-test --format '{{.GraphDriver.Data.UpperDir}}')
-
-# UpperDir is empty — nothing written yet
-ls $UPPER    # → (empty)
-
-# Write a file inside the container
-docker exec ofs-test touch /hello.txt
-
-# Now the file appears in UpperDir (copy-on-write)
-ls $UPPER    # → hello.txt  ← only the diff, not the whole filesystem
-
-# Delete the container — UpperDir is gone
-docker stop ofs-test && docker rm ofs-test
-ls $UPPER    # → No such file or directory  ← writes lost!
-
-# Image layers are still there — unaffected
-docker images nginx:mainline   # → still present
+bash demo-05-seccomp.sh
 ```
 
-### Before vs After — side by side
+### WHAT THE SCRIPT DOES
+1. Compiles a tiny Go program that calls `uname()` syscall
+2. Runs it **without** seccomp — works normally
+3. Runs it **with** a seccomp profile that **blocks** `uname` — process is killed
+4. Shows how to inspect a seccomp profile JSON
 
-| | Before (image) | Container running | After `docker rm` |
-|--|----------------|-------------------|-------------------|
-| Image layers | read-only | **still read-only** | still on disk |
-| UpperDir (RW) | doesn't exist | exists, captures writes | **deleted** |
-| Written files | n/a | visible inside container | **gone** |
-| Shared layers | shared with other images | shared | **still shared** |
-
-### Run the full training demo script
-
+### AFTER — what to observe
 ```bash
-bash container-demos/demo-06-overlayfs.sh
+# Without seccomp profile:
+# → program runs and prints kernel info normally
+
+# With seccomp profile blocking uname:
+# → process killed with "Bad system call" or exit code 159
+# → the syscall never reached the kernel — blocked at entry
+
+# Inside the container:
+cat /proc/self/status | grep Seccomp
+# → Seccomp: 2   ← filter is active
+```
+
+### What to explain
+```
+Capabilities say: "you can't do network admin operations"
+seccomp says:     "you can't even CALL the syscall to try"
+
+It's a second, deeper layer of defence:
+  1. Capabilities block high-level privileges
+  2. seccomp blocks the raw kernel interface
+
+Docker's default seccomp profile blocks syscalls like:
+  ❌ keyctl      (kernel keyring — privilege escalation vector)
+  ❌ ptrace      (process tracing — could inspect other processes)
+  ❌ reboot      (would reboot the host)
+  ❌ kexec_load  (load a new kernel)
+
+→ Even if someone bypasses capabilities, they still hit the seccomp wall.
+→ --security-opt seccomp=unconfined removes this wall — avoid in production.
 ```
 
 ---
 
-## 6. Bind Mounts — Injecting Host Files into a Container
+## Demo 06 — OverlayFS: Layered Container Filesystems
 
-> **Concept:** A bind mount maps a host directory into the container.  
-> The container sees the host files at that path — live, no copy.  
-> This is how you inject configs, source code, or SSH keys without rebuilding the image.
+### Concept
+Container images are built in layers (each Dockerfile instruction = one layer).  
+OverlayFS stacks multiple **read-only** directories and adds a **single writable** layer on top.  
+When you write a file, it goes into the RW layer — the image layers are never modified.  
+When you delete a file from a lower layer, a special "whiteout" marker is created in the RW layer.
 
-### BEFORE bind mount — container uses its own baked-in files
-
-```bash
-# Default nginx container serves its own built-in page
-docker run -d --name no-mount -p 8080:80 nginx:mainline
-curl http://localhost:8080
-# → "Welcome to nginx!" (nginx's default page baked into the image)
-
-docker stop no-mount && docker rm no-mount
+```
+RW layer  ← your writes go here (lost when container is deleted)
+─────────
+ro3       ← layer 3 (e.g. COPY app.jar)
+ro2       ← layer 2 (e.g. RUN apt-get install java)
+ro1       ← layer 1 (e.g. FROM ubuntu:22.04)
 ```
 
-### AFTER bind mount — inject your own content from host
-
+### BEFORE — three separate directories, no connection
 ```bash
-# Create a directory with custom content on the HOST
-mkdir -p /tmp/webroot
-echo "<h1>Hello from bind mount!</h1>" > /tmp/webroot/index.html
+# The script creates this structure:
+#   ~/overlay/ro1/  → contains file: bayern
+#   ~/overlay/ro2/  → contains file: muenchen
+#   ~/overlay/ro3/  → contains file: beckenbauer
+#   ~/overlay/rw/   → empty (will become the writable layer)
+#   ~/overlay/work/ → empty (required by overlayfs internals)
+#   ~/overlay/merged/ → the mountpoint where everything comes together
 
-# Mount it over nginx's webroot — no image rebuild
-docker run -d --name with-mount -p 8081:80 \
-  --mount type=bind,source=/tmp/webroot,target=/usr/share/nginx/html \
-  nginx:mainline
-
-curl http://localhost:8081
-# → Hello from bind mount!  ← your file, not nginx's default
-
-# Edit the file LIVE on the host — container sees it instantly, no restart
-echo "<h1>Updated live — no restart!</h1>" > /tmp/webroot/index.html
-curl http://localhost:8081
-# → Updated live — no restart!
-
-docker stop with-mount && docker rm with-mount
+# Before mounting, each directory is completely separate:
+ls ~/overlay/ro1   # → bayern
+ls ~/overlay/ro2   # → muenchen
+ls ~/overlay/ro3   # → beckenbauer
+ls ~/overlay/rw    # → (empty)
+ls ~/overlay/merged # → (empty)
 ```
 
-### Before vs After — side by side
-
-| | No bind mount | With bind mount |
-|--|--------------|----------------|
-| `curl localhost` | nginx default page | **your custom page** |
-| Edit host file | no effect | **instant update, no restart** |
-| Image content | unchanged | **hidden/overridden at mount path** |
-| File persists after `rm` | n/a | **yes — it's on the host** |
-
-### Security demo — verify the risk of unrestricted bind mounts
-
+### Run the script
 ```bash
-# WARNING: demonstration only — never do this in production
-# Mounting /etc into a container exposes host secrets
-docker run -it --rm \
-  --mount type=bind,source=/etc,target=/hostetc \
-  alpine cat /hostetc/shadow
-# → can read host shadow file from inside the container!
-
-# Lesson: always use :ro (read-only) for config mounts
-docker run -d \
-  --mount type=bind,source=/tmp/webroot,target=/usr/share/nginx/html,readonly \
-  nginx:mainline
-# → container can read but NOT write to the mounted path
+bash demo-06-overlayfs.sh
 ```
 
-### Run the full training demo script
+### WHAT THE SCRIPT DOES
+1. Creates the 3 read-only dirs with one file each
+2. Mounts them as an overlay: `mount -t overlay overlay -o lowerdir=ro3:ro2:ro1,upperdir=rw,workdir=work merged`
+3. Shows `merged/` — all 3 files visible together
+4. Creates a new file in `merged/` (hoeness)
+5. Deletes a file from `merged/` (beckenbauer)
+6. Unmounts and inspects what happened to the lower layers
 
+### AFTER — what to observe
 ```bash
-bash container-demos/demo-07-bind-mount.sh
+# Immediately after mount — merged shows ALL files:
+ls merged/
+# → bayern  beckenbauer  muenchen   ← all 3 lower layers unified ✅
+
+# After touch merged/hoeness and rm merged/beckenbauer:
+ls merged/
+# → bayern  hoeness  muenchen   ← beckenbauer gone, hoeness added
+
+# After unmount — check what happened under the hood:
+ls ro3/
+# → beckenbauer   ← STILL THERE in the lower layer, untouched ✅
+# (lower layers are read-only — the delete never touched ro3)
+
+ls rw/
+# → hoeness              ← new file went to the RW layer ✅
+# → beckenbauer          ← a character device (whiteout file)!
+# The whiteout file is OverlayFS's way of "hiding" a file from a lower layer
+```
+
+### What to explain
+```
+This is EXACTLY how Docker images work:
+
+FROM ubuntu     → ro1 (base layer, read-only)
+RUN apt install → ro2 (new layer on top, read-only)
+COPY app.jar    → ro3 (new layer on top, read-only)
+[container runs] → rw (your writes, deleted on docker rm)
+
+Key observations:
+  1. All image layers are SHARED between containers.
+     100 containers using the same nginx image = 100 x rw layers,
+     but only 1 copy of the nginx image layers on disk.
+
+  2. Deleting a file does NOT remove it from the lower layer.
+     It creates a whiteout marker. The image size grows when you delete.
+     This is why "RUN apt-get install && apt-get clean" must be ONE layer.
+
+  3. Container writes are LOST when the container is deleted.
+     Only the image layers (lower, read-only) survive docker rm.
+     → Use volumes for persistent data.
 ```
 
 ---
 
-## Quick Reference — Linux Primitives
+## Demo 07 — Bind Mount: Injecting Host Files into a Container Path
 
-| Primitive     | Isolates / Controls       | Docker equivalent |
-|---------------|---------------------------|-------------------|
-| `chroot`      | Filesystem root           | Container image (rootfs) |
-| `namespaces`  | PID, NET, MNT, UTS…       | `docker run` (automatic) |
-| `cgroups`     | CPU, memory, I/O          | `--cpus`, `--memory` |
-| `capabilities`| Root privilege slices     | `--cap-add/drop` |
-| `overlayfs`   | Layered image filesystem  | Image layers, `docker history` |
-| `bind mount`  | Host path → container path| `--mount type=bind` |
+### Concept
+A bind mount makes a directory from one location on the filesystem appear at another location.  
+The original content at the target is hidden while the mount is active.  
+Writes at either end are immediately visible at the other — they point to the same disk location.  
+This is how `docker run -v /host/path:/container/path` works.
+
+### BEFORE — two separate directories
+```bash
+# The script creates:
+#   ~/bind/a/  → contains file: sap
+#   ~/bind/b/  → contains file: walldorf
+
+ls ~/bind/a    # → sap
+ls ~/bind/b    # → walldorf
+# They are completely independent at this point
+```
+
+### Run the script
+```bash
+bash demo-07-bind-mount.sh
+```
+
+### WHAT THE SCRIPT DOES
+1. Creates `a/` (with file `sap`) and `b/` (with file `walldorf`)
+2. Bind-mounts `a` onto `b`: `mount -o bind a b`
+3. Shows what `b/` contains now
+4. Creates a file inside `b/` (st-leon-rot)
+5. Unmounts `b`
+6. Shows what survived in both directories
+
+### AFTER — what to observe
+```bash
+# Immediately after bind mount:
+ls b/
+# → sap      ← b now shows a's content!
+# → walldorf IS GONE — hidden behind the mount (not deleted)
+
+# After touch b/st-leon-rot (write while mounted):
+ls b/
+# → sap  st-leon-rot
+
+ls a/
+# → sap  st-leon-rot   ← file appears in a too! Same disk location ✅
+
+# After unmount:
+ls b/
+# → walldorf   ← original content of b is back ✅ (was never deleted)
+
+ls a/
+# → sap  st-leon-rot   ← file written during mount stays in a ✅
+```
+
+### What to explain
+```
+Bind mount = re-mapping a path, not copying.
+
+This is exactly docker run -v /myapp:/app:
+  /myapp on HOST  →  mounted at /app inside container
+  Container writes to /app  →  instantly visible in /myapp on host
+  Container is deleted      →  /myapp on host still has the files ✅
+
+Practical uses in containers:
+  ├── Inject config files without rebuilding the image
+  ├── Persist database files (postgres data directory)
+  ├── Share source code during development (live reload)
+  └── Inject secrets from host into container
+
+Security risk:
+  mount -o bind /etc /container/etc  →  container can read /etc/shadow
+  Always use ,readonly for config mounts:
+  docker run -v /config:/app/config:ro ...
+```
+
+---
+
+## Quick Reference — Demos at a Glance
+
+| Demo | Script | Concept | Key command to observe |
+|------|--------|---------|----------------------|
+| 01 | demo-01-chroot.sh | Filesystem isolation | `ls /` inside chroot — only 3 dirs |
+| 02 | demo-02-unshare.sh | Process & user isolation | `ps -ef` = 2 processes; `echo $$` = 1 |
+| 03 | demo-03-cgroup_v2.sh | Resource limits | `top` — CPU drops from 33% to 25% per dd |
+| 04 | demo-04-capabilities.sh | Privilege slicing | `hostname` fails inside container (needs Docker) |
+| 05 | demo-05-seccomp.sh | Syscall filtering | Program killed with "Bad system call" (needs Docker + Go) |
+| 06 | demo-06-overlayfs.sh | Layered filesystem | `ls rw/` shows whiteout file for deleted item |
+| 07 | demo-07-bind-mount.sh | Host path injection | Write in `b/` appears in `a/` immediately |
 
 ---
 
 ## Learning Path
 
-- [ ] `01` chroot — understand rootfs = just a directory  
-- [ ] `02` namespaces — process isolation (PID, NET)  
-- [ ] `03` cgroups — resource limits  
-- [ ] `04` capabilities — fine-grained privilege  
-- [ ] `05` overlayfs — layered images, copy-on-write  
-- [ ] `06` bind mounts — inject host files  
+- [ ] `01` chroot — filesystem root = just a directory  
+- [ ] `02` namespaces — isolate PIDs, users, hostname  
+- [ ] `03` cgroups — enforce CPU/memory limits  
+- [ ] `04` capabilities — caged root (requires Docker)  
+- [ ] `05` seccomp — block dangerous syscalls (requires Docker + Go)  
+- [ ] `06` overlayfs — layered images, copy-on-write, whiteout  
+- [ ] `07` bind-mount — host path → container path, live sync
+

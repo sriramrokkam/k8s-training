@@ -1,3 +1,18 @@
+
+# Docker Build Demo:
+```bash
+docker build -t Docker-Demo:v1 .
+```
+verify
+```bash
+docker images
+```
+Run it
+```bash
+docker run --name Docker-Demo Docker-Demo:v1
+```
+
+
 # Demo of Docker networks
 
 You can use network-demo.sh script.
